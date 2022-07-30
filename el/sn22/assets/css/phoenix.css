@@ -32,7 +32,7 @@ select {
 .phx-hero {
   text-align: center;
   border-bottom: 1px solid #e3e3e3;
-  background: #eee;
+  background: rgb(114, 77, 77);
   border-radius: 6px;
   padding: 3em 3em 1em;
   margin-bottom: 3rem;
@@ -40,7 +40,7 @@ select {
   font-size: 120%;
 }
 .phx-hero input {
-  background: #ffffff;
+  background: #3d1919;
 }
 .phx-logo {
   min-width: 300px;
@@ -55,8 +55,8 @@ select {
 /* Headers */
 header {
   width: 100%;
-  background: #fdfdfd;
-  border-bottom: 1px solid #eaeaea;
+  background: #af9595;
+  border-bottom: 1px solid #af2a2a;
   margin-bottom: 2rem;
 }
 header section {
