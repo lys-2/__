@@ -18,6 +18,9 @@ defmodule Sn22Web.Router do
     pipe_through :browser
 
     get "/", PageController, :index
+    get "/p", PageController, :p
+    get "/rq", PageController, :rq
+    get "/rq1", PageController, :rq1
   end
 
   # Other scopes may use custom stacks.
