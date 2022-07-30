@@ -40,7 +40,7 @@ select {
   font-size: 120%;
 }
 .phx-hero input {
-  background: #3d1919;
+  background: #bacfd2;
 }
 .phx-logo {
   min-width: 300px;
@@ -55,7 +55,7 @@ select {
 /* Headers */
 header {
   width: 100%;
-  background: #af9595;
+  background: #d8d9c7;
   border-bottom: 1px solid #af2a2a;
   margin-bottom: 2rem;
 }
