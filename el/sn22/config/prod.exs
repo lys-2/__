@@ -17,8 +17,8 @@ config :sn22, Sn22Web.Endpoint,
     port: 443,
     cipher_suite: :strong,
     keyfile: "/etc/letsencrypt/live/www.tym.pw/privkey.pem",
-    cacertfile: "/etc/letsencrypt/live/www.tym.pw/fullchain.pem",
-    # certfile: "/etc/letsencrypt/live/tym.pw/cert.pem"
+    # cacertfile: "/etc/letsencrypt/live/www.tym.pw/fullchain.pem",
+    certfile: "/etc/letsencrypt/live/www.tym.pw/fullchain.pem"
 
   ],
   force_ssl: [hsts: true],
