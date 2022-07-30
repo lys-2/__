@@ -18,7 +18,7 @@ config :sn22, Sn22Web.Endpoint,
     cipher_suite: :strong,
     keyfile: "/etc/letsencrypt/live/tym.pw/privkey.pem",
     cacertfile: "/etc/letsencrypt/live/tym.pw/chain.pem",
-    certfile: "/etc/letsencrypt/live/tym.pw/cert.pem"]
+    certfile: "/etc/letsencrypt/live/tym.pw/cert.pem"
 
   ],
   force_ssl: [hsts: true],
