@@ -17,7 +17,7 @@ config :sn22, Sn22Web.Endpoint,
   watchers: [
     # Start the esbuild watcher by calling Esbuild.install_and_run(:default, args)
     esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]}
-  ]
+  ],
 
 # ## SSL Support
 #
@@ -32,12 +32,12 @@ config :sn22, Sn22Web.Endpoint,
 #
 # The `http:` config above can be replaced with:
 #
-#     https: [
-#       port: 4001,
-#       cipher_suite: :strong,
-#       keyfile: "priv/cert/selfsigned_key.pem",
-#       certfile: "priv/cert/selfsigned.pem"
-#     ],
+    https: [
+      port: 4001,
+      cipher_suite: :strong,
+      keyfile: "priv/cert/selfsigned_key.pem",
+      certfile: "priv/cert/selfsigned.pem"
+    ]
 #
 # If desired, both `http:` and `https:` keys can be
 # configured to run both http and https servers on
