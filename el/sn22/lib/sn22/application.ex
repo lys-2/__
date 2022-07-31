@@ -11,6 +11,8 @@ defmodule Sn22.Application do
   @impl true
   def start(_type, _args) do
 
+    IO.inspect System.cmd("whoami", [])
+    IO.inspect System.cmd("ls", ["-la"])
 
     spawn(Sn22, :run, []) |> Process.register(:mb)
     spawn(Sn22, :run2, [1, {[], 0, 0}])

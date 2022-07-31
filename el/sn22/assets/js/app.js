@@ -22,7 +22,7 @@ import "../css/app.css"
 // Include phoenix_html to handle method=PUT/DELETE in forms and buttons.
 import "phoenix_html"
 // Establish Phoenix Socket and LiveView configuration.
-import {Socket, Presence} from "phoenix"
+import {Socket} from "phoenix"
 import {LiveSocket} from "phoenix_live_view"
 import topbar from "../vendor/topbar"
 
@@ -42,24 +42,3 @@ liveSocket.connect()
 // >> liveSocket.enableLatencySim(1000)  // enabled for duration of browser session
 // >> liveSocket.disableLatencySim()
 window.liveSocket = liveSocket
-
-let socket = new Socket("/socket", {params: {token: window.userToken}})
-let channel = socket.channel("room:lobby", {name: window.location.search.split("=")[1]})
-let presence = new Presence(channel)
-
-function renderOnlineUsers(presence) {
-  let response = ""
-
-  presence.list((id, {metas: [first, ...rest]}) => {
-    let count = rest.length + 1
-    response += `<br>${id} (count: ${count})</br>`
-  })
-
-  document.querySelector("main[role=main]").innerHTML = response
-}
-
-socket.connect()
-
-presence.onSync(() => renderOnlineUsers(presence))
-
-channel.join()
