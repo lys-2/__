@@ -10,9 +10,9 @@ defmodule Sn22Web.Endpoint do
     signing_salt: "eT8p8zs4"
   ]
 
-  socket "/socket", Sn22Web.UserSocket,
-  websocket: true,
-  longpoll: false
+  # socket "/socket", Sn22Web.UserSocket,
+  # websocket: true,
+  # longpoll: false
 
   socket "/live", Phoenix.LiveView.Socket, websocket: [connect_info: [session: @session_options]]
 
