@@ -66,7 +66,7 @@ defmodule Sn22 do
       Process.put(:m, [mt =
         {Process.put(:mc, Process.get(:mc)+1),
          :calendar.universal_time, ch, n, m} | Process.get(:m)]);
-        #  IO.inspect mt
+         IO.inspect mt
       end
     end
 

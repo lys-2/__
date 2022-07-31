@@ -5,13 +5,17 @@ defmodule Sn22.Application do
 
   use Application
 
-  spawn(Sn22, :run, []) |> Process.register(:mb)
-  spawn(Sn22, :run2, [1, {[], 0, 0}])
-  spawn(M1, :init, []) |> Process.register(:main)
+
 
 
   @impl true
   def start(_type, _args) do
+
+
+    spawn(Sn22, :run, []) |> Process.register(:mb)
+    spawn(Sn22, :run2, [1, {[], 0, 0}])
+    spawn(M1, :init, []) |> Process.register(:main)
+
     children = [
       # Start the Telemetry supervisor
       M2,
