@@ -79,17 +79,7 @@ for e <- p do %>
     end; inspect aaa %></span>
 <br>
 
- <%= for e <- aaa do %>
- <span style={"font-family:monospace; transform: rotate("<>
- "#{:rand.uniform(6)-3}"
- <>"deg); display:inline-block;
-   font-size: 22px; "<>
- "color: "<>
- Enum.random ["Orange", "Tomato", "SpringGreen"]
 
- }>
- <%= e %></span>
-<% end %> 
 
 <canvas id="myCanvas" width="960" height="540"></canvas>
 </p>
@@ -118,6 +108,22 @@ for e <- p do %>
 <pre id="place"style=" transform: rotate(-3deg); margin-top: -20px; position: relative; top: -750px;
  left: 30px; font-family:monospace;" ></pre>
 
+ <%= for e <- aaa do %>
+ <span style={"font-family:monospace;
+ position: relative; top: -1250px;
+  transform: rotate("<>
+ "#{:rand.uniform(6)-3}"
+ <>"deg); display:inline-block;
+   font-size: "
+   <>
+ "#{:rand.uniform(24)+24}"
+ <>"px; "<>
+ "color: "<>
+ Enum.random ["Orange", "Tomato", "SpringGreen"]
+
+ }>
+ <%= e %></span>
+<% end %> 
 
 <p hidden>Владимир Градусов, Москва, 2022</p>
 <script>
@@ -145,7 +151,11 @@ let count = 1;
   if (count <33)
  { count++;
 ctx.beginPath();
-ctx.arc(300, 100+count/3, <%= Enum.random(0..1000) %>/count, 10, 3  * Math.PI);
+ctx.arc(
+  <%= Enum.random(0..960) %>, 
+  <%= Enum.random(0..540) %>+count/3,
+   <%= Enum.random(0..1000) %>/count,
+    10, 3  * Math.PI);
 ctx.stroke();
  }
 }, 125-count*2);
