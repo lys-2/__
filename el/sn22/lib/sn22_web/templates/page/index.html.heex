@@ -72,6 +72,7 @@ for e <- p do %>
 
 
 <span><%= send(tw, {self, 1});
+
  aaa = receive do {n,{{y,mn,d},{h,min,sec}},ch,sc,m} -> 
    [n,y,mn,d,h,min,sec,ch,sc,m]
    nil -> [0]
@@ -79,10 +80,13 @@ for e <- p do %>
 <br>
 
  <%= for e <- aaa do %>
- <span style={" transform: rotate(11deg); font-size: 26px; "<>
+ <span style={"font-family:monospace; transform: rotate("<>
+ "#{:rand.uniform(6)-3}"
+ <>"deg); display:inline-block;
+   font-size: 22px; "<>
  "color: "<>
- Enum.random ["Orange", "Tomato", "SpringGreen", "#372248", "#171123"]
- 
+ Enum.random ["Orange", "Tomato", "SpringGreen"]
+
  }>
  <%= e %></span>
 <% end %> 
