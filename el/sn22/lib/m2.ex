@@ -35,6 +35,8 @@ defmodule M2 do
 
   def update() do
 
+  # System.cmd("mix", ["assets.deploy"]);
+
    s = 1..123 |>
     Enum.map(fn i ->
       Agent.update({:via, Registry, {MyAgents, i}},

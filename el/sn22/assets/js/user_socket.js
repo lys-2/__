@@ -3,7 +3,7 @@
 
 // Bring in Phoenix channels client library:
 import {Socket} from "phoenix"
-console.log(1);
+console.log(111);
 // And connect to the path in "lib/sn22_web/endpoint.ex". We pass the
 // token for authentication. Read below how it should be used.
 let socket = new Socket("/socket", {params: {token: window.userToken}})
@@ -60,5 +60,9 @@ let channel = socket.channel("room:lobby", {})
 channel.join()
   .receive("ok", resp => { console.log("Joined successfully", resp) })
   .receive("error", resp => { console.log("Unable to join", resp) })
+
+channel.on("new_msg", payload => {
+    console.log(payload)
+  })
 
 export default socket
