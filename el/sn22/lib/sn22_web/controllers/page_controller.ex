@@ -6,6 +6,11 @@ defmodule Sn22Web.PageController do
     render(conn, "index.html")
   end
 
+  def gd(conn, _params) do
+    # send(Process.whereis(:tw), {self(), 1})
+    render(conn, "gd.html")
+  end
+
   def rq(conn, _params) do
     # send(Process.whereis(:tw), {self(), 1})
     text(conn, inspect conn.params["time"]

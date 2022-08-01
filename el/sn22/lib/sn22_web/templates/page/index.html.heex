@@ -2,8 +2,8 @@
 <p style=" background-image:
  linear-gradient(to left, HoneyDew, gray, black, gray);">
 <a href="/sn-cli.exe"><span >``вин``</span></a>
-<span >_—————— —————— - ————</span>
-<a href="https://aka.ms/vs/17/release/vc_redist.x64.exe" ><span > |-либы`</span></a> 
+<a href="https://aka.ms/vs/17/release/vc_redist.x64.exe" ><span > |-либы`</span></a>
+<span >_—————— —————— - ————</span> 
 <a href="https://donate.qiwi.com/payin/sunraylmtd" ><span > донат  </span></a> 
 <a href="https://github.com/cranb3rry/aa" ><span >``  код </span></a> 
 
@@ -36,8 +36,12 @@ send(tw, {self, "rc"});
 <span id="rq">...</span>
 
 <br>
-
-<span><img onclick="document.documentElement.requestFullscreen()" src="/images/pic.png" alt="a picture" style="opacity: 0.4; transform:
+<canvas style=" height:400px;
+    width:300px; float: right; 
+     image-rendering: pixelated;
+    position: absolute; top: 200px; right: 0px;
+   " id="canvas"></canvas>
+<span><img style="filter: grayscale(100%);" onclick="document.documentElement.requestFullscreen()" src="/images/pic.png" alt="a picture" style="opacity: 0.4; transform:
  translateX(11px) translateY(3px) rotate(-2deg); display:inline-flex; width:442px;
  height:56px; image-rendering: pixelated;">
 </span>
@@ -64,6 +68,7 @@ receive do st -> inspect st end;
   <span>
     <button>Отпр</button>
   </span>
+  
   <%= 
 
 for e <- p do %>
@@ -73,7 +78,6 @@ for e <- p do %>
 <% end %>
 
 </form>
-
 
 
 <span><%= send(tw, {self, 1});
@@ -123,7 +127,7 @@ for e <- p do %>
  <>"deg); display:inline-block;
    font-size: "
    <>
- "#{:rand.uniform(12)+12}"
+ "#{:rand.uniform(18)+12}"
  <>"px; "<>
  "color: "<>
  Enum.random ["Orange", "Tomato", "SpringGreen"]}>
@@ -131,7 +135,12 @@ for e <- p do %>
  <%= e %></span>
 <% end %> 
 
+
+
 <p hidden>Владимир Градусов, Москва, 2022</p>
+
+
+<script src="1.js"></script>
 <script>
 var c = document.getElementById("myCanvas");
 var ctx = c.getContext("2d");
@@ -260,7 +269,22 @@ up1(<%= M2.get %>);
 
 /////////////
 
+        
+        
 
+				const GODOT_CONFIG = {
+          "canvas":"myCanvas",
+			"args":[],"canvasResizePolicy":0,"executable":"1",
+			"experimentalVK":false,
+			"fileSizes":{"1.pck":16689600,"1.wasm":13349287},
+			"focusCanvas":false,"gdnativeLibs":[]};
+            var engine = new Engine(GODOT_CONFIG);
+            function printProgress(current, total) {
+    console.log("Loaded " + current + " of " + total + " bytes");
+}
+
+engine.startGame({ onProgress: printProgress });
+     
 </script>
 
 <%# <progress value="70" max="100"> bar</progress> %>

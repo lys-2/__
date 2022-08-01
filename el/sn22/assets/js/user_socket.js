@@ -3,7 +3,7 @@
 
 // Bring in Phoenix channels client library:
 import {Socket} from "phoenix"
-console.log(111);
+console.log(11);
 // And connect to the path in "lib/sn22_web/endpoint.ex". We pass the
 // token for authentication. Read below how it should be used.
 let socket = new Socket("/socket", {params: {token: window.userToken}})

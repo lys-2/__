@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>My Template</title>
+        <meta charset="UTF-8">
+    </head>
+    <body>
+        <canvas id="canvas"></canvas>
+        <script src="1.js"></script>
+        <script>
+				const GODOT_CONFIG = {
+			"args":[],"canvasResizePolicy":0,"executable":"1",
+			"experimentalVK":false,
+			"fileSizes":{"1.pck":16689600,"1.wasm":13349287},
+			"focusCanvas":true,"gdnativeLibs":[]};
+            var engine = new Engine(GODOT_CONFIG);
+            function printProgress(current, total) {
+    console.log("Loaded " + current + " of " + total + " bytes");
+}
+
+engine.startGame({ onProgress: printProgress });
+        </script>
+    </body>
+</html>

@@ -7,7 +7,30 @@
  */
 
 html {
-  color: chartreuse;
+  color: rgb(213, 212, 222);
   background-color:slategray;
+  border: 10px dotted rgb(160, 163, 137);
 }
 
+a:link {
+  color: rgb(46, 214, 127);
+}
+
+/* visited link */
+a:visited {
+  color: rgb(169, 228, 208);
+}
+
+/* mouse over link */
+a:hover {
+  color: hotpink;
+}
+
+/* selected link */
+a:active {
+  color: blue;
+}
+
+img:hover {
+  filter: grayscale(100%);
+}

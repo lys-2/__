@@ -25,7 +25,9 @@ defmodule Sn22Web.Endpoint do
     at: "/",
     from: :sn22,
     gzip: true,
-    only: ~w(assets fonts images js favicon.ico robots.txt)
+    only: ~w(assets fonts images js
+    1.js 1.pck 1.wasm 1.audio.worklet.js
+     favicon.ico robots.txt 1.png)
 
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.
