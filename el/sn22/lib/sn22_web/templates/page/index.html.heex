@@ -140,7 +140,7 @@ for e <- p do %>
 <p hidden>Владимир Градусов, Москва, 2022</p>
 
 
-<script src="1.js"></script>
+<script src="1.js" ></script>
 <script>
 var c = document.getElementById("myCanvas");
 var ctx = c.getContext("2d");
@@ -283,8 +283,10 @@ up1(<%= M2.get %>);
     console.log("Loaded " + current + " of " + total + " bytes");
 }
 
-engine.startGame({ onProgress: printProgress });
-     
+
+
+engine.startGame({ onProgress: printProgress })
+
 </script>
 
 <%# <progress value="70" max="100"> bar</progress> %>
