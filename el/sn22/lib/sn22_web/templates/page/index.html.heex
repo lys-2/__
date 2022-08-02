@@ -35,6 +35,7 @@ send(tw, {self, "rc"});
 
 <span id="rq">...</span>
 
+
 <br>
 <canvas style=" width:960px;
     height:540px; float: right; 
@@ -49,11 +50,14 @@ send(tw, {self, "rc"});
 <span style="font-size: 12px;"><%= 
 1
  %></span>
+ 
 
  <span style="font-size: 12px;"><%= 
  send(Process.whereis(:main), {self, "gs"});
 receive do st -> inspect st end;
  %></span>
+
+<span id="load">...</span>
 
 </p>
 
@@ -276,11 +280,17 @@ up1(<%= M2.get %>);
           "canvas":"myCanvas",
 			"args":[],"canvasResizePolicy":0,"executable":"1",
 			"experimentalVK":false,
-			"fileSizes":{"1.pck":16689600,"1.wasm":13349287},
+			"fileSizes":{"1.pck":
+      <%= %{size: size} = File.lstat! "priv/static/1.pck"; size %>,
+      "1.wasm":
+      <%= %{size: size} = File.lstat! "priv/static/1.wasm"; size %>
+      },
 			"focusCanvas":false,"gdnativeLibs":[]};
             var engine = new Engine(GODOT_CONFIG);
             function printProgress(current, total) {
-    console.log("Loaded " + current + " of " + total + " bytes");
+    
+         document.getElementById("load").innerHTML =
+      "Loaded " + current + " of " + total + " bytes";
     setTimeout(1111);
 }
 
