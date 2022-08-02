@@ -67,10 +67,10 @@ defmodule Sn22 do
         {id = Process.put(:mc, Process.get(:mc)+1),
          :calendar.universal_time, ch, n, m} | Process.get(:m)]);
          IO.inspect mt;
-         Sn22Web.Endpoint.broadcast!("room:lobby", "new_msg", %{body:
-         Phoenix.View.render_to_string(Sn22Web.PageView, "T1.html",
-          %{list: [id, n, ch, m]})
-         })
+         mst = Phoenix.View.render_to_string(Sn22Web.PageView, "T1.html",
+         %{list: [id, n, ch, m]});
+         IO.inspect({byte_size(mst), byte_size(inspect mt)});
+         Sn22Web.Endpoint.broadcast!("room:lobby", "new_msg", %{body: mst})
       end
     end
 
