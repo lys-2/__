@@ -71,10 +71,10 @@ channel.join()
   .receive("error", resp => { console.log("Unable to join", resp) })
 
   channel.on("new_msg", payload => {
-    let messageItem = document.createElement("p")
-    messageItem.innerText = `${payload.body}`
-    messagesContainer.appendChild(messageItem)
-    messagesContainer.innerText = `${payload.body}`
+    // let messageItem = document.createElement("p")
+    // messageItem.innerText = `${payload.body}`
+    // messagesContainer.appendChild(messageItem)
+    document.getElementById('m2').innerHTML = payload.body
     console.log(payload)
   })
 

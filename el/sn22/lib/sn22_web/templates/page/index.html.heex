@@ -82,7 +82,7 @@ for e <- p do %>
 <% end %>
 
 </form>
-<pre style="height: 24px; font-size: 24px;" id="messages" role="log" aria-live="polite"></pre>
+<div style="font-size: 24px;" id="messages" role="log" aria-live="polite"></div>
 <input id="chat-input" type="text">
 
 <span><%= send(tw, {self, 1});
@@ -122,9 +122,8 @@ for e <- p do %>
 <pre id="place"style=" transform: rotate(-3deg); margin-top: -20px; position: relative; top: -880px;
  left: 30px; font-family:monospace;" ></pre>
 
+<p id="m2" style="position: relative; top: -1250px;">
  <%= for e <- aaa do %>
-
-
  <span style={"font-family:monospace;
  position: relative; top: -1250px;
   transform: rotate("<>
@@ -139,7 +138,7 @@ for e <- p do %>
  
  <%= e %></span>
 <% end %> 
-
+</p>
 
 
 <p hidden>Владимир Градусов, Москва, 2022</p>

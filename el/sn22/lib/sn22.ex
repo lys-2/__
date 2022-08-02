@@ -64,11 +64,12 @@ defmodule Sn22 do
       String.split("\r\n") |> Enum.at(0);
 
       Process.put(:m, [mt =
-        {Process.put(:mc, Process.get(:mc)+1),
+        {id = Process.put(:mc, Process.get(:mc)+1),
          :calendar.universal_time, ch, n, m} | Process.get(:m)]);
          IO.inspect mt;
          Sn22Web.Endpoint.broadcast!("room:lobby", "new_msg", %{body:
-         Phoenix.View.render_to_string(Sn22Web.PageView, "T1.html", %{})
+         Phoenix.View.render_to_string(Sn22Web.PageView, "T1.html",
+          %{list: [id, n, ch, m]})
          })
       end
     end

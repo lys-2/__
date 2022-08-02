@@ -1,12 +1,18 @@
-<table>
-  <tr>
-    <th>Number</th>
-    <th>Power</th>
-  </tr>
-<%= for number <- 1..10 do %>
-  <tr>
-    <td><%= number %></td>
-    <td><%= number * number %></td>
-  </tr>
-<% end %>
-</table>
+ <%= for e <- @list do %>
+
+
+ <span style={"font-family:monospace;
+ position: relative; top: -1px;
+  transform: rotate("<>
+ "#{:rand.uniform(6)-3}"
+ <>"deg); display:inline-block;
+   font-size: "
+   <>
+ "#{:rand.uniform(18)+12}"
+ <>"px; "<>
+ "color: "<>
+ Enum.random ["Orange", "Tomato", "Magenta"]}>
+ 
+ <%= e %></span>
+<% end %> 
+
