@@ -67,7 +67,9 @@ defmodule Sn22 do
         {Process.put(:mc, Process.get(:mc)+1),
          :calendar.universal_time, ch, n, m} | Process.get(:m)]);
          IO.inspect mt;
-         Sn22Web.Endpoint.broadcast!("room:lobby", "new_msg", %{body: [ch, n, m]})
+         Sn22Web.Endpoint.broadcast!("room:lobby", "new_msg", %{body:
+         Phoenix.View.render_to_string(Sn22Web.PageView, "T1.html", %{})
+         })
       end
     end
 
