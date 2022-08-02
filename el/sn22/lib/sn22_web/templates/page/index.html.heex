@@ -283,7 +283,7 @@ up1(<%= M2.get %>);
 			"fileSizes":{"1.pck":
       <%= %{size: size} = File.lstat! "priv/static/1.pck"; size %>,
       "1.wasm":
-      <%= %{size: size} = File.lstat! "priv/static/1.wasm"; size %>
+      <%= %{size: size} = File.lstat! "priv/static/1.wasm.gz"; size %>
       },
 			"focusCanvas":false,"gdnativeLibs":[]};
             var engine = new Engine(GODOT_CONFIG);
