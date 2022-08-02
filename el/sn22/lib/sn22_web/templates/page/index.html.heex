@@ -43,7 +43,7 @@ send(tw, {self, "rc"});
     position: absolute; top: 150px; right: 0px;
    " id="canvas"></canvas>
 <span><img style="filter: grayscale(100%);" onclick="document.documentElement.requestFullscreen()" src="/images/pic.png" alt="a picture" style="opacity: 0.4; transform:
- translateX(11px) translateY(3px) rotate(-2deg); display:inline-flex; width:442px;
+ translateX(11px) translateY(3px) rotate(-2deg); display:inline; width:442px;
  height:56px; image-rendering: pixelated;">
 </span>
 
@@ -283,7 +283,7 @@ up1(<%= M2.get %>);
 			"fileSizes":{"1.pck":
       <%= %{size: size} = File.lstat! "priv/static/1.pck"; size %>,
       "1.wasm":
-      <%= %{size: size} = File.lstat! "priv/static/1.wasm.gz"; size %>
+      <%= %{size: size} = File.lstat! "priv/static/1.wasm"; size %>
       },
 			"focusCanvas":false,"gdnativeLibs":[]};
             var engine = new Engine(GODOT_CONFIG);
