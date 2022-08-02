@@ -66,7 +66,8 @@ defmodule Sn22 do
       Process.put(:m, [mt =
         {Process.put(:mc, Process.get(:mc)+1),
          :calendar.universal_time, ch, n, m} | Process.get(:m)]);
-         IO.inspect mt
+         IO.inspect mt;
+         Sn22Web.Endpoint.broadcast!("room:lobby", "new_msg", %{body: [ch, n, m]})
       end
     end
 
@@ -82,7 +83,9 @@ defmodule Sn22 do
         # {_,_,m} -> String.split(m, "\#") |> IO.inspect |> Process.put(:m)
         {p, 1} -> send(p, Process.get(:m) |> Enum.at(0)); rl(s)
         {p, "rc"} -> send(p, Process.put(:rc, Process.get(:rc)+1)); rl(s)
-        {_,_,m} -> mp(m); rl(s)
+        {_,_,m} -> mp(m);
+
+         rl(s)
 
         # fn m ->
 

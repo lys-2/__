@@ -82,7 +82,8 @@ for e <- p do %>
 <% end %>
 
 </form>
-
+<pre style="height: 24px; font-size: 24px;" id="messages" role="log" aria-live="polite"></pre>
+<input id="chat-input" type="text">
 
 <span><%= send(tw, {self, 1});
 
@@ -220,7 +221,7 @@ function req() {
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
      document.getElementById("rq").innerHTML =
-      Date.now()-this.responseText.slice(1, -1)+" ms";
+      Date.now()-this.responseText.slice(1, -1)+" мс";
 
     }
   };
