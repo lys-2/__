@@ -11,11 +11,13 @@ import Config
 # before starting your production server.
 config :sn22, Sn22Web.Endpoint,
   http: [port: 80,
+  compress: true,
     protocol_options: [max_keepalive: 5_000_000]
   ],
   https: [
     port: 443,
     cipher_suite: :strong,
+    compress: true,
     keyfile: "/etc/letsencrypt/live/www.tym.pw/privkey.pem",
     # ,"priv/cert/selfsigned.pem"
     # cacertfile: "/etc/letsencrypt/live/www.tym.pw/fullchain.pem",
