@@ -18,6 +18,8 @@ defmodule Sn22.Application do
     spawn(Sn22, :run2, [1, {[], 0, 0}])
     spawn(M1, :init, []) |> Process.register(:main)
 
+    Node.connect :"a@tym.pw"
+
     children = [
       # Start the Telemetry supervisor
       M2,

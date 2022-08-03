@@ -20,7 +20,7 @@ defmodule Sn22.MixProject do
   def application do
     [
       mod: {Sn22.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :os_mon]
     ]
   end
 
