@@ -1,10 +1,18 @@
 defmodule Sn22Web.PageController do
   use Sn22Web, :controller
+  alias Phoenix.LiveView
 
   def index(conn, _params) do
     # send(Process.whereis(:tw), {self(), 1})
     render(conn, "index.html")
   end
+
+  def v(conn, _params) do
+    # send(Process.whereis(:tw), {self(), 1})
+    LiveView.Controller.live_render(conn, V1, session: %{})
+
+  end
+
 
   def gd(conn, _params) do
     # send(Process.whereis(:tw), {self(), 1})

@@ -16,12 +16,14 @@ defmodule Sn22Web.Router do
 
   scope "/", Sn22Web do
     pipe_through :browser
+    live "/thermostat", V1
 
     get "/", PageController, :index
     get "/p", PageController, :p
     get "/rq", PageController, :rq
     get "/rq1", PageController, :rq1
     get "/g", PageController, :gd
+    get "/v", PageController, :v
   end
 
   # Other scopes may use custom stacks.
