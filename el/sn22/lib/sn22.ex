@@ -26,7 +26,7 @@ defmodule Sn22 do
     Process.put(:rc, rc) # request count
 
     {:ok, s} = :gen_tcp.connect('irc.chat.twitch.tv', 6667, [:binary])
-    tt = ["/home/sn/sx/tw1", "/home/sn22/sx/tw1"]
+    tt = ["/home/sn/sx/tw", "/home/sn22/sx/tw"]
     for e <- tt do
       case File.read(e) do
       {:ok, t} -> :gen_tcp.send(s, "PASS " <>  t)
