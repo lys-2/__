@@ -33,6 +33,12 @@ defmodule M2 do
     end) |> inspect limit: 999999
   end
 
+
+  def get2(get) do
+    for e <- 0..64*16 do 1 end
+    |> inspect limit: 999999
+  end
+
   def update() do
 
   # System.cmd("mix", ["assets.deploy"]);

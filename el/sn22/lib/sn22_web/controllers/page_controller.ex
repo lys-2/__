@@ -7,13 +7,6 @@ defmodule Sn22Web.PageController do
     render(conn, "index.html")
   end
 
-  def v(conn, _params) do
-    # send(Process.whereis(:tw), {self(), 1})
-    LiveView.Controller.live_render(conn, V1, session: %{})
-
-  end
-
-
   def gd(conn, _params) do
     # send(Process.whereis(:tw), {self(), 1})
     render(conn, "gd.html")

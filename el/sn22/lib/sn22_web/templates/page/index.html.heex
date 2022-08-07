@@ -8,7 +8,7 @@
    донат   
  </span></a> 
 
-<a href="https://github.com/cranb3rry/aa" ><span >``  код </span></a> 
+<a href="https://github.com/lys-2/aa" ><span >``  код </span></a> 
 
     <span onclick="document.documentElement.requestFullscreen()" 
     style="   height:80px;
@@ -142,7 +142,7 @@ for e <- p do %>
  <%= e %></span>
 <% end %> 
 </p>
-
+<%= live_render(@conn, Sn22Web.V1) %>
 
 <p hidden>Владимир Градусов, Москва, 2022</p>
 
@@ -240,37 +240,37 @@ setTimeout(req, 250);
 
 function up1(s) {
 
-          var d = document.getElementById("place");
-        var arr = s;
-        var str = [];
-        str.push("")
-        for (let i = 1; i < 64*16+1; i++) {
-            if (arr.indexOf(i) != -1) {
-                <%# str.push("░") %>
-                str.push("a")
-            } else {
-                str.push(' ');
-            }
-            if (i%64==0) {str.push("\n")}
-            d.innerText = str.join(" ") 
-        }
+  var d = document.getElementById("place");
+  var str = [];
+
+  for (let i = 1; i < 64*16+1; i++) {
+      if (s.includes(i)) {
+
+          str.push("a")
+      } else {
+          str.push(' ');
+      }
+      if (i%64==0) {str.push("\n")}
+      d.innerText = str.join(" ") 
+  }
 
 }
 function up() {
-        var req1 = new XMLHttpRequest();
-        req1.open("GET", "rq1", true);
-        req1.send();  
-        req1.onreadystatechange = function() {
+  var req1 = new XMLHttpRequest();
+  req1.open("GET", "rq1", true);
+  req1.send();  
+  req1.onreadystatechange = function() {
 
-      if (this.readyState == 4 && this.status == 200) {
+if (this.readyState == 4 && this.status == 200) {
 
-        up(this.responseText)
-        
-    }
-    
-    }
-    setTimeout(up(), 3000);
-    }
+  up(this.responseText)
+  
+}
+
+}
+setTimeout(up(), 3000);
+}
+
 
 
 up1(<%= M2.get %>);

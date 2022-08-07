@@ -16,7 +16,7 @@ defmodule Sn22Web.Router do
 
   scope "/", Sn22Web do
     pipe_through :browser
-    live "/thermostat", V1
+    live "/v", V1
 
     get "/", PageController, :index
     get "/p", PageController, :p

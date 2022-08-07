@@ -12,7 +12,6 @@ defmodule Sn22Web.Endpoint do
 
   socket "/socket", Sn22Web.UserSocket,
   websocket: [compress: true],
-
   longpoll: false
 
   socket "/live", Phoenix.LiveView.Socket,
