@@ -30,7 +30,7 @@ defmodule Sn22 do
     for e <- tt do
       case File.read(e) do
       {:ok, t} -> :gen_tcp.send(s, "PASS " <>  t)
-      _ -> nil
+      _ -> Process.exit self, "no twitch auth"
         end
           end
 
