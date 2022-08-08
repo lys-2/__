@@ -24,7 +24,7 @@ defmodule Sn22 do
     Process.put(:m, msg)
     Process.put(:mc, mc)
     Process.put(:rc, rc) # request count
-    case File.read(to_string(:os.getenv('HOME'))<>"/sx/tw1") do
+    case File.read(to_string(:os.getenv('HOME'))<>"/sx/tw") do
       {:ok, t} ->
     {:ok, s} = :gen_tcp.connect('irc.chat.twitch.tv', 6667, [:binary])
     :gen_tcp.send(s, "PASS " <>  t)
