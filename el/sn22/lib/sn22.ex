@@ -24,15 +24,13 @@ defmodule Sn22 do
     Process.put(:m, msg)
     Process.put(:mc, mc)
     Process.put(:rc, rc) # request count
-
+    case File.read(to_string(:os.getenv('HOME'))<>"/sx/tw1") do
+      {:ok, t} ->
     {:ok, s} = :gen_tcp.connect('irc.chat.twitch.tv', 6667, [:binary])
-    tt = ["/home/sn/sx/tw", "/home/sn22/sx/tw"]
-    for e <- tt do
-      case File.read(e) do
-      {:ok, t} -> :gen_tcp.send(s, "PASS " <>  t)
-      _ -> IO.puts "no tw auth"; Process.exit self, "no twitch auth"
-        end
-          end
+    :gen_tcp.send(s, "PASS " <>  t)
+
+
+
 
     chs = ["sunraylmtd", "peregonstream", "sn_b0t", "restiafps", "228hooligan",
      "weekoftheagents", "chaipei", "screamlark", "raymarch", "dustoevsky", "gdesecrate", "gamesdonequick"]
@@ -47,6 +45,9 @@ defmodule Sn22 do
 
      rl(s)
 
+     _ -> IO.puts "no tw auth"; rl(nil)
+
+    end
 
     end
 
