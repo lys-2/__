@@ -20,7 +20,10 @@ style=" display:inline-flex; width:32px; height:32px; image-rendering: pixelated
 
 <span style="font-size: 12px;"><%=inspect :calendar.seconds_to_daystime(div(
   :erlang.statistics(:wall_clock) |> elem(0), 1000))%></span>
-
+     <span id="q">Q</span>
+     <span id="w">W</span>
+     <span id="e">E</span>
+     <span id="r">R</span>
 <span><%= 
 mb = Process.whereis(:mb)
 p = mb |> Process.info(:messages) |> elem(1)
