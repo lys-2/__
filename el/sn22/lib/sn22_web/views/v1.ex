@@ -11,9 +11,13 @@ defmodule Sn22Web.V1 do
      1);
      for c <- cs2, do: {:h3.get_base_cell(c), :h3.k_ring(c, 1)}
      |> inspect
-     %></p>
-
-
+     %>
+     </p>
+     <p><%= @name %></p>
+     <span id="q">Q</span>
+     <span id="w">W</span>
+     <span id="e">E</span>
+     <span id="r">R</span>
      <script>
      document.addEventListener("keydown", keyDownHandler, false);
       document.addEventListener("keyup", keyUpHandler, false);
@@ -55,13 +59,15 @@ defmodule Sn22Web.V1 do
     if connected?(socket), do: Process.send_after(self(), :update, 1000)
 
     put_flash(socket, :info, "It worked!");
-    {:ok, assign(socket, :aaa, M2.get)};
+    {:ok, assign(socket, %{aaa: M2.get, name:
+    (for _ <- 1..10, into: "", do: <<Enum.random('0123456789abcdef')>>)
+    })};
 
   end
 
   def handle_info(:update, socket) do
     Process.send_after(self(), :update, 1000);
-    IO.inspect 1;
+    # IO.inspect 1;
     {:noreply, assign(socket, :aaa, inspect M2.get2 M2.get)}
   end
 
@@ -70,12 +76,9 @@ defmodule Sn22Web.V1 do
     {:noreply, assign(socket, %{})}
   end
 
-  def handle_event("update_temp", %{"key" => "ArrowUp"}, socket) do
-    IO.puts 222;
-    {:noreply, assign(socket, %{})}
-
-
+  def handle_event("update_temp", %{"key" => key}, socket) do
+    IO.puts inspect {key, socket.assigns.name};
+    {:noreply, assign(socket, :key, key)}
   end
-
 
 end

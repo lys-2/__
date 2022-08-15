@@ -31,7 +31,7 @@ defmodule Sn22.Application do
       {Phoenix.PubSub, name: Sn22.PubSub},
       # Start the Endpoint (http/https)
       Sn22Web.Endpoint,
-      # Sn22Web.Presence
+      Sn22Web.Presence
       # Start a worker by calling: Sn22.Worker.start_link(arg)
       # {Sn22.Worker, arg}
     ]
