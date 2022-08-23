@@ -1,0 +1,73 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=4
+
+_global_script_classes=[ {
+"base": "Node",
+"class": "PhoenixChannel",
+"language": "GDScript",
+"path": "res://Phoenix/Scripts/Channel.gd"
+}, {
+"base": "Node",
+"class": "PhoenixMessage",
+"language": "GDScript",
+"path": "res://Phoenix/Scripts/Message.gd"
+}, {
+"base": "Node",
+"class": "PhoenixPresence",
+"language": "GDScript",
+"path": "res://Phoenix/Scripts/Presence.gd"
+}, {
+"base": "Node",
+"class": "PhoenixSocket",
+"language": "GDScript",
+"path": "res://Phoenix/Scripts/Socket.gd"
+}, {
+"base": "Node",
+"class": "PhoenixUtils",
+"language": "GDScript",
+"path": "res://Phoenix/Scripts/Utils.gd"
+} ]
+_global_script_class_icons={
+"PhoenixChannel": "",
+"PhoenixMessage": "",
+"PhoenixPresence": "",
+"PhoenixSocket": "",
+"PhoenixUtils": ""
+}
+
+[application]
+
+config/name="New Game Project"
+run/main_scene="res://Spatial.tscn"
+run/flush_stdout_on_print=true
+config/icon="res://icon.png"
+
+[debug]
+
+settings/fps/force_fps=4
+
+[global]
+
+fps=false
+frame=false
+
+[gui]
+
+common/drop_mouse_on_gui_input_disabled=true
+
+[physics]
+
+common/physics_fps=4
+common/enable_pause_aware_picking=true
+
+[rendering]
+
+quality/driver/driver_name="GLES2"
+environment/default_environment="res://default_env.tres"

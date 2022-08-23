@@ -1,0 +1,15 @@
+[gd_resource type="Environment" load_steps=2 format=2]
+
+[sub_resource type="ProceduralSky" id=1]
+sky_top_color = Color( 0.905882, 0.819608, 0.819608, 1 )
+sky_horizon_color = Color( 0.164706, 0.192157, 0.219608, 1 )
+sky_curve = 0.313398
+sky_energy = 0.64
+sun_color = Color( 0.862745, 0.156863, 0.156863, 1 )
+sun_latitude = -0.95
+sun_longitude = -0.06
+sun_curve = 0.193188
+
+[resource]
+background_mode = 2
+background_sky = SubResource( 1 )
