@@ -1,6 +1,7 @@
 defmodule Sn22Web.V1 do
   # In Phoenix v1.6+ apps, the line below should be: use MyAppWeb, :live_view
   use Phoenix.LiveView
+  alias Sn22.Presence
 
   def render(assigns) do
     ~H"""
