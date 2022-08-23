@@ -60,6 +60,7 @@ text = "godot_phoenix"
 placeholder_text = "Username"
 
 [node name="Host" type="LineEdit" parent="MainContainer/ControlRoom/ServerConnect"]
+visible = false
 margin_left = 204.0
 margin_right = 710.0
 margin_bottom = 24.0
@@ -68,8 +69,8 @@ text = "ws://localhost:4000/socket"
 placeholder_text = "Host"
 
 [node name="Connect" type="Button" parent="MainContainer/ControlRoom/ServerConnect"]
-margin_left = 714.0
-margin_right = 778.0
+margin_left = 204.0
+margin_right = 268.0
 margin_bottom = 24.0
 text = "Connect"
 
