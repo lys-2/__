@@ -24,6 +24,7 @@ defmodule Sn22Web.Router do
     get "/rq1", PageController, :rq1
     get "/g", PageController, :gd
     get "/v", PageController, :v
+    get "/sm", PageController, :sm
   end
 
   # Other scopes may use custom stacks.
