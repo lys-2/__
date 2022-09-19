@@ -147,6 +147,40 @@ for e <- p do %>
 </p>
 <%= live_render(@conn, Sn22Web.V1) %>
 
+####################
+
+<%=  for e <- M4.get2 do %>
+<span
+style={"font-family:monospace;
+ position: absolute; top: "<>
+ "#{e.top}"
+ <>"px; left: "<>
+ "#{e.left}"
+ <>"px;
+  transform: rotate("<>
+ "#{e.tilt}"
+ <>"deg); display:inline-block;
+   font-size: "
+   <>
+ "#{e.size}"
+ <>"px; "<>
+ "color: hsl("<>"#{e.color}"<>", 60%, 55%);"
+ 
+ }
+><%=
+ (inspect e.id)
+<> ": "<> (inspect :erlang.read_timer(e.timer))
+ %></span>
+<% end %>
+
+    <h3>devices</h3>
+    <h3>nodes</h3>
+<%=  for e <- [Node.self | Node.list] do %>
+<span><%= inspect e %></span>
+<% end %>
+
+##################################
+
 <p hidden>Владимир Градусов, Москва, 2022</p>
 
 
