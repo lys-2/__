@@ -5,12 +5,32 @@
         <meta charset="UTF-8">
     </head>
     <body>
-    <h3>nodes</h3>
+
     <h3>cells</h3>
     <h3>characters</h3>
+
     <h3>users</h3>
+<%=  for e <- M4.get2 do %>
+<span
+style={"font-family:monospace;
+ position: relative; top: -1px;
+  transform: rotate("<>
+ "#{:rand.uniform(8)-3}"
+ <>"deg); display:inline-block;
+   font-size: "
+   <>
+ "#{:rand.uniform(18)+4}"
+ <>"px; "<>
+ "color: hsl("<>"#{:rand.uniform(255)}"<>", 90%, 55%);"
+ 
+ }
+><%= inspect e.id %></span>
+<% end %>
+
     <h3>devices</h3>
     <h3>nodes</h3>
-<%=  inspect [Node.self | Node.list] %>
+<%=  for e <- [Node.self | Node.list] do %>
+<span><%= inspect e %></span>
+<% end %>
     </body>
 </html>

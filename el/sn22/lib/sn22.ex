@@ -33,7 +33,8 @@ defmodule Sn22 do
 
 
     chs = ["sunraylmtd", "peregonstream", "sn_b0t", "restiafps", "228hooligan",
-     "weekoftheagents", "chaipei", "screamlark", "raymarch", "dustoevsky", "gdesecrate", "gamesdonequick"]
+     "weekoftheagents", "chaipei", "screamlark", "raymarch", "dustoevsky",
+      "gdesecrate", "gamesdonequick"]
 
     chsm = for e <- chs, do: "#"<>e
 
