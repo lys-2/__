@@ -13,7 +13,11 @@
 <%=  for e <- M4.get2 do %>
 <span
 style={"font-family:monospace;
- position: relative; top: -1px;
+ position: absolute; top: "<>
+ "#{e.top}"
+ <>"px; left: "<>
+ "#{e.left}"
+ <>"px;
   transform: rotate("<>
  "#{e.tilt}"
  <>"deg); display:inline-block;

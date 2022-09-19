@@ -21,11 +21,11 @@ defmodule M4 do
   use GenServer
 
   defstruct [
-    :id, :timer, :color, :tilt, :size,
+    :id, :timer, :color, :tilt, :size, :left, :top,
    :name, :bio, :twname, :twmsg, :twmsgr, :stat
   ]
 
-  @count 333
+  @count 3333
 
   def init(s) do
     # process input and compute result
@@ -33,7 +33,9 @@ defmodule M4 do
 
     {:ok, {_, t}} = :timer.exit_after(Enum.random(1000..20000), 1);
     {:ok, %{s | timer: t, color: :rand.uniform(255),
-    size: :rand.uniform(14)+12,
+    size: :rand.uniform(6)+2,
+    top: :rand.uniform(540)+300,
+    left: :rand.uniform(960),
     tilt: :rand.uniform(8)-3
     }}
     end
