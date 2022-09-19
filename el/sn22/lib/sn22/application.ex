@@ -19,8 +19,8 @@ defmodule Sn22.Application do
     spawn(M1, :init, []) |> Process.register(:main)
 
     IO.inspect(Node.self());
-    Node.connect :"a@tym.pw"
-
+    Node.connect :"a@tym.pw";
+    M4s.start
 
     children = [
       # Start the Telemetry supervisor
