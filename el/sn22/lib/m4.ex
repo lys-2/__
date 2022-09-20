@@ -22,10 +22,11 @@ defmodule M4 do
 
   defstruct [
     :id, :timer, :color, :tilt, :size, :left, :top, :mirror,
+    :rotate,
    :name, :twname, :twmsg, :twmsgr, :stat
   ]
 
-  @count 99
+  @count 144
 
   def init(s) do
     # process input and compute result
@@ -34,14 +35,16 @@ defmodule M4 do
 
     {:ok, {_, t}} = :timer.exit_after(Enum.random(1000..2999), 1);
 
-    :timer.send_interval(10, self, :tick);
+    :timer.send_interval(100, self, :tick);
 
     {:ok, %{s | timer: t, color: :rand.uniform(255),
-    size: :rand.uniform(16)+4,
+    size: :rand.uniform(1)+2,
     top: :rand.uniform(540)+300,
     left: :rand.uniform(960),
     tilt: :rand.uniform(8)-3,
-    color: :rand.uniform(20),
+    rotate: :rand.uniform(360),
+    color: Enum.random([:rand.uniform(10)-20,
+        250+:rand.uniform(10)-20]),
     mirror: Enum.random([-1,1])
     }}
     end
@@ -59,9 +62,9 @@ defmodule M4 do
   def handle_info(:tick, s) do
     {:noreply,
      %{s |
-    size: s.size+0.1,
-    top: s.top+Enum.random(-12..12),
-    left: s.left+Enum.random(-12..12)
+    size: s.size+2,
+    top: s.top+:math.cos(3.141*(s.rotate/180.0))*-5,
+    left: s.left+:math.sin(3.141*s.rotate/180.0)*5*s.mirror
     }}
   end
 
