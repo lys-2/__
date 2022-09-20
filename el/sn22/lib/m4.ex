@@ -35,7 +35,8 @@ defmodule M4 do
 
     {:ok, {_, t}} = :timer.exit_after(Enum.random(1000..2999), 1);
 
-    :timer.send_interval(100, self, :tick);
+    :timer.send_interval(44, self, :tick);
+
 
     {:ok, %{s | timer: t, color: :rand.uniform(255),
     size: :rand.uniform(1)+2,
@@ -62,11 +63,14 @@ defmodule M4 do
   def handle_info(:tick, s) do
     {:noreply,
      %{s |
-    size: s.size+2,
-    top: s.top+:math.cos(3.141*(s.rotate/180.0))*-5,
-    left: s.left+:math.sin(3.141*s.rotate/180.0)*5*s.mirror
+    rotate: s.rotate+Enum.random([0,0,0,0,0,0,0,:rand.uniform(20)-40]),
+    size: s.size+Enum.random([0,0,0,0,0,:rand.uniform(7)]),
+    top: s.top+:math.cos(3.1415*(s.rotate/180.0))*-5,
+    left: s.left+:math.sin(3.1415*s.rotate/180.0)*5*s.mirror
     }}
   end
+
+
 
   ####################
 
