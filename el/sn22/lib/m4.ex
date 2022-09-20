@@ -21,8 +21,8 @@ defmodule M4 do
   use GenServer
 
   defstruct [
-    :id, :timer, :color, :tilt, :size, :left, :top,
-   :name, :bio, :twname, :twmsg, :twmsgr, :stat
+    :id, :timer, :color, :tilt, :size, :left, :top, :mirror,
+   :name, :twname, :twmsg, :twmsgr, :stat
   ]
 
   @count 99
@@ -33,11 +33,16 @@ defmodule M4 do
     # :timer.send_after(2000, GenServer, :cast, [self, :up])
 
     {:ok, {_, t}} = :timer.exit_after(Enum.random(1000..2999), 1);
+
+    :timer.send_interval(10, self, :tick);
+
     {:ok, %{s | timer: t, color: :rand.uniform(255),
-    size: :rand.uniform(6)+4,
+    size: :rand.uniform(16)+4,
     top: :rand.uniform(540)+300,
     left: :rand.uniform(960),
-    tilt: :rand.uniform(8)-3
+    tilt: :rand.uniform(8)-3,
+    color: :rand.uniform(20),
+    mirror: Enum.random([-1,1])
     }}
     end
 
@@ -51,11 +56,12 @@ defmodule M4 do
     {:reply, s, s}
   end
 
-  def handle_cast(:tick, s) do
+  def handle_info(:tick, s) do
     {:noreply,
      %{s |
-    size: s.size+1,
-    top: s.top-1,
+    size: s.size+0.1,
+    top: s.top+Enum.random(-12..12),
+    left: s.left+Enum.random(-12..12)
     }}
   end
 
@@ -69,7 +75,7 @@ defmodule M4 do
   end
 
   def update(name, s) do
-    GenServer.cast(name, :up)
+    GenServer.cast(name, :tick)
   end
 
   def get(name) do

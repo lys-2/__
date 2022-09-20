@@ -159,12 +159,16 @@ style={"font-family:monospace;
  <>"px;
   transform: rotate("<>
  "#{e.tilt}"
+ 
  <>"deg); display:inline-block;
    font-size: "
    <>
- "#{e.size}"
+ "#{4+e.size/16}"
  <>"px; "<>
- "color: hsl("<>"#{e.color}"<>", 60%, 55%);"
+ "color: hsl("<>"#{e.color}"<>", 60%, 55%);
+
+        
+ "
  
  }
 ><%=
@@ -173,34 +177,38 @@ style={"font-family:monospace;
 "Ящер: "<> inspect e.id
 
  %></span>
- <%# <span>🦎</span> %>
+
  <span style={"font-family:monospace;
+ display: inline-block;  
  position: absolute; top: "<>
  "#{e.top+80}"
  <>"px; left: "<>
  "#{e.left}"
  <>"px; "<>
  "filter: hue-rotate("<>
- "#{e.color}"
- <>"deg) ;
+ "#{111}"
+ <>"deg);
  font-size: "
    <>
- "#{32+e.tilt}"
+ "#{32+e.size}"
  <>"px;
-
-transform: rotate("<>
+ transform: scale("
+   <>
+ "#{e.mirror}"
+ <>", 1) rotate("<>
  "#{e.tilt*33}"
  <>"deg);
 
-
-filter: contrast(100%);
-filter: opacity(60%);
-
+filter: contrast(33%)
+ hue-rotate( "
+   <>
+ "#{e.color}"
+ <>"deg)
+ opacity(60%);
  "
  
- }>🦎</span>
+ }><%= "🦎" %></span>
 <% end %>
-
 ##################################
 
 <p hidden>Владимир Градусов, Москва, 2022</p>
