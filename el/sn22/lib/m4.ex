@@ -5,7 +5,7 @@ defmodule M4s do
     # process input and compute result
     # IO.puts(s);
     M4.start;
-    :timer.apply_interval(21000, M4, :start, [])
+    :timer.apply_interval(3000, M4, :start, [])
 
     end
 
@@ -25,15 +25,16 @@ defmodule M4 do
    :name, :bio, :twname, :twmsg, :twmsgr, :stat
   ]
 
-  @count 3333
+  @count 99
 
   def init(s) do
     # process input and compute result
     # IO.puts(s);
+    # :timer.send_after(2000, GenServer, :cast, [self, :up])
 
-    {:ok, {_, t}} = :timer.exit_after(Enum.random(1000..20000), 1);
+    {:ok, {_, t}} = :timer.exit_after(Enum.random(1000..2999), 1);
     {:ok, %{s | timer: t, color: :rand.uniform(255),
-    size: :rand.uniform(6)+2,
+    size: :rand.uniform(6)+4,
     top: :rand.uniform(540)+300,
     left: :rand.uniform(960),
     tilt: :rand.uniform(8)-3
@@ -50,8 +51,12 @@ defmodule M4 do
     {:reply, s, s}
   end
 
-  def handle_cast({:up, s1}, 1) do
-    {:noreply, s1}
+  def handle_cast(:tick, s) do
+    {:noreply,
+     %{s |
+    size: s.size+1,
+    top: s.top-1,
+    }}
   end
 
   ####################
@@ -64,7 +69,7 @@ defmodule M4 do
   end
 
   def update(name, s) do
-    GenServer.cast(name, {:time, s})
+    GenServer.cast(name, :up)
   end
 
   def get(name) do

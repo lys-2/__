@@ -14,7 +14,7 @@
 <span
 style={"font-family:monospace;
  position: absolute; top: "<>
- "#{e.top+200}"
+ "#{e.top+80}"
  <>"px; left: "<>
  "#{e.left}"
  <>"px;
@@ -30,8 +30,36 @@ style={"font-family:monospace;
  }
 ><%=
  (inspect e.id)
-<> ": "<> (inspect :erlang.read_timer(e.timer))
+<> ": "<> (inspect :erlang.read_timer(e.timer));
+"Ящер: "<> inspect e.id
+
  %></span>
+ <%# <span>🦎</span> %>
+ <span style={"font-family:monospace;
+ position: absolute; top: "<>
+ "#{e.top+80}"
+ <>"px; left: "<>
+ "#{e.left}"
+ <>"px; "<>
+ "filter: hue-rotate("<>
+ "#{e.color}"
+ <>"deg) ;
+ font-size: "
+   <>
+ "#{32+e.tilt}"
+ <>"px;
+
+transform: rotate("<>
+ "#{e.tilt*33}"
+ <>"deg);
+
+
+filter: contrast(100%);
+filter: opacity(60%);
+
+ "
+ 
+ }>🦎</span>
 <% end %>
 
     <h3>devices</h3>

@@ -153,7 +153,7 @@ for e <- p do %>
 <span
 style={"font-family:monospace;
  position: absolute; top: "<>
- "#{e.top+200}"
+ "#{e.top+80}"
  <>"px; left: "<>
  "#{e.left}"
  <>"px;
@@ -169,14 +169,36 @@ style={"font-family:monospace;
  }
 ><%=
  (inspect e.id)
-<> ": "<> (inspect :erlang.read_timer(e.timer))
- %></span>
-<% end %>
+<> ": "<> (inspect :erlang.read_timer(e.timer));
+"Ящер: "<> inspect e.id
 
-    <h3>devices</h3>
-    <h3>nodes</h3>
-<%=  for e <- [Node.self | Node.list] do %>
-<span><%= inspect e %></span>
+ %></span>
+ <%# <span>🦎</span> %>
+ <span style={"font-family:monospace;
+ position: absolute; top: "<>
+ "#{e.top+80}"
+ <>"px; left: "<>
+ "#{e.left}"
+ <>"px; "<>
+ "filter: hue-rotate("<>
+ "#{e.color}"
+ <>"deg) ;
+ font-size: "
+   <>
+ "#{32+e.tilt}"
+ <>"px;
+
+transform: rotate("<>
+ "#{e.tilt*33}"
+ <>"deg);
+
+
+filter: contrast(100%);
+filter: opacity(60%);
+
+ "
+ 
+ }>🦎</span>
 <% end %>
 
 ##################################
