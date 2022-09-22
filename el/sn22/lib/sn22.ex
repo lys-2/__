@@ -72,7 +72,9 @@ defmodule Sn22 do
          mst = Phoenix.View.render_to_string(Sn22Web.PageView, "T1.html",
          %{list: [id, n, ch, m]});
          IO.inspect({byte_size(mst), byte_size(inspect mt)});
-         Sn22Web.Endpoint.broadcast!("room:lobby", "new_msg", %{body: mst})
+         Sn22Web.Endpoint.broadcast!("room:lobby", "new_msg", %{body: mst});
+         M4c.put :cache, {ch,n,m};
+
       end
     end
 

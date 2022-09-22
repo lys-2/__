@@ -1,3 +1,32 @@
+defmodule M4c do
+  use GenServer
+
+  # Client
+
+  def start() do GenServer.start(__MODULE__, %{}, name: :cache) end
+  def get(p) do GenServer.call(p, :get) end
+  def put(p, m) do GenServer.cast(p, {:put, m}) end
+
+  # Server (callbacks)
+
+  def init(s) do {:ok, s} end
+  def handle_cast({:put, m}, s) do {:noreply, update(s,m)} end
+  def handle_call(:get, p, s) do {:reply, s, s} end
+
+  def update(s,{sn,rc,m}) do
+    s2 = update2 s, sn;
+    update2 s2, rc
+  end
+
+  def update2(s,u) do
+    case Map.has_key? s, u do
+      true -> Map.put s, u, Map.fetch!(s, u)+1
+      _ -> Map.put s, u, 1
+    end
+  end
+
+end
+
 defmodule M4s do
   use GenServer
 
@@ -5,9 +34,11 @@ defmodule M4s do
     # process input and compute result
     # IO.puts(s);
     M4.start;
-    :timer.apply_interval(15000, M4, :start, [])
+    :timer.apply_interval(3000, M4, :start, []);
+    {:ok, s}
 
     end
+
 
     def start() do
 
@@ -17,6 +48,7 @@ defmodule M4s do
     end
 
 end
+
 defmodule M4 do
   use GenServer
 
@@ -26,16 +58,16 @@ defmodule M4 do
    :name, :twname, :twmsg, :twmsgr, :stat
   ]
 
-  @count 70
+  @count 99
 
   def init(s) do
     # process input and compute result
     # IO.puts(s);
     # :timer.send_after(2000, GenServer, :cast, [self, :up])
 
-    {:ok, {_, t}} = :timer.exit_after(Enum.random(1000..14999), 1);
+    {:ok, {_, t}} = :timer.exit_after(Enum.random(1000..3000), 1);
 
-    :timer.send_interval(44, self, :tick);
+    :timer.send_interval(250, self, :tick);
 
 
     {:ok, %{s |
@@ -64,7 +96,7 @@ defmodule M4 do
   def handle_info(:tick, s) do
     {:noreply,
      %{s |
-    rotate: s.rotate+Enum.random([0,0,0,0,0,0,0,:rand.uniform(20)-40]),
+    rotate: s.rotate+Enum.random([0,0,0,0,0,0,0,:rand.uniform(120)-60]),
     size: s.size+Enum.random([0,0,0,0,0,:rand.uniform(7)]),
     top: s.top+:math.cos(3.1415*(s.rotate/180.0))*-5,
     left: s.left+:math.sin(3.1415*s.rotate/180.0)*5*s.mirror
@@ -94,7 +126,7 @@ defmodule M4 do
   end
 
   def get2() do
-    ls = for e <- 1..@count,
+    ls = for e <- 1..16,
      do: get String.to_atom("m4_#{e}");
      ls |> Enum.filter fn x -> x != nil end
 

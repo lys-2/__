@@ -14,7 +14,8 @@ defmodule Sn22Web.PageController do
 
   def sm(conn, _params) do
     # send(Process.whereis(:tw), {self(), 1})
-    render(conn, "sm2.html")
+    a = 1
+    render(conn, "sm.html")
   end
 
   def rq(conn, _params) do

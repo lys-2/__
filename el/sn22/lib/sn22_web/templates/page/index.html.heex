@@ -53,16 +53,6 @@ send(tw, {self, "rc"});
  height:56px; image-rendering: pixelated;">
 </span>
 
-<span style="font-size: 12px;"><%= 
-1
- %></span>
- 
-
- <span style="font-size: 12px;"><%= 
- send(Process.whereis(:main), {self, "gs"});
-receive do st -> inspect st end;
- %></span>
-
 <span id="load">...</span>
 
 </p>
@@ -72,7 +62,7 @@ receive do st -> inspect st end;
   <span>
     <label for="say">  </label>
     <%# <textarea name="text"></textarea> %>
-    <input type="text" size="8" name="say" id="say" placeholder="..." autofocus maxlength="99">
+    <input type="text" size="8" name="say" id="say" placeholder="..."  maxlength="99">
   </span>
 
   <span>
@@ -116,7 +106,7 @@ for e <- p do %>
     <pre style={" font-size: 16px; margin-top: -20px; position: relative; top: -780px;
  left: 21px; font-family:monospace;"<>
  "color: "<>
- Enum.random ["Orange", "Tomato", "SpringGreen", "#372248", "#171123"]
+ Enum.random ["Orange", "Green", "Tomato", "SpringGreen", "#372248", "#171123"]
  
  }><%=
 
@@ -149,7 +139,7 @@ for e <- p do %>
 
 ####################
 
-<%= render(Sn22Web.PageView, "sm.html") %>
+<%= render(Sn22Web.PageView, "sm.html", conn: @conn) %>
 
 ##################################
 
@@ -189,9 +179,21 @@ ctx.arc(
     10, 3  * Math.PI);
 ctx.stroke();
  }
- if (count==33) {
+ if (count==2) {
   count++
-engine.startGame({ onProgress: printProgress })}
+e = engine.startGame({ onProgress: printProgress })
+
+document.getElementById("load").style.background = "green"
+
+e.then(() =>
+ document.getElementById("load").style.background ="gray",
+);
+e.then(() => 
+document.getElementById("load").innerHTML = "______"
+);
+
+ }
+
 }, 125-count*2);
 
 
@@ -224,7 +226,7 @@ source.buffer = myArrayBuffer;
 // destination so we can hear the sound
 source.connect(audioCtx.destination);
 // start the source playing
-source.start();
+// source.start();
 
 
 ////////////////////
@@ -301,14 +303,13 @@ up1(<%= M2.get %>);
       <%= %{size: size} = File.lstat! "priv/static/1.wasm"; size %>
       },
 			"focusCanvas":false,"gdnativeLibs":[]};
-            var engine = new Engine(GODOT_CONFIG);
-            function printProgress(current, total) {
-    
+
+    var engine = new Engine(GODOT_CONFIG);
+
+    function printProgress(current, total) {
          document.getElementById("load").innerHTML =
       "Загружено " + current + " из " + total + " байт.";
-    setTimeout(1111);
-}
-
+      }
 
 
 
