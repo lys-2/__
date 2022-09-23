@@ -10,14 +10,21 @@
     <h3>characters</h3>
     <h3>users</h3>
 
+<%= for _ <- 1..22 do %>
+<br>
+<% end %> 
+
 <%= for {a, b} <- M4c.get :cache do %>
-<span style="font-size: 24px;"> <%= a %> </span>
-<span style="font-size: 28px;"> <%= inspect b %> </span>
+<span style="font-size: 10px;"> <%= a %> </span>
+<span style="font-size: 16px;"> <%= inspect [b.id, b.name]  %> </span>
 <% end %>
 <br>
 
 <%=  for {a, b} <- Map.from_struct(@conn) do %>
-<span style="font-size: 36px;"> <%= inspect a %> </span> <span> <%= inspect b %> </span>
+<span style="font-size: 24px;"> <%= inspect a %> </span>
+ <span style="font-size: 12px;">
+ <%= inspect b %> 
+ </span>
 <% end %>
 
 
