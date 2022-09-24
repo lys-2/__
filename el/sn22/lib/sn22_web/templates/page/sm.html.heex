@@ -14,7 +14,11 @@
 <br>
 <% end %> 
 
-<%= for {a, b} <- M4c.get :cache do %>
+
+
+<%= 
+for {a, b} <- M4c.get :cache do
+ %>
 <span style="font-size: 10px;"> <%= a %> </span>
 <span style="font-size: 16px;"> <%= inspect [b.id, b.name]  %> </span>
 <% end %>

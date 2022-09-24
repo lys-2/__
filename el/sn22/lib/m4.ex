@@ -100,16 +100,21 @@ end
 defmodule M4c do
   use GenServer
 
-  defstruct uc: 0, idc: 1
+  defstruct idc: 1, st: %{}
+  @path  "../../../s"
 
   # Client
 
   def start() do
-    GenServer.start(__MODULE__, {%{}, %M4c{}}, name: :cache)
+    GenServer.start(__MODULE__, nil, name: :cache)
   end
 
   def get(p) do
+    if Process.whereis :cache do
     GenServer.call(p, :get)
+    else
+      %{}
+    end
   end
 
   def put(p, m) do
@@ -118,57 +123,51 @@ defmodule M4c do
 
   # Server (callbacks)
 
-  def init(s) do
-    {:ok, s}
+  def init(_s) do
+    put(self, {"1","2",3})
+    case File.read(@path) do
+      {:ok, f} -> {:ok, load}
+      _ -> {:ok, %M4c{}}
+    end
   end
 
   def handle_cast({:put, m}, s) do
     {:noreply, up(s, m)}
   end
 
-  def handle_call(:get, p, s) do
-    {:reply, elem(s, 0), s}
+  def handle_call(:get, _p, s) do
+    {:reply, s.st, s}
   end
+
+def save(s) do File.write(@path, :erlang.term_to_binary(s)) end
+def load() do :erlang.binary_to_term File.read!(@path) end
+def load(:b) do File.read!(@path) end
 
   def up(s, {rc, sn, m}) do
+
     s = add s, rc;
     s = add s, sn;
+
+    {rc, sn} = {Map.fetch!(s.st,rc), Map.fetch!(s.st,sn)}
+
+    # s = %M4c{s | st: %{s.st | %M4{rc | twmsgr: 1}}};
+    # s = %M4c{s | st: %{s.st | %M4{sn | twmsg: 1}}};
+    st = 1
+    s = %M4c{s | st: st};
+    save s;
     s
+
   end
 
-  def add({s, st}, u) do
-    if not Map.has_key? s, u do
-      {Map.put(s, u, %M4{
-        name: Faker.Pokemon.name,
-         id: st.idc
-         }), %M4c{idc: st.idc + 1}}
+  def add(s, u) do
+    if not Map.has_key? s.st, u do
+        %M4c{idc: s.idc + 1,
+        st: Map.put(s.st, u, %M4{name: Faker.Pokemon.name, id: s.idc})}
     else
-        {s, st}
+        s
     end
   end
 
-  def update(s, {sn, rc, m}) do
-    s2 = update2(s, sn, :sn)
-    update2(s2, rc, :rc)
-  end
-
-  def update2(s, u, t) do
-    case {Map.has_key?(s, u), t} do
-      {true, :rc} ->
-        {rc, sn} = Map.fetch!(s, u)
-        Map.put(s, u, {rc, sn + 1})
-
-      {true, :sn} ->
-        {rc, sn} = Map.fetch!(s, u)
-        Map.put(s, u, {rc + 1, sn})
-
-      {_, :rc} ->
-        Map.put(s, u, {0, 1})
-
-      {_, :sn} ->
-        Map.put(s, u, {1, 0})
-    end
-  end
 end
 
 defmodule M4s do
