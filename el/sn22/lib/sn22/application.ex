@@ -21,7 +21,8 @@ defmodule Sn22.Application do
     IO.inspect(Node.self());
     Node.connect :"a@tym.pw";
     M4s.start;
-    M4c.start
+    M4c.start;
+    M5.start
 
     children = [
       # Start the Telemetry supervisor
