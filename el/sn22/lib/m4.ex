@@ -28,7 +28,7 @@ defmodule M4 do
     # IO.puts(s);
     # :timer.send_after(2000, GenServer, :cast, [self, :up])
 
-    {:ok, {_, t}} = :timer.exit_after(Enum.random(1000..3000), 1)
+    {:ok, {_, t}} = :timer.exit_after(Enum.random(10000..30000), 1)
 
     :timer.send_interval(250, self, :tick)
 
@@ -177,7 +177,7 @@ defmodule M4s do
     # process input and compute result
     # IO.puts(s);
     M4.start()
-    :timer.apply_interval(3000, M4, :start, [])
+    :timer.apply_interval(30000, M4, :start, [])
     {:ok, s}
   end
 

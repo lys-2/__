@@ -12,9 +12,13 @@ defmodule Sn22Web.PageController do
     render(conn, "gd.html")
   end
 
+  def ls(conn, _params) do
+    # send(Process.whereis(:tw), {self(), 1})
+    render(conn, "ls.html")
+  end
+
   def sm(conn, _params) do
     # send(Process.whereis(:tw), {self(), 1})
-    a = 1
     render(conn, "sm.html")
   end
 

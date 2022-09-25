@@ -48,7 +48,8 @@ defmodule Sn22.MixProject do
       {:plug_cowboy, "~> 2.5"},
       {:h3, "~> 3.6"},
       {:poolboy, "~> 1.5"},
-      {:faker, "~> 0.17"}
+      {:faker, "~> 0.17"},
+      {:osc, "~> 0.1.2"}
 
     ]
   end

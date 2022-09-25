@@ -1,0 +1,78 @@
+
+<div style="background-color: transparent;
+  border: 0px dotted rgb(160, 163, 137);
+
+position: absolute; top:-400px; left: -400px;
+
+">  111111111111111111111111
+
+<%=  for e <- M4.get2 do %>
+
+<span
+style={"font-family:monospace;
+ position: absolute; top: "<>
+ "#{e.top+80}"
+ <>"px; left: "<>
+ "#{e.left}"
+ <>"px;
+  transform: rotate("<>
+ "#{e.tilt}"
+ 
+ <>"deg); display:inline-block;
+   font-size: "
+   <>
+ "#{4+e.size/16}"
+ <>"px; "<>
+ "color: hsl("<>"#{e.color}"<>", 60%, 55%);
+
+        
+ "
+ 
+ }
+><%=
+ (inspect e.id)
+<> ": "<> (inspect :erlang.read_timer(e.timer));
+"Ящер: "<> inspect e.id
+
+ %></span>
+
+ <span style={"font-family:monospace;
+ display: inline-block;  
+ position: absolute; top: "<>
+ "#{e.top+80}"
+ <>"px; left: "<>
+ "#{e.left}"
+ <>"px; "<>
+ "filter: hue-rotate("<>
+ "#{111}"
+ <>"deg);
+ font-size: "
+   <>
+ "#{32+e.size}"
+ <>"px;
+ transform: scale("
+   <>
+ "#{e.mirror}"
+ <>", 1) rotate("<>
+ "#{e.rotate+20}"
+ <>"deg);
+
+filter: contrast(70%)
+ hue-rotate( "
+   <>
+ "#{e.color}"
+ <>"deg)
+ opacity(70%);
+ "
+ 
+ }><%= "🦎" %></span>
+<% end %>
+
+
+</div>
+
+<script type="text/javascript">
+  setTimeout(function(){
+    location = ''
+  },1000/30)
+</script>

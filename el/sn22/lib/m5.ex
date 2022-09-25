@@ -1,7 +1,7 @@
 defmodule M5 do
   use GenServer
 
-  defstruct tr: 1611, st: 0, tm: nil
+  defstruct tr: 1611, st: 0, tm: nil, sp: 1
 
   def start() do GenServer.start __MODULE__, %M5{st: 0}, name: :seq; end
   def pause() do 1 end
@@ -18,7 +18,9 @@ defmodule M5 do
     # send(self, :tick)
     # :timer.send_after(1, :tick);
 
+    {:ok, socket} = :gen_udp.open(11115, [:binary])
     {_, t} = :timer.send_interval(s.tr, :tick);
+
 
     # :timer.apply_after(4000, GenServer, :stop, [self])
     # tick2 1
@@ -29,6 +31,10 @@ defmodule M5 do
   def handle_call(:gets, _p, s) do {:reply, s, s} end
   def handle_info(:tick, s) do {:noreply, tick s} end
   def handle_info({:tr, tr}, s) do {:noreply, %M5{s | tr: tr}} end
+
+  def handle_info({:udp,_,_,_,m}, s) do
+    << a::binary-size(11), b::binary >> = m; {:noreply,
+    %M5{s | tr: (:binary.decode_unsigned(b)+1)*5}} end
 
   # def handle_info(:tick2, s) do {:noreply, tick2 s} end
 

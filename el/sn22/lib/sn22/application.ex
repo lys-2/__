@@ -22,7 +22,7 @@ defmodule Sn22.Application do
     Node.connect :"a@tym.pw";
     M4s.start;
     # M4c.start;
-    M5.start 1
+    M5.start
 
     children = [
       # Start the Telemetry supervisor

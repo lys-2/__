@@ -1,13 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html style="background-color: transparent;" lang="en">
   <head>
 <style>
 body::-webkit-scrollbar {
   display: none;
+  
 }
 
 /* Hide scrollbar for IE, Edge and Firefox */
 body {
+  background-color: gray;
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
 }
@@ -26,8 +28,6 @@ body {
 
       </section>
     </header>
-
-<%= render(Sn22Web.PageView, "smh.html", conn: @conn) %>
 
     <%= @inner_content %>
   </body>
