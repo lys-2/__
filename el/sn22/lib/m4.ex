@@ -100,7 +100,7 @@ end
 defmodule M4c do
   use GenServer
 
-  defstruct idc: 1, st: %{}
+  defstruct idc: 1, st: %{}, tm: nil
   @path  "../../../s"
 
   # Client
