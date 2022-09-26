@@ -5,15 +5,11 @@ defmodule Sn22Web.V1 do
 
   def render(assigns) do
     ~H"""
+
     <button phx-click="inc_temperature" phx-window-keyup="update_temp">+</button>
-    aaa <%= @aaa;  inspect((:h3.k_ring_distances 577375545977733119,
-     1), limit: 9999) %>
-     <p><%= @aaa; cs2 = :h3.k_ring(577094071001022463,
-     1);
-     for c <- cs2, do: {:h3.get_base_cell(c), :h3.k_ring(c, 1)}
-     |> inspect
-     %>
-     </p>
+
+
+
      <p><%= @name %></p>
      <span id="q">Q</span>
      <span id="w">W</span>

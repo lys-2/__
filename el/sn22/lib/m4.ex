@@ -30,7 +30,7 @@ defmodule M4 do
 
     {:ok, {_, t}} = :timer.exit_after(Enum.random(10000..30000), 1)
 
-    :timer.send_interval(250, self, :tick)
+    :timer.send_interval(125, self, :tick)
 
     {:ok,
      %{

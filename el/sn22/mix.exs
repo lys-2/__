@@ -4,7 +4,7 @@ defmodule Sn22.MixProject do
   def project do
     [
       app: :sn22,
-      version: "0.1.0",
+      version: "0.0.5",
       elixir: "~> 1.12",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [] ++ Mix.compilers(),
@@ -46,10 +46,11 @@ defmodule Sn22.MixProject do
       {:gettext, "~> 0.18"},
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
-      {:h3, "~> 3.6"},
+      # {:h3, "~> 3.6"},
       {:poolboy, "~> 1.5"},
       {:faker, "~> 0.17"},
-      {:osc, "~> 0.1.2"}
+      # {:osc, "~> 0.1.2"},
+      {:nx, "~> 0.3.0"}
 
     ]
   end
