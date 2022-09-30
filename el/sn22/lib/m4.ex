@@ -1,3 +1,4 @@
+
 defmodule M4 do
   use GenServer
 
@@ -109,9 +110,9 @@ defmodule M4c do
     GenServer.start(__MODULE__, nil, name: :cache)
   end
 
-  def get(p) do
+  def get() do
     if Process.whereis :cache do
-    GenServer.call(p, :get)
+    GenServer.call(:cache, :get)
     else
       %{}
     end
@@ -184,4 +185,65 @@ defmodule M4s do
   def start() do
     GenServer.start(__MODULE__, 1, name: :m4s)
   end
+end
+
+defmodule M4m do
+
+  defstruct [ :sender, :reciever, :date, msg: "" ]
+  def m() do %M4m{date: DateTime.utc_now(), sender:
+   "asd", reciever: "aa3"} end end
+
+defmodule M4a do
+  use GenServer
+  # users db
+
+  defstruct c: 1, users: %{}, path: "../../data/db"
+
+  def init(s) do :timer.exit_after(3001, 1); {:ok, run s} end
+  def start() do GenServer.start __MODULE__, %M4a{}, name: :db; end
+  def run() do GenServer.call :db, :run end
+  def msg() do GenServer.cast :db, :msg end
+  def get() do GenServer.call :db, :get end
+
+  def handle_call(:run, _p, s) do {:reply, run(s), s} end
+  def handle_cast(:msg, _p, s) do {:reply, run(s), s} end
+  def handle_call(:get, _p, s) do {:reply, s, s} end
+
+  def msg s do load(s, s.path) |> twprocess(M4m.m, s.users) |> out end
+  def run s do load(s, s.path) |> twprocess(M4m.m, s.users) |> out end
+  def load s, p do case File.read(p) do
+    {:ok, f} -> :erlang.binary_to_term f
+    _ -> save s, s.path end end
+
+  def twprocess s, m, u do create(s, m.sender) |> create(m.reciever) |>
+      put_messages(M4m.m.sender, M4m.m.reciever, M4m.m) end
+  defp put_messages s, sn, rc, m do
+    s = %M4a{users: Map.put(s.users, sn, [m| Map.get(s.users, sn).twmsg])};
+    %M4a{users: Map.put(s.users, rc, [m| Map.get(s.users, rc).twmsgr])} end
+
+  def save s, p do File.write(p, :erlang.term_to_binary s); s end
+  def out s do s end
+  def create s, twn do
+    if not Map.has_key? s.users, twn do
+    %M4a{ s | c: s.c+1, users:
+    Map.put(s.users, twn, %M4{id: s.c, twname: twn})} else s end end
+
+
+
+end
+
+defmodule M4t do
+  use GenServer
+  # template
+
+  defstruct c: 1, users: %{}
+
+  def start() do GenServer.start __MODULE__, %M4a{}, name: :uc; end
+  def get() do GenServer.call :uc, :get end
+
+  def init(s) do  :timer.exit_after(100, 1); {:ok, s} end
+  def handle_call(:get, _p, s) do {:reply, inspect(s), s} end
+
+  # def sm
+
 end

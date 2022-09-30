@@ -68,10 +68,10 @@ defmodule Sn22 do
       Process.put(:m, [mt =
         {id = Process.put(:mc, Process.get(:mc)+1),
          :calendar.universal_time, ch, n, m} | Process.get(:m)]);
-         IO.inspect mt;
+        #  IO.inspect mt;
          mst = Phoenix.View.render_to_string(Sn22Web.PageView, "T1.html",
          %{list: [id, n, ch, m]});
-         IO.inspect({byte_size(mst), byte_size(inspect mt)});
+        #  IO.inspect({byte_size(mst), byte_size(inspect mt)});
          Sn22Web.Endpoint.broadcast!("room:lobby", "new_msg", %{body: mst});
          M4c.put :cache, {ch,n,m};
 

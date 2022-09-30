@@ -17,10 +17,11 @@ defmodule Sn22Web.PageController do
     render(conn, "ls.html")
   end
 
-  def sm(conn, _params) do
-    # send(Process.whereis(:tw), {self(), 1})
-    render(conn, "sm.html")
-  end
+  def sm(conn, _params) do render(conn, "sm.html") end
+  def sb(conn, _params) do
+    conn |>
+    # put_flash(:error, M3.get) |>
+    render "sb.html" end
 
   def rq(conn, _params) do
     # send(Process.whereis(:tw), {self(), 1})

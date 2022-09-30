@@ -5,9 +5,6 @@ defmodule Sn22.Application do
 
   use Application
 
-
-
-
   @impl true
   def start(_type, _args) do
 
@@ -22,7 +19,8 @@ defmodule Sn22.Application do
     Node.connect :"a@tym.pw";
     M4s.start;
     # M4c.start;
-    M5.start
+    M5.start;
+    M6.start
 
     children = [
       # Start the Telemetry supervisor

@@ -2,12 +2,24 @@ defmodule Sn22Web.Router do
   use Sn22Web, :router
 
   pipeline :browser do
+
+    def auth(conn, opts) do
+
+      {:ok, pw} = File.read System.user_home <> "/1"
+      if pw == conn.params["pw"] do IO.puts "aaa" end
+
+      put_resp_cookie conn, "u", "123123", max_age: 360000;
+    end
+
+
     plug :accepts, ["html"]
     plug :fetch_session
     plug :fetch_live_flash
     plug :put_root_layout, {Sn22Web.LayoutView, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug :auth
+
   end
 
   pipeline :api do
@@ -15,6 +27,7 @@ defmodule Sn22Web.Router do
   end
 
   scope "/", Sn22Web do
+
     pipe_through :browser
     live "/v", V1
 
@@ -25,6 +38,7 @@ defmodule Sn22Web.Router do
     get "/g", PageController, :gd
     get "/v", PageController, :v
     get "/sm", PageController, :sm
+    get "/sb", PageController, :sb
     get "/ls", PageController, :ls
   end
 
