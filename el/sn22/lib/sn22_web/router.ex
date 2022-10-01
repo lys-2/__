@@ -1,5 +1,6 @@
 defmodule Sn22Web.Router do
   use Sn22Web, :router
+  import Phoenix.LiveView.Router
 
   pipeline :browser do
 
@@ -29,8 +30,8 @@ defmodule Sn22Web.Router do
   scope "/", Sn22Web do
 
     pipe_through :browser
-    live "/v", V1
-
+    # live "/v", V1
+    live "/ts", ThermostatLive
     get "/", PageController, :index
     get "/p", PageController, :p
     get "/rq", PageController, :rq

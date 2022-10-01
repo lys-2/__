@@ -1,7 +1,32 @@
+defmodule Sn22Web.ThermostatLive do
+  # In Phoenix v1.6+ apps, the line below should be: use MyAppWeb, :live_view
+  use Sn22Web, :live_view
+
+  def render(assigns) do
+    ~H"""
+    Current temperature: <%= @tem.m %>
+    <p> a <%= @tem.s %> </p>
+
+    """
+  end
+
+  def mount(_params, %{}, socket) do
+  if connected?(socket), do: Process.send_after(self(), :update, 12);
+  {:ok, assign(socket, :tem, %{m: 1, s: M5.get})}
+
+  end
+
+  def handle_info(:update, socket) do
+    Process.send_after(self(), :update, 12)
+
+    {:noreply, assign(socket, :tem, %{m: (M6.start; M6.get), s: M5.get})}
+  end
+end
+
 defmodule M6 do
   use GenServer
 
-  defstruct a: 0, h: 256, w: 256, m: 128*16, p: :persistent_term, s: nil
+  defstruct a: 0, h: 256, w: 256, m: 8, p: :persistent_term, s: nil
 
   def start() do GenServer.start __MODULE__, %M6{}, name: :cls; end
   def pause() do 1 end
@@ -22,15 +47,8 @@ defmodule M6 do
      {:ok, s} end
 
   def fill(a, m) do
-
-      %M6{s:
-      for e <- 1..m do
-        :atomics.put a, e, r = Enum.random([0,0,0,0,0,0,0,0,3,3,3,1,2,0,0]);
-        r;
-       end
-      };
-
-
+    %M6{s: for e <- 1..m do :atomics.put a, e, r =
+      Enum.random([0,0,0,0,0,0,0,0,3,3,3,1,2,0,0]); r; end};
         #  |> IO.puts
   end
 

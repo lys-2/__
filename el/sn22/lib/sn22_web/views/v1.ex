@@ -8,8 +8,6 @@ defmodule Sn22Web.V1 do
 
     <button phx-click="inc_temperature" phx-window-keyup="update_temp">+</button>
 
-
-
      <p><%= @name %></p>
      <span id="q">Q</span>
      <span id="w">W</span>

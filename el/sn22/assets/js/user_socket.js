@@ -69,8 +69,10 @@ channel.join()
     // let messageItem = document.createElement("p")
     // messageItem.innerText = `${payload.body}`
     // messagesContainer.appendChild(messageItem)
+    if ( window.location.pathname === '/' ){
     document.getElementById('m2').innerHTML = payload.body
     console.log(payload)
+    }
   })
 
 export default socket
