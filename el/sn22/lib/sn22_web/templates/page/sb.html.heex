@@ -4,15 +4,16 @@
         <title>My Template</title>
         <meta charset="UTF-8">
     </head>
-    <body>
+    <body >
 <%= render(Sn22Web.PageView, "smh.html", conn: @conn) %>
+<div style="background-image: url('images/fb1.png');">
     <h3>cells</h3>
     <h3>characters</h3>
     <h3>users</h3>
 
-<span style="font-size: 24px;"> 
+<span  style="font-size: 24px;"> 
 
-<%= M4a.start; inspect M4a.get %>
+<%= inspect M4a.get %>
 </span>
 
 
@@ -121,5 +122,6 @@ filter: contrast(70%)
 <%=  for e <- [Node.self | Node.list] do %>
 <span><%= inspect e %></span>
 <% end %>
+</div>
     </body>
 </html>

@@ -73,7 +73,9 @@ defmodule Sn22 do
          %{list: [id, n, ch, m]});
         #  IO.inspect({byte_size(mst), byte_size(inspect mt)});
          Sn22Web.Endpoint.broadcast!("room:lobby", "new_msg", %{body: mst});
-         M4c.put :cache, {ch,n,m};
+        #  M4c.put :cache, {ch,n,m};
+         M4a.msg %M4m{date: DateTime.utc_now(), sender:
+         n, reciever: ch, msg: m, id: id};
 
       end
     end

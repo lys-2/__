@@ -189,37 +189,42 @@ end
 
 defmodule M4m do
 
-  defstruct [ :sender, :reciever, :date, msg: "" ]
+  defstruct [ :sender, :reciever, :id, :date, msg: "" ]
   def m() do %M4m{date: DateTime.utc_now(), sender:
    "asd", reciever: "aa3"} end end
 
 defmodule M4a do
   use GenServer
   # users db
-
   defstruct c: 1, users: %{}, path: "../../data/db"
+  # :timer.exit_after(3001, 1);
 
-  def init(s) do :timer.exit_after(3001, 1); {:ok, run s} end
+  def init(s) do {:ok, load(s, s.path)} end
   def start() do GenServer.start __MODULE__, %M4a{}, name: :db; end
+  def stop() do GenServer.stop :db; end
   def run() do GenServer.call :db, :run end
-  def msg() do GenServer.cast :db, :msg end
+  def msg(m) do GenServer.cast :db, {:msg, m} end
   def get() do GenServer.call :db, :get end
 
   def handle_call(:run, _p, s) do {:reply, run(s), s} end
-  def handle_cast(:msg, _p, s) do {:reply, run(s), s} end
+  def handle_cast({:msg, m}, s) do {:noreply, msg(s, m)} end
   def handle_call(:get, _p, s) do {:reply, s, s} end
 
-  def msg s do load(s, s.path) |> twprocess(M4m.m, s.users) |> out end
-  def run s do load(s, s.path) |> twprocess(M4m.m, s.users) |> out end
+  def msg s, m do twprocess(s, m) end
+  def run s do load(s, s.path) |> twprocess(M4m.m) |> out end
   def load s, p do case File.read(p) do
     {:ok, f} -> :erlang.binary_to_term f
     _ -> save s, s.path end end
 
-  def twprocess s, m, u do create(s, m.sender) |> create(m.reciever) |>
-      put_messages(M4m.m.sender, M4m.m.reciever, M4m.m) end
+  def twprocess s, m do create(s, m.sender) |> create(m.reciever) |>
+      put_messages(m.sender, m.reciever, m) end
   defp put_messages s, sn, rc, m do
-    s = %M4a{users: Map.put(s.users, sn, [m| Map.get(s.users, sn).twmsg])};
-    %M4a{users: Map.put(s.users, rc, [m| Map.get(s.users, rc).twmsgr])} end
+    s = %M4a{users: Map.put(s.users, sn,
+     %M4{Map.get(s.users, sn) | twmsg: [m | Map.get(s.users, sn).twmsg]})};
+
+     s = %M4a{users: Map.put(s.users, rc,
+     %M4{Map.get(s.users, rc) | twmsgr: [m | Map.get(s.users, rc).twmsgr]})}
+     end
 
   def save s, p do File.write(p, :erlang.term_to_binary s); s end
   def out s do s end
