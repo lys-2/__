@@ -50,6 +50,8 @@ defmodule Sn22.MixProject do
       {:poolboy, "~> 1.5"},
       {:faker, "~> 0.17"},
       # {:osc, "~> 0.1.2"},
+      {:gen_smtp, "~> 1.2"},
+      {:pixels, "~> 0.2.1"},
       {:nx, "~> 0.3.0"}
 
     ]

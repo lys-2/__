@@ -32,6 +32,7 @@ defmodule Sn22Web.Router do
     pipe_through :browser
     # live "/v", V1
     live "/ts", ThermostatLive
+    live "/st", Store
     get "/", PageController, :index
     get "/p", PageController, :p
     get "/rq", PageController, :rq

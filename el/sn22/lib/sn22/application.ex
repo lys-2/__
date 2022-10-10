@@ -26,6 +26,7 @@ defmodule Sn22.Application do
       # Start the Telemetry supervisor
       M2,
       M3,
+      M7state,
       Sn22Web.Telemetry,
       # Start the PubSub system
       {Phoenix.PubSub, name: Sn22.PubSub},
