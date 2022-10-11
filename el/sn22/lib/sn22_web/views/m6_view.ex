@@ -48,7 +48,9 @@ alias Sn22Web.Presence
   def handle_event("cursor-move", %{"x" => x, "y" => y, "p" => p}, socket) do
     key = socket.id
     payload = %{x: x, y: y, p: p}
-    IO.puts("#{floor x/16} #{floor y/16} #{p} #{inspect socket.assigns.user}");
+    IO.puts("#{floor x/16} #{floor y/16}
+     #{64*(floor y/16)+(floor x/16)} #{p}
+    #{inspect socket.assigns.user}");
 
     # IO.inspect socket
 
@@ -79,6 +81,8 @@ alias Sn22Web.Presence
       |> assign(mu: :erlang.memory(:total))
       |> assign(pc: :erlang.system_info(:process_count))
       |> assign(c: Presence.list(@cursorview) |> map_size)
+      # |> assign(:cl, M7.parse)
+
 
     {:noreply, updated}
   end
@@ -88,17 +92,10 @@ alias Sn22Web.Presence
   def render(assigns) do
     ~H"""
 
+<div style="float: right; top: 111px;"><br><br><p>
+11111
+</p></div>
 
-    <%= for e <- @cl do %>
-    <pre style={"
-    position: absolute;
-     top: "<>"#{e.y*16}"<>"px;
-     left: "<>"#{e.x*16}"<>"px;
-     filter: hue-rotate("<>"#{e.hue}"<>"deg);
-     "}><%=
-      "#{e.type}"
-        %></pre>
-    <% end %>
 
 
 <span style="font-size: 24px;"> <%=
@@ -141,6 +138,17 @@ alias Sn22Web.Presence
     </span>
     <% end %>
 
+    <%= for e <- @cl do %>
+    <pre style={"
+    position: absolute;
+     top: "<>"#{e.y*16}"<>"px;
+     left: "<>"#{e.x*16}"<>"px;
+     filter: hue-rotate("<>"#{e.hue}"<>"deg);
+     "}><%=
+      "#{e.type}"
+        %></pre>
+    <% end %>
     """
+
   end
 end
