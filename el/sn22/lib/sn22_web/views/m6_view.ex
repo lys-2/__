@@ -13,6 +13,8 @@ alias Sn22Web.Presence
       x: 50,
       y: 50,
       p: 50,
+      id: 1,
+
       name: n,
       # cl: M7.parse,
       mu: :erlang.memory(:total)
@@ -29,6 +31,7 @@ alias Sn22Web.Presence
       |> assign(:x, 50)
       |> assign(:y, 50)
       |> assign(:p, 50)
+      |> assign(:id, 50)
       |> assign(:cl, M7.parse)
       |> assign(c: Presence.list(@cursorview) |> map_size)
       |> assign(s: s)
@@ -47,18 +50,23 @@ alias Sn22Web.Presence
 
   def handle_event("cursor-move", %{"x" => x, "y" => y, "p" => p}, socket) do
     key = socket.id
-    payload = %{x: x, y: y, p: p}
-    IO.puts("#{floor x/16} #{floor y/16}
-     #{64*(floor y/16)+(floor x/16)} #{p}
-    #{inspect socket.assigns.user}");
+    # payload = %{x: x, y: y, p: p}
+    id = 64*(floor y/16)+(floor x/16)
+    payload = %{x: x, y: y, p: p, id: id}
 
-    # IO.inspect socket
+    IO.puts("#{floor x/16} #{floor y/16} #{id} #{p}
+    #{inspect socket.assigns.user}
+    #{inspect M7cell.get id}
+    #{inspect M7cell.ns floor(x/16), floor(y/16), 64, 64}
+     ");
+
+    # IO.inspect [x, y, id, p]
 
     metas =
       Presence.get_by_key(@cursorview, key)[:metas]
       |> List.first()
       |> Map.merge(payload)
-      # |> assign(s: M6.get)
+      # |> assign(id: id)
 
 
     Presence.update(self(), @cursorview, key, metas)
@@ -78,6 +86,7 @@ alias Sn22Web.Presence
       |> assign(users: users)
       |> assign(socket_id: socket.id)
       |> assign(s: M6.get)
+      |> assign(id: socket.id)
       |> assign(mu: :erlang.memory(:total))
       |> assign(pc: :erlang.system_info(:process_count))
       |> assign(c: Presence.list(@cursorview) |> map_size)
@@ -133,15 +142,23 @@ alias Sn22Web.Presence
     "
 
     }><%=  "🦎" <> List.to_string(@s)  %>
+
+    <span style=" position: absolute;
+    font-family:monospace;"><%=  M7cell.get(user.id) |> inspect %></span>
+
    <span id="cursors" phx-hook="TrackClientCursor"
-   style="  position: absolute; font-family:monospace;  background-color: deeppink;"> <%= user.name %></span>
+   style=" position: absolute;
+   font-family:monospace;  background-color:
+    deeppink;"> <%= user.name %></span>
     </span>
+
     <% end %>
 
     <%= for e <- @cl do %>
     <pre style={"
+    font-size: #{16}px;
     position: absolute;
-     top: "<>"#{e.y*16}"<>"px;
+     top: #{(e.y-1)*16}px;
      left: "<>"#{e.x*16}"<>"px;
      filter: hue-rotate("<>"#{e.hue}"<>"deg);
      "}><%=

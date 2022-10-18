@@ -236,7 +236,10 @@ defmodule M4a do
     %M4a{ s |c: s.c+1, users:
     Map.put(s.users, twn, %M4{id: s.c, twname: twn})} else s end end
 
-
+  def get_rand() do
+    {a, b} = M4a.get.users |> Enum.random; {a, b.twmsg
+     |> Enum.map(fn m -> m.msg end)}
+  end
 
 end
 

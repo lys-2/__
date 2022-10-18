@@ -52,6 +52,7 @@ defmodule Sn22.MixProject do
       # {:osc, "~> 0.1.2"},
       {:gen_smtp, "~> 1.2"},
       {:pixels, "~> 0.2.1"},
+      {:png, "~> 0.2.1"},
       {:nx, "~> 0.3.0"}
 
     ]
