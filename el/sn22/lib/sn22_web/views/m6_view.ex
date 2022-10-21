@@ -7,6 +7,7 @@ alias Sn22Web.Presence
   def mount(_params, _, socket) do
     n = Faker.Pokemon.name
     s = M6.get
+    cells = M7state.get;
     Sn22Web.Endpoint.subscribe(@cursorview)
     Presence.track(self(), @cursorview, socket.id, %{
       socket_id: socket.id,
@@ -32,7 +33,7 @@ alias Sn22Web.Presence
       |> assign(:y, 50)
       |> assign(:p, 50)
       |> assign(:id, 50)
-      |> assign(:cl, M7.parse)
+      |> assign(:cl, cells)
       |> assign(c: Presence.list(@cursorview) |> map_size)
       |> assign(s: s)
       |> assign(mu: :erlang.memory(:total))
@@ -156,7 +157,7 @@ alias Sn22Web.Presence
 
     <%= for e <- @cl do %>
     <pre style={"
-    font-size: #{16}px;
+    font-size: #{16*e.hue/111}px;
     position: absolute;
      top: #{(e.y-1)*16}px;
      left: "<>"#{e.x*16}"<>"px;

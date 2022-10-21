@@ -33,6 +33,7 @@ defmodule Sn22.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:ecto_sqlite3, "~> 0.8.2"},
       {:phoenix, "~> 1.6.11"},
       {:phoenix_html, "~> 3.0"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},

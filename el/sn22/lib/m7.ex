@@ -23,13 +23,15 @@ defmodule M7user do
   use GenServer
   # template
 
-  defstruct c: 1, users: %{}
+  defstruct [:id, :adm, devices: %{}, clients: %{}, sessions: %{}]
 
-  def start_link(_) do GenServer.start_link __MODULE__, %M4a{}, name: :aa end
-  def get() do GenServer.call :aa, :get end
+  def start(i) do GenServer.start __MODULE__, %M7user{}, name: i2a(i) end
+  def get(i) do GenServer.call i2a(i), :get end
 
-  def init(s) do  inspect s; :timer.kill_after(4444); {:ok, s} end
-  def handle_call(:get, _p, s) do {:reply, inspect([s, self]), s} end
+  def init(s) do  inspect 111; {:ok, s} end
+  def handle_call(:get, _p, s) do {:reply, s, s} end
+
+  def i2a(i) do String.to_atom("u#{i}") end
 
   # def sm
 
@@ -119,6 +121,10 @@ defmodule M7 do
           %M7cell{type: a, id: b, x: rem(b,64), y: floor((b/64)),
            hue: ceil :rand.uniform(24)+b/(:rand.uniform(111)+12)} end);
 
+           :dets.open_file(:dt, [type: :set]);
+           :dets.insert(:dt, {1, d}); :dets.close(:dt); d
+
+
   end
 
 
@@ -128,21 +134,44 @@ defmodule M7state do
   use GenServer
   # template
 
-  defstruct [:s]
+  defstruct [user_count: 0]
 
   def start_link(i) do GenServer.start_link __MODULE__, %M7state{}, name: :M7state end
   def get() do GenServer.call :M7state, :get end
+  def load() do GenServer.call :M7state, :load end
+  def save() do GenServer.call :M7state, :save end
+
+  def aaa, do: 1
 
   def init(s) do
-   s = for e <- M7.parse do M7cell.start_link(e); end
-   s = for e <- M7.parse do GenServer.call(String.to_atom("c#{e.id}"), :ns) end
- {:ok,s} end
+  #  c = for e <- M7.parse do M7cell.start_link(e); end
+  # File.cd "../../data"
+  # {:ok, table} = :dets.open_file(:dt, [type: :set])
+  # s = load(s)
+  # for e <- [] do M7cell.start_link(e); end
+  # for e <- M7.parse do GenServer.call(String.to_atom("c#{e.id}"), :ns) end
+  :dets.open_file(:dt, [type: :set]);
+  [{_, s}] = :dets.lookup(:dt, 1); :dets.close(:dt);
+  for e <- s do M7cell.start_link(e); end
+  for e <- s do GenServer.call(String.to_atom("c#{e.id}"), :ns) end
 
+  #  s = M7user.start 1
+#  {:ok, %__MODULE__{s | cells: c}} end
+ {:ok, s} end
 
   def handle_call(:get, _p, s) do {:reply, s, s} end
+  def handle_call(:load, _p, s) do {:reply, s, load(s)} end
+  def handle_call(:save, _p, s) do {:reply, s, save(s)} end
+
   def i2a(i) do String.to_atom("c#{i}") end
 
-  def rc() do M7state.get |> Enum.random
+  def rc() do M7state.get.cells |> Enum.random
   |> Map.get(:id) |> M7cell.get end
+
+  def save(s) do
+    File.write("../../data/st1/st", :erlang.term_to_binary s); s end
+  def load(s) do case File.read("../../data/M7") do
+    {:ok, f} -> :erlang.binary_to_term f
+    _ -> nil end end
 
 end
