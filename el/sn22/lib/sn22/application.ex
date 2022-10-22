@@ -13,7 +13,7 @@ defmodule Sn22.Application do
 
     spawn(Sn22, :run, []) |> Process.register(:mb)
     spawn(Sn22, :run2, [1, {[], 0, 0}])
-    spawn(M1, :init, []) |> Process.register(:main)
+    # spawn(M1, :init, []) |> Process.register(:main)
 
     IO.inspect(Node.self());
     Node.connect :"a@tym.pw";

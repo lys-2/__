@@ -7,7 +7,7 @@ alias Sn22Web.Presence
   def mount(_params, _, socket) do
     n = Faker.Pokemon.name
     s = M6.get
-    cells = M7state.get;
+    cells = M7state.get.cells;
     Sn22Web.Endpoint.subscribe(@cursorview)
     Presence.track(self(), @cursorview, socket.id, %{
       socket_id: socket.id,
@@ -70,7 +70,7 @@ alias Sn22Web.Presence
       # |> assign(id: id)
 
 
-    Presence.update(self(), @cursorview, key, metas)
+    # Presence.update(self(), @cursorview, key, metas)
 
     # IO.inspect socket
 
@@ -103,7 +103,11 @@ alias Sn22Web.Presence
     ~H"""
 
 <div style="float: right; top: 111px;"><br><br><p>
-11111
+<button>Make white noise</button>
+<audio
+        controls
+        src="/ts">
+    </audio>
 </p></div>
 
 
@@ -166,6 +170,45 @@ alias Sn22Web.Presence
       "#{e.type}"
         %></pre>
     <% end %>
+
+    <script>
+
+const audioCtx = new (window.AudioContext)();
+console.log(audioCtx)
+// Create an empty three-second stereo buffer at the sample rate of the AudioContext
+const myArrayBuffer = audioCtx.createBuffer(1, 111111, 4444);
+
+  const s = new Float32Array(
+   <%=
+   s = for e <- 1..111111, do:
+   (:math.sin(e*(e/128/5)+e/11) + :math.sin(e*0.2*(e/55555)+e/2)
+   |> Kernel.* :math.sin(e/32)
+   |> Kernel.* :math.sin(e/1024)
+   |> Kernel./ 20
+   );
+   inspect(s, limit: :infinity)
+   %>
+    );
+
+  myArrayBuffer.copyToChannel(s, 0);
+
+  console.log(s)
+
+///////////////////////
+// Get an AudioBufferSourceNode.
+// This is the AudioNode to use when we want to play an AudioBuffer
+const source = audioCtx.createBufferSource();
+// set the buffer in the AudioBufferSourceNode
+source.buffer = myArrayBuffer;
+// connect the AudioBufferSourceNode to the
+// destination so we can hear the sound
+source.connect(audioCtx.destination);
+// start the source playing
+source.start();
+
+    </script>
+
+
     """
 
   end

@@ -42,6 +42,7 @@ defmodule Sn22Web.Router do
     get "/sm", PageController, :sm
     get "/sb", PageController, :sb
     get "/ls", PageController, :ls
+    get "/ts", Audio, :song
   end
 
   # Other scopes may use custom stacks.
