@@ -7,7 +7,8 @@ alias Sn22Web.Presence
   def mount(_params, _, socket) do
     n = Faker.Pokemon.name
     s = M6.get
-    cells = M7state.get.cells;
+    # cells = M7state.get.cells;
+    cells = M7.parse;
     Sn22Web.Endpoint.subscribe(@cursorview)
     Presence.track(self(), @cursorview, socket.id, %{
       socket_id: socket.id,
@@ -70,7 +71,7 @@ alias Sn22Web.Presence
       # |> assign(id: id)
 
 
-    # Presence.update(self(), @cursorview, key, metas)
+    Presence.update(self(), @cursorview, key, metas)
 
     # IO.inspect socket
 
@@ -102,21 +103,15 @@ alias Sn22Web.Presence
   def render(assigns) do
     ~H"""
 
-<div style="float: right; top: 111px;"><br><br><p>
-<button>Make white noise</button>
-<audio
-        controls
-        src="/ts">
-    </audio>
-</p></div>
 
 
 
-<span style="font-size: 24px;"> <%=
+
+<span style="font-size: 12px;"> <%=
 
   @us
 
-   %> </span>
+   %> <button>asd</button> <%= inspect(M8s.a(440), limit: :infinity) %></span>
 <span style="font-size: 24px;"> <%= @c %> </span>
 <span style="font-size: 24px;"> <%= @mu %> </span>
 <span style="font-size: 24px;"> <%= @pc %> </span>
@@ -148,8 +143,10 @@ alias Sn22Web.Presence
 
     }><%=  "🦎" <> List.to_string(@s)  %>
 
-    <span style=" position: absolute;
-    font-family:monospace;"><%=  M7cell.get(user.id) |> inspect %></span>
+    <span style=" font-size: 16px; position: absolute;
+    font-family:monospace; ">
+    <%=  M7cell.get(user.id) |> inspect %>
+    </span>
 
    <span id="cursors" phx-hook="TrackClientCursor"
    style=" position: absolute;
@@ -176,17 +173,12 @@ alias Sn22Web.Presence
 const audioCtx = new (window.AudioContext)();
 console.log(audioCtx)
 // Create an empty three-second stereo buffer at the sample rate of the AudioContext
-const myArrayBuffer = audioCtx.createBuffer(1, 111111, 4444);
+const myArrayBuffer = audioCtx.createBuffer(1, 333333, <%= M8s.p %>);
 
   const s = new Float32Array(
    <%=
-   s = for e <- 1..111111, do:
-   (:math.sin(e*(e/128/5)+e/11) + :math.sin(e*0.2*(e/55555)+e/2)
-   |> Kernel.* :math.sin(e/32)
-   |> Kernel.* :math.sin(e/1024)
-   |> Kernel./ 20
-   );
-   inspect(s, limit: :infinity)
+
+   inspect(M8s.a(440), limit: :infinity)
    %>
     );
 

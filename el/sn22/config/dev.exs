@@ -8,6 +8,7 @@ import Config
 # with esbuild to bundle .js and .css sources.
 config :logger, level: :warn
 
+config :nx, :default_backend, EXLA.Backend
 
 config :sn22, Sn22Web.Endpoint,
   # Binding to loopback ipv4 address prevents access from other machines.
@@ -49,10 +50,19 @@ config :sn22, Sn22Web.Endpoint,
 # Watch static and templates for browser reloading.
 config :sn22, Sn22Web.Endpoint,
   live_reload: [
+    backend: :fs_poll,
+    backend_opts: [
+      interval: 500
+    ],
+    dirs: [
+      "../../data"
+    ],
     patterns: [
       ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$",
       ~r"priv/gettext/.*(po)$",
       ~r"lib/sn22_web/(live|views)/.*(ex)$",
+      ~r"lib/m8.ex",
+      ~r"../../data/m7.png",
       ~r"lib/sn22_web/templates/.*(eex)$"
     ]
   ]

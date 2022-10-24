@@ -110,7 +110,7 @@ defmodule M7 do
           <<0, 0, 0, 255>> -> "⛚"
           <<0, 0, 111, 255>> -> "⛆"
           <<0, 0, 255, 255>> -> "⛽"
-          <<0, 111, 0, 255>> -> "~"
+          <<0, 111, 0, 255>> -> "🍭"
           _ -> 0
         end
 
@@ -119,7 +119,7 @@ defmodule M7 do
         d = d |> Enum.reject(fn {x, _} -> x == 0 end) |>
          Enum.map( fn {a, b}->
           %M7cell{type: a, id: b, x: rem(b,64), y: floor((b/64)),
-           hue: ceil :rand.uniform(24)+b/(:rand.uniform(111)+12)} end);
+           hue: ceil :rand.uniform(24)+b/(:rand.uniform(111)+1)} end);
 
            :dets.open_file(:dt, [type: :set]);
            :dets.insert(:dt, {1, d}); :dets.close(:dt); d
@@ -155,7 +155,7 @@ defmodule M7state do
   # for e <- M7.parse do GenServer.call(String.to_atom("c#{e.id}"), :ns) end
   # :dets.open_file(:dt, [type: :set]);
   # [{_, s}] = :dets.lookup(:dt, 1); :dets.close(:dt);
-  # s = put_in(s.users, create_users(s.users))
+  s = put_in(s.cells, M7.parse)
 
   for e <- s.cells do M7cell.start_link(e); end
   for e <- s.cells do GenServer.call(String.to_atom("c#{e.id}"), :ns) end
@@ -168,7 +168,7 @@ defmodule M7state do
   def handle_call(:load, _p, s) do {:reply, s, load(s)} end
   def handle_call(:save, _p, s) do {:reply, s, save(s)} end
   def handle_call({:add_user, u}, _p, s) do {:reply, :ok, add_user(s, u)} end
-  def handle_call(:create_users, _p, s) do {:reply, s, create_users(s)} end
+  def handle_call(:create_users, _p, s) do {:reply, create_users(s).users, create_users(s)} end
   def handle_call(:reset, _p, s) do {:reply, reset(s), reset(s)} end
 
   def i2a(i) do String.to_atom("c#{i}") end
@@ -182,9 +182,10 @@ defmodule M7state do
     {:ok, f} -> :erlang.binary_to_term f
     _ -> nil end end
 
-    def create_users(s), do:
+    def create_users(s) do
     # c = s.stats.user_counter;
-      for e <- 1..11111, do: add_user s, 1
+      for e <- 1..11111, reduce: s do acc -> add_user(acc, %M7user{id: e}) end
+    end
 
     def add_user(s, u) do
         s = put_in s.users, Map.put(s.users, :"u#{s.stats.user_counter}", u);

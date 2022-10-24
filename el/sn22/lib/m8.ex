@@ -1,4 +1,4 @@
-defmodule LinReg do
+defmodule M8 do
   import Nx.Defn
 
   def run do
@@ -12,7 +12,7 @@ data =
   Stream.repeatedly(fn -> for _ <- 1..32, do: :rand.uniform() * 10 end)
   |> Stream.map(fn x -> Enum.zip(x, Enum.map(x, target_fn)) end)
   IO.puts("Target m: #{target_m}\tTarget b: #{target_b}\n")
-  {m, b} = LinReg.train(100, data)
+  {m, b} = train(100, data)
   IO.puts("Learned m: #{Nx.to_number(m)}\tLearned b: #{Nx.to_number(b)}")
 
   end
@@ -36,6 +36,7 @@ data =
     b = Nx.random_normal({}, 0.0, 0.1)
     {m, b}
   end
+
   def train(epochs, data) do
     init_params = init_random_params()
     for _ <- 1..epochs, reduce: init_params do
@@ -55,16 +56,31 @@ data =
   end
 end
 
-defmodule Audio do
-  @chunk_size 128
+defmodule M8s do
+  import Nx.Defn
 
-  def init(opts), do: opts
+  def p(), do: 4444
 
-  def song(conn, _opts) do
+  def a(f), do:
+  Enum.to_list(1..4444) |> Nx.tensor(type: :u16)
+  |> c
+  |> Nx.to_flat_list
+  |> Enum.map(fn x -> Float.round(x, 2) end)
 
-    Plug.conn.put_resp_header("content-type", "audio/wav")
+  defn c(a) do import Nx
+    # sin(e*(e/128/5)+e/11
+    v = 1
+    v2 = ceil cos(a/2222*128)
+    v1 = ceil cos a/222
+    f = &sin(&1*&1*11111)
 
-    File.stream!("dt", [], @chunk_size)
-    |> Enum.into(conn)
+    sin(a*(a/1111111)+a)
+    |> multiply v
+    # |> multiply v*v2*v1
+    # |> f.()
+    |> divide(18)
+    # sin(a*(a/128/5))+a/16
+
   end
+
 end
