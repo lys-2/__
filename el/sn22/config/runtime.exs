@@ -35,7 +35,7 @@ if config_env() == :prod do
       """
 
   host = System.get_env("PHX_HOST") || "tym.pw"
-  port = String.to_integer(System.get_env("PORT") || "4000")
+  port = String.to_integer(System.get_env("PORT") || "443")
 
   config :sn22, Sn22Web.Endpoint,
     # url: [host: host, port: 443, scheme: "https"],

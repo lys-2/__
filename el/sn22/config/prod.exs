@@ -12,6 +12,9 @@ import Config
 config :sn22, Sn22Web.Endpoint,
 
 url: [host: "tym.pw", port: 443, scheme: "https"],
+url: [host: "tym.pw", port: 80, scheme: "http"],
+
+  http: [port: 80],
 
   https: [
 
@@ -26,7 +29,7 @@ url: [host: "tym.pw", port: 443, scheme: "https"],
     # ,"priv/cert/selfsigned.pem"
 
   ],
-      force_ssl: [hsts: true]
+  force_ssl: [hsts: true]
 
 
 # Do not print debug messages in production
