@@ -10,14 +10,15 @@ import Config
 # which you should run after static files are built and
 # before starting your production server.
 config :sn22, Sn22Web.Endpoint,
-  http: [port: 80,
-  compress: true,
-    protocol_options: [max_keepalive: 5_000_000]
-  ],
+
+url: [host: "tym.pw", port: 443, scheme: "https"],
+
   https: [
+
     port: 443,
     cipher_suite: :strong,
     compress: true,
+    otp_app: :sn22,
     keyfile: "/etc/letsencrypt/live/www.tym.pw/privkey.pem",
     # ,"priv/cert/selfsigned.pem"
     # cacertfile: "/etc/letsencrypt/live/www.tym.pw/fullchain.pem",
@@ -25,10 +26,8 @@ config :sn22, Sn22Web.Endpoint,
     # ,"priv/cert/selfsigned.pem"
 
   ],
-  force_ssl: [hsts: true],
-   load_from_system_env: true,
-   url: [host: "tym.pw", port: 443],
-   cache_static_manifest: "priv/static/cache_manifest.json"
+      force_ssl: [hsts: true]
+
 
 # Do not print debug messages in production
 config :logger, level: :info
