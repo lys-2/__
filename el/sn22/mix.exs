@@ -51,8 +51,8 @@ defmodule Sn22.MixProject do
       {:poolboy, "~> 1.5"},
       {:faker, "~> 0.17"},
       {:gen_smtp, "~> 1.2"},
-      {:pixels, "~> 0.2.1"},
-      {:png, "~> 0.2.1"},
+      # {:pixels, "~> 0.2.1"},
+      # {:png, "~> 0.2.1"},
       {:stb_image, "~> 0.5.2"},
       {:exla, "~> 0.4.0"},
       {:nx, "~> 0.4.0"}

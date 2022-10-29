@@ -103,14 +103,14 @@ defmodule M7 do
   def parse do
         # m = ["../../data/m7.png", "../../data/m7a.png", "../../data/m7b.png"]
         m = ["../../data/m7.png"]
-        {_, %{data: d}} = Pixels.read_file Enum.random m
+        {:ok, %StbImage{data: d}} = StbImage.read_file("../../data/m7.png")
 
         match = fn
           <<0, 255, 0, 255>> -> "✅"
           <<0, 0, 0, 255>> -> "⛚"
           <<0, 0, 111, 255>> -> "⛆"
           <<0, 0, 255, 255>> -> "⛽"
-          <<0, 111, 0, 255>> -> "🍭"
+          <<0, 111, 0, 255>> -> "~~~"
           _ -> 0
         end
 
@@ -156,6 +156,7 @@ defmodule M7state do
   # :dets.open_file(:dt, [type: :set]);
   # [{_, s}] = :dets.lookup(:dt, 1); :dets.close(:dt);
   s = put_in(s.cells, M7.parse)
+  # s = put_in(s.cells, [])
 
   for e <- s.cells do M7cell.start_link(e); end
   for e <- s.cells do GenServer.call(String.to_atom("c#{e.id}"), :ns) end
