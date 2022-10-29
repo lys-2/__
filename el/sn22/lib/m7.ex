@@ -119,7 +119,7 @@ defmodule M7 do
         d = d |> Enum.reject(fn {x, _} -> x == 0 end) |>
          Enum.map( fn {a, b}->
           %M7cell{type: a, id: b, x: rem(b,64), y: floor((b/64)),
-           hue: ceil :rand.uniform(24)+b/(:rand.uniform(111)+1)} end);
+           hue: ceil :rand.uniform(24)+b/(:rand.uniform(111)+12)} end);
 
            :dets.open_file(:dt, [type: :set]);
            :dets.insert(:dt, {1, d}); :dets.close(:dt); d

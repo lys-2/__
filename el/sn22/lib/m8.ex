@@ -59,10 +59,19 @@ end
 defmodule M8s do
   import Nx.Defn
 
-  def p(), do: 4444
+  def p(), do: 8888
+
+  defn f(x) do
+    Nx.exp x
+  end
+
+  defn b(x) do
+    grad(&f/1).(x)
+
+  end
 
   def a(f), do:
-  Enum.to_list(1..4444) |> Nx.tensor(type: :u16)
+  Nx.iota({222}, type: :f32)
   |> c
   |> Nx.to_flat_list
   |> Enum.map(fn x -> Float.round(x, 2) end)
@@ -70,15 +79,16 @@ defmodule M8s do
   defn c(a) do import Nx
     # sin(e*(e/128/5)+e/11
     v = 1
-    v2 = ceil cos(a/2222*128)
-    v1 = ceil cos a/222
-    f = &sin(&1*&1*11111)
+    v2 = ceil cos(a/2048*16)
+    v1 = ceil cos a/2048
+    v3 = sin(a/16)/16
+    f = &sin(&1*&1*2048)
 
     sin(a*(a/1111111)+a)
-    |> multiply v
-    # |> multiply v*v2*v1
+    # |> multiply(v)
+    |> multiply(v*v2*v1)
     # |> f.()
-    |> divide(18)
+    |> divide(16)
     # sin(a*(a/128/5))+a/16
 
   end
