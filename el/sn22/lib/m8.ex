@@ -3,9 +3,9 @@ defmodule M8 do
 
     def t() do import Nx
 
-    size = 1281
+    size = 128
 
-    t3 = iota({size*size}) |> divide(tensor(3333))
+    t3 = iota({size*size}) |> divide(tensor(333))
 
     t2 = random_uniform({size*size})
     |> multiply(t3)
