@@ -15,8 +15,9 @@ defmodule Sn22Web.Store do
   def render(assigns) do
     ~H"""
 <pre style="
+font-family:monospace;
   line-height: 8px;
-  font-size: 16px;"><%= @y%></pre>
+  font-size: 16px;"><%= @y %></pre>
     <input type="file" />
 
       <script>
@@ -26,9 +27,10 @@ defmodule Sn22Web.Store do
 
 
       }, true);
-    <input type="file" />
+
 
       </script>
+
     """
   end
 end

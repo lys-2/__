@@ -3,12 +3,29 @@ defmodule M8 do
 
     def t() do import Nx
 
-    t2 = iota {128,128}, type: :u8
+    size = 1281
+
+    t3 = iota({size*size}) |> divide(tensor(3333))
+
+    t2 = random_uniform({size*size})
+    |> multiply(t3)
+    # |> Nx.round
+    |> as_type(:u8)
+
+    match = fn
+      1 -> 34
+      2 -> 121
+      3 -> 124
+      4 -> 112
+      _ -> 32
+    end
+
     l = t2 |> add(tensor(1)) |> to_flat_list
+    l = for e <- l, do: match.(e)
     t = for {e, c} <- Enum.with_index(l),
-     into: "" do case rem(c, 128) do
-      127 -> <<111>><><<10>>
-      _ -> <<110>>
+     into: "" do case rem(c, size) do
+      127 -> <<e>><><<10>>
+      _ -> <<e>>
     end end
 
   end
