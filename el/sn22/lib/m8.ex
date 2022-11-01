@@ -1,8 +1,19 @@
 defmodule M8 do
   import Nx.Defn
 
-  def run do
+    def t() do import Nx
 
+    t2 = iota {128,128}, type: :u8
+    l = t2 |> add(tensor(1)) |> to_flat_list
+    t = for {e, c} <- Enum.with_index(l),
+     into: "" do case rem(c, 128) do
+      127 -> <<111>><><<10>>
+      _ -> <<110>>
+    end end
+
+  end
+
+  def run do
     target_m = :rand.normal(0.0, 10.0)
     target_b = :rand.normal(0.0, 5.0)
 

@@ -7,19 +7,26 @@ defmodule Sn22Web.Store do
     updated =
       socket
       |> assign(:x, 50)
-      |> assign(:y, 1)
+      |> assign(:y, M8.t )
     {:ok, updated}
   end
 
 
   def render(assigns) do
     ~H"""
-      <%= inspect @y, limit: 1111 %>
+<pre style="
+  line-height: 8px;
+  font-size: 16px;"><%= @y%></pre>
+    <input type="file" />
+
       <script>
       window.addEventListener('pointerdown', (event) => {
         console.log(event);
 
+
+
       }, true);
+    <input type="file" />
 
       </script>
     """
