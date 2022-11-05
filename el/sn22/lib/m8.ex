@@ -3,12 +3,16 @@ defmodule M8 do
 
     def t() do import Nx
 
-    size = 128
+    size = 128; s1 = (size*2) - 1;
+    s2 = size*size*3
+    {_,t2,t1} = :os.timestamp; t1 = t2/50000 + t1/10000
 
-    t3 = iota({size*size}) |> divide(tensor(333))
+    t3 = iota({s2}) |> divide(tensor(33))
 
-    t2 = random_uniform({size*size})
+    t2 = random_uniform({s2})
     |> multiply(t3)
+    |> add(tensor(1))
+    |> multiply(cos divide(tensor(t1), 1000))
     # |> Nx.round
     |> as_type(:u8)
 
@@ -20,11 +24,11 @@ defmodule M8 do
       _ -> 32
     end
 
-    l = t2 |> add(tensor(1)) |> to_flat_list
+    l = t2 |> to_flat_list
     l = for e <- l, do: match.(e)
     t = for {e, c} <- Enum.with_index(l),
-     into: "" do case rem(c, size) do
-      127 -> <<e>><><<10>>
+     into: "" do case rem(c, size*2) do
+      ^s1 -> <<e>><><<10>>
       _ -> <<e>>
     end end
 

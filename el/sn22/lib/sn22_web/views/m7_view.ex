@@ -1,6 +1,5 @@
 defmodule Sn22Web.Store do
 
-  # In Phoenix v1.6+ apps, the line below should be: use MyAppWeb, :live_view
   use Sn22Web, :live_view
 
   def mount(_params, _session, socket) do
@@ -9,34 +8,65 @@ defmodule Sn22Web.Store do
 
     updated =
       socket
-      |> assign(:x, :rand.uniform)
-      |> assign(:y, M8.t )
+      |> assign(:user, M7state.get.users.u2.name<>"::2")
+      |> assign(:users, M7state.get.users)
+      |> assign(:token, Phoenix.Controller.get_csrf_token())
+      |> assign(:y, M8.t)
     {:ok, updated}
   end
 
   def handle_info(:update, socket) do
-    Process.send_after(self(), :update, 25)
+    Process.send_after(self(), :update, 2000)
     {:noreply, assign(socket, :y, M8.t)}
   end
 
 
   def render(assigns) do
     ~H"""
-    <pre><%= @x %></pre>
+
+
+<form action="/reg" method="POST" >
+
+    <input type="hidden" value={"#{@token}"} name="_csrf_token"/>
+    <input type="text" size="8" name="name" id="name" placeholder="...name"  maxlength="99">
+    <input type="text" size="8" name="key" id="key" placeholder="...key"  maxlength="99">
+    <button>Отпр</button>
+    <button name="action">Отпр</button>
+    <input type="submit" name="action" value="Update" />
+
+</form>
+
+
+<%= for {k, v} <- @users do %>
+    <span style={"
+
+    font-size: 16px;
+
+     "}><%=
+      k
+        %></span>
+        <span style={"
+
+    font-size: 20px;
+    color: yellow;
+
+     "}><%=
+      v.name
+        %></span>
+    <% end %>
+
+
 <pre style="
+user-select: none;
+pointer-events: none;
+position: absolute; top: 132px;
 font-family:monospace;
-  line-height: 8px;
-  font-size: 16px;"><%= @y %></pre>
-    <input type="file" />
+color: darkorange;
+  line-height: 4px;
+  font-size: 8px;
+  "><%= @y %></pre>
 
       <script>
-      window.addEventListener('pointerdown', (event) => {
-        console.log(event);
-
-
-
-      }, true);
-
 
       </script>
 

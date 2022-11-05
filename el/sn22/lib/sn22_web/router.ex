@@ -33,6 +33,8 @@ defmodule Sn22Web.Router do
     # live "/v", V1
     live "/ts", ThermostatLive
     live "/st", Store
+    post "/reg", PageController, :reg
+    post "/log", PageController, :log
     get "/", PageController, :index
     get "/p", PageController, :p
     get "/rq", PageController, :rq

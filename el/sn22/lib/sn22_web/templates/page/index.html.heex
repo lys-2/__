@@ -1,3 +1,6 @@
+<%= live_render(@conn, Sn22Web.Store) %>
+
+
 
 <p style=" background-image:
  linear-gradient(to left, HoneyDew, gray, black, gray);">
@@ -52,18 +55,19 @@ send(tw, {self, "rc"});
 <canvas style=" width:960px;
     height:540px; float: right; 
      image-rendering: pixelated;
-    position: absolute; top: 150px; right: 0px;
+    position: absolute; top: 180px; right: 0px;
    " id="canvas"></canvas>
 <span><img style="filter: grayscale(100%);" onclick="document.documentElement.requestFullscreen()" src="/images/pic.png" alt="a picture" style="opacity: 0.4; transform:
  translateX(11px) translateY(3px) rotate(-2deg); display:inline; width:442px;
  height:56px; image-rendering: pixelated;">
 </span>
 
+
+
 <span style="display:inline;" id="load">...</span>
 
 </p>
 
-<p>
 <form action="/p" method="GET" >
   <span>
     <label for="say">  </label>
@@ -74,8 +78,7 @@ send(tw, {self, "rc"});
   <span>
     <button>Отпр</button>
   </span>
-  
-  <%= 
+    <%= 
 
 for e <- p do %>
 
@@ -83,9 +86,8 @@ for e <- p do %>
 
 <% end %>
 
-</form>
-<div style="font-size: 24px;" id="messages" role="log" aria-live="polite"></div>
-<input id="chat-input" type="text">
+
+
 
 <span><%= send(tw, {self, 1});
 
@@ -93,9 +95,8 @@ for e <- p do %>
    [n,y,mn,d,h,min,sec,ch,sc,m]
    nil -> [0]
     end; inspect aaa %></span>
-<br>
-
-
+</form>
+<p>
 
 <canvas id="myCanvas" width="960" height="540"></canvas>
 </p>
@@ -142,6 +143,7 @@ for e <- p do %>
 <% end %> 
 </p>
 <%= live_render(@conn, Sn22Web.ThermostatLive) %>
+
 
 ####################
 

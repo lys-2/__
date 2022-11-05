@@ -7,6 +7,11 @@ defmodule Sn22Web.PageController do
     render(conn, "index.html")
   end
 
+  def st(conn, _p) do
+    M7state.add_user %M7user{name: conn.params["name"]}
+    redirect(conn, to: "/st")
+   end
+
   def gd(conn, _params) do
     # send(Process.whereis(:tw), {self(), 1})
     render(conn, "gd.html")

@@ -103,21 +103,9 @@ alias Sn22Web.Presence
   def render(assigns) do
     ~H"""
 
-
-
-
-
-<span style="font-size: 12px;"> <%=
-
-  @us
-
-   %> <button>asd</button> <%= inspect(M8s.a(440), limit: :infinity) %></span>
-<span style="font-size: 24px;"> <%= @c %> </span>
-<span style="font-size: 24px;"> <%= @mu %> </span>
-<span style="font-size: 24px;"> <%= @pc %> </span>
-
-    <%= for user <- @users do %>
+<%= for user <- @users do %>
     <span style={"font-family:monospace;
+
     display: inline-block;
     position: absolute; top: "<>"#{user.y}"<>"px;
      left: "<>"#{user.x}"<>"px; "<>
@@ -156,8 +144,23 @@ alias Sn22Web.Presence
 
     <% end %>
 
+
+
+<span style="font-size: 12px;"> <%=
+
+  @us
+
+   %> <button>asd</button> <%= inspect(M8s.a(440), limit: :infinity) %></span>
+<span style="font-size: 24px;"> <%= @c %> </span>
+<span style="font-size: 24px;"> <%= @mu %> </span>
+<span style="font-size: 24px;"> <%= @pc %> </span>
+
+
+
     <%= for e <- @cl do %>
     <pre style={"
+user-select: none;
+pointer-events: none;
     font-size: #{16*e.hue/111}px;
     position: absolute;
      top: #{(e.y-1)*16}px;

@@ -23,7 +23,7 @@ defmodule M7user do
   use GenServer
   # template
 
-  defstruct [:id, :pw, :adm, :name, devices: %{}, clients: %{}, sessions: %{}]
+  defstruct [:id, :pw, :adm, :name, devices: %{}, clients: %{}, sessions: %{}, key: nil]
 
   def start(i) do GenServer.start __MODULE__, %M7user{}, name: i2a(i) end
   def get(i) do GenServer.call i2a(i), :get end
@@ -54,7 +54,9 @@ defmodule M7cell do
 
   def ns() do GenServer.call self, :ns end
 
-  def init(s) do  :timer.kill_after(44414); {:ok,
+  def init(s) do
+    # :timer.kill_after(111111);
+   {:ok,
    %M7cell{s | wp: ns(1, 2, 3, 4)}} end
 
   def handle_call(:get, _p, s) do {:reply, s, s} end
@@ -110,7 +112,7 @@ defmodule M7 do
           <<0, 0, 0, 255>> -> "⛚"
           <<0, 0, 111, 255>> -> "⛆"
           <<0, 0, 255, 255>> -> "⛽"
-          <<0, 111, 0, 255>> -> "~~~"
+          <<0, 111, 0, 255>> -> "~"
           _ -> 0
         end
 
@@ -119,7 +121,7 @@ defmodule M7 do
         d = d |> Enum.reject(fn {x, _} -> x == 0 end) |>
          Enum.map( fn {a, b}->
           %M7cell{type: a, id: b, x: rem(b,64), y: floor((b/64)),
-           hue: ceil :rand.uniform(24)+b/(:rand.uniform(77)+12)} end);
+           hue: ceil :rand.uniform(24)+b/(:rand.uniform(111)+12)} end);
 
            :dets.open_file(:dt, [type: :set]);
            :dets.insert(:dt, {1, d}); :dets.close(:dt); d
@@ -150,7 +152,7 @@ defmodule M7state do
   #  c = for e <- M7.parse do M7cell.start_link(e); end
   # File.cd "../../data"
   # {:ok, table} = :dets.open_file(:dt, [type: :set])
-  s = save(s)
+  # s = save(s)
   # for e <- [] do M7cell.start_link(e); end
   # for e <- M7.parse do GenServer.call(String.to_atom("c#{e.id}"), :ns) end
   # :dets.open_file(:dt, [type: :set]);
@@ -185,7 +187,10 @@ defmodule M7state do
 
     def create_users(s) do
     # c = s.stats.user_counter;
-      for e <- 1..11111, reduce: s do acc -> add_user(acc, %M7user{id: e}) end
+      for e <- 1..111, reduce: s do acc ->
+         add_user(acc,
+         %M7user{id: e, name: Faker.Person.name}
+         ) end
     end
 
     def add_user(s, u) do
@@ -193,6 +198,8 @@ defmodule M7state do
         update_in s.stats.user_counter, &(&1 + 1)
        end
 
-  def reset(s), do: %M7state{}
+  def reset(s), do:
+   add_user(%M7state{}, %M7user{name: "a", adm: true, pw: 1})
+   |> add_user %M7user{name: "An"}
 
 end
