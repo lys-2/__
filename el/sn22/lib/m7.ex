@@ -157,6 +157,7 @@ defmodule M7state do
   # for e <- M7.parse do GenServer.call(String.to_atom("c#{e.id}"), :ns) end
   # :dets.open_file(:dt, [type: :set]);
   # [{_, s}] = :dets.lookup(:dt, 1); :dets.close(:dt);
+  s = reset s;
   s = put_in(s.cells, M7.parse)
   # s = put_in(s.cells, [])
 

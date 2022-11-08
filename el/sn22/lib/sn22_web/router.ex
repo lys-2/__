@@ -1,18 +1,26 @@
 defmodule Sn22Web.Router do
   use Sn22Web, :router
   import Phoenix.LiveView.Router
+  import Plug.BasicAuth
 
   pipeline :browser do
 
     def auth(conn, opts) do
 
       {:ok, pw} = File.read System.user_home <> "/1"
-      if pw == conn.params["pw"] do IO.puts "aaa" end
+      if pw == conn.params["pw"] do
+        IO.puts "aaa"
+      end
 
-      put_resp_cookie conn, "u", "123123", max_age: 360000;
+      put_resp_cookie(conn, "u", "2", max_age: 360000)
+      # |> resp(410, "It's gone!")
+      # |> send_resp()
+      |> assign(:user, 2)
+      |> Plug.BasicAuth.basic_auth(username: "an", password: "")
+#
     end
 
-
+    plug :basic_auth, username: "an", password: ""
     plug :accepts, ["html"]
     plug :fetch_session
     plug :fetch_live_flash
@@ -20,6 +28,7 @@ defmodule Sn22Web.Router do
     plug :protect_from_forgery
     plug :put_secure_browser_headers
     plug :auth
+
 
   end
 
@@ -33,7 +42,7 @@ defmodule Sn22Web.Router do
     # live "/v", V1
     live "/ts", ThermostatLive
     live "/st", Store
-    post "/reg", PageController, :reg
+    post "/reg", PageController, :st
     post "/log", PageController, :log
     get "/", PageController, :index
     get "/p", PageController, :p
