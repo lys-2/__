@@ -3,24 +3,31 @@ defmodule Sn22Web.Router do
   import Phoenix.LiveView.Router
   import Plug.BasicAuth
 
-  pipeline :browser do
 
-    def auth(conn, opts) do
 
-      {:ok, pw} = File.read System.user_home <> "/1"
-      if pw == conn.params["pw"] do
-        IO.puts "aaa"
-      end
+  def auth(conn, _opts) do
 
-      put_resp_cookie(conn, "u", "2", max_age: 360000)
-      # |> resp(410, "It's gone!")
-      # |> send_resp()
-      |> assign(:user, 2)
-      |> Plug.BasicAuth.basic_auth(username: "an", password: "")
-#
+    # {:ok, pw} = File.read System.user_home <> "/1"
+    # if 1 == conn.params["pw"] do
+    #   IO.puts "aaa"
+    # end
+    # put_resp_cookie(conn, "u", "2", max_age: 360000)
+    # text(conn, 1)
+    q = M7state.get_user get_session(conn, :user)
+    case q do
+      {:ok, _} -> {_, u} = q; conn |> put_session(:user, u.id)
+      _ -> conn |> put_session(:user, 2)
+
     end
 
-    plug :basic_auth, username: "an", password: ""
+    # delete_session(conn, :user)
+    # |> put_session(:user, 2)
+    # |> Plug.BasicAuth.basic_auth(username: "an", password: "")
+#
+  end
+
+  pipeline :browser do
+    # plug :basic_auth, username: "an", password: ""
     plug :accepts, ["html"]
     plug :fetch_session
     plug :fetch_live_flash
@@ -39,10 +46,13 @@ defmodule Sn22Web.Router do
   scope "/", Sn22Web do
 
     pipe_through :browser
-    # live "/v", V1
-    live "/ts", ThermostatLive
-    live "/st", Store
-    post "/reg", PageController, :st
+    # live "/v",
+    live_session :default do
+      live "/ts", ThermostatLive
+      live "/st", Store
+  end
+    post "/reg", PageController, :reg
+    post "/logout", PageController, :logout
     post "/log", PageController, :log
     get "/", PageController, :index
     get "/p", PageController, :p

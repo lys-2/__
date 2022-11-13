@@ -6,7 +6,7 @@ import Config
 # The watchers configuration can be used to run external
 # watchers to your application. For example, we use it
 # with esbuild to bundle .js and .css sources.
-config :logger, level: :warn
+config :logger, level: :info
 
 config :nx, :default_backend, EXLA.Backend
 

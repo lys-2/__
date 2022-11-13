@@ -7,7 +7,7 @@ defmodule Sn22Web.Endpoint do
   @session_options [
     store: :cookie,
     key: "_sn22_key",
-    signing_salt: "eT8p8zs4"
+    signing_salt: ""
   ]
 
   socket "/socket", Sn22Web.UserSocket,

@@ -140,6 +140,7 @@ defmodule M7state do
 
   def start_link(i) do GenServer.start_link __MODULE__, %M7state{}, name: :M7state end
   def get() do GenServer.call :M7state, :get end
+  def get_user(i) do GenServer.call :M7state, {:get_user, i} end
   def load() do GenServer.call :M7state, :load end
   def save() do GenServer.call :M7state, :save end
   def add_user(u) do GenServer.call :M7state, {:add_user, u} end
@@ -172,6 +173,7 @@ defmodule M7state do
   def handle_call(:load, _p, s) do {:reply, s, load(s)} end
   def handle_call(:save, _p, s) do {:reply, s, save(s)} end
   def handle_call({:add_user, u}, _p, s) do {:reply, :ok, add_user(s, u)} end
+  def handle_call({:get_user, i}, _p, s) do {:reply, get_user(s, i), s} end
   def handle_call(:create_users, _p, s) do {:reply, create_users(s).users, create_users(s)} end
   def handle_call(:reset, _p, s) do {:reply, reset(s), reset(s)} end
 
@@ -190,17 +192,23 @@ defmodule M7state do
     # c = s.stats.user_counter;
       for e <- 1..111, reduce: s do acc ->
          add_user(acc,
-         %M7user{id: e, name: Faker.Person.name}
+         %M7user{name: Faker.Person.name}
          ) end
     end
 
+    def get_user(s, i) do s.users |> Map.fetch :"u#{i}" end
+
+    def check(u, pw), do: u.pw == pw
+
     def add_user(s, u) do
-        s = put_in s.users, Map.put(s.users, :"u#{s.stats.user_counter}", u);
+        s = put_in s.users, Map.put(s.users, :"u#{s.stats.user_counter}",
+        %M7user{u | id: s.stats.user_counter});
         update_in s.stats.user_counter, &(&1 + 1)
        end
 
   def reset(s), do:
-   add_user(%M7state{}, %M7user{name: "a", adm: true, pw: 1})
-   |> add_user %M7user{name: "An"}
+   add_user(%M7state{}, %M7user{name: "a", adm: true, pw: "1"})
+   |> add_user %M7user{name: "an", pw: "2"}
+  #  |> add_user %M7user{name: "234", pw: 123}
 
 end

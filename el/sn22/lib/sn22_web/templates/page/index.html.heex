@@ -6,17 +6,17 @@
  linear-gradient(to left, HoneyDew, gray, black, gray);">
 <a href="/sn-cli.exe"><span >``вин``</span></a>
 <%# <a href="https://aka.ms/vs/17/release/vc_redist.x64.exe" ><span > |-либы`</span></a> %>
-<span >_—————— —————— - ————</span> 
+<span >_—————— —————— - ————</span>
 <a title="" href="https://donate.qiwi.com/payin/sunraylmtd" ><span >
-   поддержка   
- </span></a> 
+   поддержка
+ </span></a>
  <a title="" href="/st" ><span >
-   магазин   
- </span></a> 
+   магазин
+ </span></a>
 
-<a href="https://github.com/lys-2/aa" ><span >``  код </span></a> 
+<a href="https://github.com/lys-2/aa" ><span >``  код </span></a>
 
-    <span onclick="document.documentElement.requestFullscreen()" 
+    <span onclick="document.documentElement.requestFullscreen()"
     style="   height:80px;
     width:200px; float: right;">экр</span>
 
@@ -24,7 +24,7 @@
 
 
 <br>
-<a href="/sn.apk"><img src="/images/qr.png" alt="qr code" 
+<a href="/sn.apk"><img src="/images/qr.png" alt="qr code"
 style=" display:inline-flex; width:32px; height:32px; image-rendering: pixelated;"><span >_анд___ _</span></a>
 
 <span style="font-size: 12px;"><%=inspect :calendar.seconds_to_daystime(div(
@@ -33,11 +33,11 @@ style=" display:inline-flex; width:32px; height:32px; image-rendering: pixelated
      <span id="w">Ц</span>
      <span id="e">У</span>
      <span id="r">К</span> %>
-<span><%= 
+<span><%=
 mb = Process.whereis(:mb)
 p = mb |> Process.info(:messages) |> elem(1)
 tw = Process.whereis(:tw)
-send(tw, {self, "rc"}); 
+send(tw, {self, "rc"});
   receive do rc -> rc end
  |> inspect %></span>
 
@@ -53,7 +53,7 @@ send(tw, {self, "rc"});
 
 <br>
 <canvas style=" width:960px;
-    height:540px; float: right; 
+    height:540px; float: right;
      image-rendering: pixelated;
     position: absolute; top: 180px; right: 0px;
    " id="canvas"></canvas>
@@ -78,7 +78,7 @@ send(tw, {self, "rc"});
   <span>
     <button>Отпр</button>
   </span>
-    <%= 
+    <%=
 
 for e <- p do %>
 
@@ -91,7 +91,7 @@ for e <- p do %>
 
 <span><%= send(tw, {self, 1});
 
- aaa = receive do {n,{{y,mn,d},{h,min,sec}},ch,sc,m} -> 
+ aaa = receive do {n,{{y,mn,d},{h,min,sec}},ch,sc,m} ->
    [n,y,mn,d,h,min,sec,ch,sc,m]
    nil -> [0]
     end; inspect aaa %></span>
@@ -106,7 +106,7 @@ for e <- p do %>
  left: 30px; font-family:monospace;"><%=
  Agent.get M3, fn s -> s end
   %></pre>
-<% end %> 
+<% end %>
 
 
  <%= for e <- 1..16 do %>
@@ -114,7 +114,7 @@ for e <- p do %>
  left: 21px; font-family:monospace;"<>
  "color: "<>
  Enum.random ["Orange", "Green", "Tomato", "SpringGreen", "#372248", "#171123"]
- 
+
  }><%=
 
   " ~   ~     ~~  ~ ``                                      ` ~ `` ~ "
@@ -138,9 +138,9 @@ for e <- p do %>
  <>"px; "<>
  "color: "<>
  Enum.random ["Orange", "Tomato", "SpringGreen"]}>
- 
+
  <%= e %></span>
-<% end %> 
+<% end %>
 </p>
 <%= live_render(@conn, Sn22Web.ThermostatLive) %>
 
@@ -181,7 +181,7 @@ let count = 1;
  { count++;
 ctx.beginPath();
 ctx.arc(
-  <%= Enum.random(0..960) %>, 
+  <%= Enum.random(0..960) %>,
   <%= Enum.random(0..540) %>+count/3,
    <%= Enum.random(0..1000) %>/count,
     10, 3  * Math.PI);
@@ -196,7 +196,7 @@ document.getElementById("load").style.background = "green"
 e.then(() =>
  document.getElementById("load").style.background ="gray",
 );
-e.then(() => 
+e.then(() =>
 document.getElementById("load").innerHTML = "______"
 );
 
@@ -239,20 +239,20 @@ function up1(s) {
           str.push(' ');
       }
       if (i%64==0) {str.push("\n")}
-      d.innerText = str.join(" ") 
+      d.innerText = str.join(" ")
   }
 
 }
 function up() {
   var req1 = new XMLHttpRequest();
   req1.open("GET", "rq1", true);
-  req1.send();  
+  req1.send();
   req1.onreadystatechange = function() {
 
 if (this.readyState == 4 && this.status == 200) {
 
   up(this.responseText)
-  
+
 }
 
 }
@@ -267,8 +267,8 @@ up1(<%= M2.get %>);
 
 /////////////
 
-        
-        
+
+
 
 				const GODOT_CONFIG = {
           "canvas":"myCanvas",
@@ -295,4 +295,4 @@ up1(<%= M2.get %>);
 <%# <progress value="70" max="100"> bar</progress> %>
 
 
- <%# <%= Poison.encode!(%{"a" => 33, "n" => "s d"})  %> 
+ <%# <%= Poison.encode!(%{"a" => 33, "n" => "s d"})  %>

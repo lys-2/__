@@ -33,6 +33,8 @@ let Hooks = {};
 Hooks.TrackClientCursor = {
   mounted() {
     document.addEventListener('mouseevent', (e) => {
+console.log(e)
+
       const x = e.pageX; // in %
       const p = e; // in %
       const y = e.pageY; // in %
@@ -53,9 +55,9 @@ window.addEventListener("phx:page-loading-stop", info => topbar.hide())
 liveSocket.connect()
 
 // expose liveSocket on window for web console debug logs and latency simulation:
-// >> liveSocket.enableDebug()
+// liveSocket.enableDebug()
 // >> liveSocket.enableLatencySim(1000)  // enabled for duration of browser session
 // >> liveSocket.disableLatencySim()
 window.liveSocket = liveSocket
 
-console.log(111)
+console.log(333)

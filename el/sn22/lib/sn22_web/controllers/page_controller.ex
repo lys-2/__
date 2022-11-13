@@ -7,9 +7,24 @@ defmodule Sn22Web.PageController do
     render(conn, "index.html")
   end
 
-  def st(conn, _p) do
-    M7state.add_user %M7user{name: conn.params["name"]}
+  def reg(conn, _p) do
+    M7state.add_user %M7user{name: conn.params["name"], pw:
+    conn.params["pw"]}
     redirect(conn, to: "/st")
+   end
+
+   def log(conn, _p) do
+    # text(conn, :ok)
+    # redirect(conn, to: "/st")
+    case get_session(conn, :user) do
+      # 1 -> redirect(put_session(conn, :user, 3), to: "/st")
+      # 2 -> redirect(put_session(conn, :user, "111"), to: "/st")
+      _ -> text(conn, " ")
+    end
+   end
+
+   def logout(conn, _p) do
+    delete_session(conn, :user)
    end
 
   def gd(conn, _params) do
