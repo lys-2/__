@@ -3,7 +3,7 @@ defmodule Sn22Web.Store do
 
   use Sn22Web, :live_view
 
-  def mount(_params, %{"user" => user}, socket) do
+  def mount(p, %{"user" => user}, socket) do
     if connected?(socket), do: Process.send_after(self(), :update, 1)
 
   {:ok, u} = M7state.get_user(user)
@@ -11,8 +11,16 @@ defmodule Sn22Web.Store do
     updated =
       socket
       |> assign(:user, u.name)
-      |> assign(:id, u.id)
-      |> assign(:users, M7state.get.users)
+      |> assign(:uid, u.id)
+      |> assign(:name, "")
+      |> assign(:pw, "")
+      |> assign(:id, "")
+      |> assign(:key, "")
+      |> assign(:info, u.info)
+      |> assign(:changeset, :aaa)
+      |> assign(:color, u.color)
+      # |> assign(:users, M7state.get.users)
+      |> assign(:users, %{})
       |> assign(:token, Phoenix.Controller.get_csrf_token())
       |> assign(:y, M8.t)
       # |> assign(:x, session)
@@ -20,27 +28,52 @@ defmodule Sn22Web.Store do
   end
 
   def handle_info(:update, socket) do
-    Process.send_after(self(), :update, 2000)
+    {:ok, u} = M7state.get_user(socket.assigns.uid)
+    Process.send_after(self(), :update, 25)
     {:noreply, assign(socket, :y, M8.t)
-    |> assign(:users, M7state.get.users)
+    |> assign(:users, %{})
+    |> assign(:info, u.info)
+    |> assign(:color, u.color)
+
+
   }
+  end
+
+  def handle_event("validate", p, socket) do
+    [h|_] = p["_target"]
+    IO.inspect h
+    socket = socket
+    |> assign(:"#{h}", p[h])
+
+    {:noreply, socket}
   end
 
   def render(assigns) do
     ~H"""
 
+
+
+<style> body {background-color: <%= @color %>;} </style>
 <span style="
  font-size: 20px;
     color: yellow;
-    "> Logged as <%= @id %>::<%= @user %></span>
+    "> <%= @uid %>::<%= @user %></span>
 
 
 <a href="/">aaaaaa</a>
+<span style="
+ font-size: 20px;
+    color: yellow;
+    "> <%= @info %></span>
+    <div
+   style="
+  # position: absolute;
+    ">
 <form action="/reg" method="POST" >
 
     <input type="hidden" value={"#{@token}"} name="_csrf_token"/>
-    <input type="text" size="8" name="name" id="name" placeholder="...name"  maxlength="99">
-    <input type="text" size="8" name="pw" id="pw" placeholder="...pw"  maxlength="99">
+    <input type="text" size="8" value={"#{@name}"} phx-change="validate" name="name" id="name" placeholder="...name"  maxlength="99">
+    <input type="text" size="8"value={"#{@pw}"}  name="pw" id="pw" phx-change="validate" placeholder="...pw"  maxlength="99">
     <button>Рег</button>
 
 
@@ -49,19 +82,24 @@ defmodule Sn22Web.Store do
 <form action="/log" method="POST" >
 
     <input type="hidden" value={"#{@token}"} name="_csrf_token"/>
-    <input type="text" size="8" name="id" id="id" placeholder="...id"  maxlength="99">
-    <input type="text" size="8" name="key" id="pw" placeholder="...key"  maxlength="99">
+    <input type="text" size="8" name="id" id="id" value={"#{@id}"} phx-change="validate" placeholder="...id"  maxlength="99">
+    <input type="text" size="8" name="key" id="key" value={"#{@key}"} phx-change="validate" placeholder="...key"  maxlength="99">
     <button>Вход</button>
 </form>
-
-<form action="/logout" method="POST" >
+</div>
+<%!-- <form action="/logout" method="POST" >
 <input type="hidden" value={"#{@token}"} name="_csrf_token"/>
 
     <button  name="log" value="out">Выхд</button>
 
-</form>
+</form> --%>
+
+<.form let={f} for={@changeset}>
+  <%= text_input f, :name %>
+</.form>
 
 <%= for {k, v} <- @users do %>
+<%!-- <%= content_tag :span, "<111>" %> --%>
     <span style={"
 
     font-size: 16px;
@@ -77,6 +115,14 @@ defmodule Sn22Web.Store do
      "}><%=
       v.name
         %></span>
+        <span style={"
+
+font-size: 20px;
+color: lightblue;
+
+ "}><%=
+  v.pw
+    %></span>
     <% end %>
 
     <span id="cursors" phx-hook="TrackClientCursor"

@@ -68,7 +68,7 @@ alias Sn22Web.Presence
       Presence.get_by_key(@cursorview, key)[:metas]
       |> List.first()
       |> Map.merge(payload)
-      # |> assign(id: id)
+      |> assign(id: id)
 
 
     Presence.update(self(), @cursorview, key, metas)

@@ -1,1 +1,16 @@
-1111
+<%= form_for :reg, "/reg", fn f -> %>
+  <%= text_input f, :pw, value: "current value" %>
+  <%= submit "Search" %>
+<% end %>
+
+<%= form_for @changeset, "/new", fn f -> %>
+  <label>
+    Name: <%= text_input f, :name %>
+  </label>
+
+  <label>
+    Age: <%= select f, :age, 18..100 %>
+  </label>
+
+  <%= submit "Submit" %>
+<% end %>

@@ -8,18 +8,33 @@ defmodule Sn22Web.PageController do
   end
 
   def reg(conn, _p) do
-    M7state.add_user %M7user{name: conn.params["name"], pw:
+    id = M7state.add_user %M7user{name: conn.params["name"] || Faker.Person.name, pw:
     conn.params["pw"]}
+    conn = put_session(conn, :user, id)
     redirect(conn, to: "/st")
    end
 
    def log(conn, _p) do
     # text(conn, :ok)
     # redirect(conn, to: "/st")
-    case get_session(conn, :user) do
+    q = M7state.get_user conn.params["id"]
+    id = get_session(conn, :user)
+    case q do
+      {:ok, _} ->
+        {_, u} = q;
+        case M7state.check u, conn.params["key"] do
+        true -> redirect(put_session(conn, :user, u.id), to: "/st")
+        _ -> M7state.info id, "Wrong!";
+
+        :timer.apply_after(5000, M7state, :info, [id, ""]);
+         redirect(conn, to: "/st")
+        end
       # 1 -> redirect(put_session(conn, :user, 3), to: "/st")
       # 2 -> redirect(put_session(conn, :user, "111"), to: "/st")
-      _ -> text(conn, " ")
+      _ ->;
+        M7state.info id, "Missing id";
+        :timer.apply_after(5000, M7state, :info, [id, ""]);
+       redirect(conn, to: "/st")
     end
    end
 
@@ -42,6 +57,21 @@ defmodule Sn22Web.PageController do
     conn |>
     # put_flash(:error, M3.get) |>
     render "sb.html" end
+
+    defmodule User do
+      use Ecto.Schema
+
+      schema "users" do
+        field :name, :string
+        field :age, :integer, default: 0
+        field :password, :string, redact: true
+        has_many :posts, Post
+      end
+    end
+
+    def new(conn, _params) do
+      render conn, "gd.html", changeset: :aaaa
+    end
 
   def rq(conn, _params) do
     # send(Process.whereis(:tw), {self(), 1})

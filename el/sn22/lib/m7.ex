@@ -23,7 +23,8 @@ defmodule M7user do
   use GenServer
   # template
 
-  defstruct [:id, :pw, :adm, :name, devices: %{}, clients: %{}, sessions: %{}, key: nil]
+  defstruct [:id, :adm, :name, pw: "", devices: %{},
+   clients: %{}, sessions: %{}, key: nil, info: nil, color: nil]
 
   def start(i) do GenServer.start __MODULE__, %M7user{}, name: i2a(i) end
   def get(i) do GenServer.call i2a(i), :get end
@@ -102,6 +103,8 @@ end
 
 defmodule M7 do
 
+
+
   def parse do
         # m = ["../../data/m7.png", "../../data/m7a.png", "../../data/m7b.png"]
         m = ["../../data/m7.png"]
@@ -136,7 +139,8 @@ defmodule M7state do
   use GenServer
   # template
 
-  defstruct [users: %{}, cells: %{}, stats: %{user_counter: 1}]
+  defstruct [users: %{}, cells: %{}, stats: %{user_counter: 1},
+   rkeys: %{}]
 
   def start_link(i) do GenServer.start_link __MODULE__, %M7state{}, name: :M7state end
   def get() do GenServer.call :M7state, :get end
@@ -144,8 +148,10 @@ defmodule M7state do
   def load() do GenServer.call :M7state, :load end
   def save() do GenServer.call :M7state, :save end
   def add_user(u) do GenServer.call :M7state, {:add_user, u} end
-  def create_users() do GenServer.call :M7state, :create_users end
+  def create_users(c) do GenServer.call :M7state, {:create_users, c} end
   def reset() do GenServer.call :M7state, :reset end
+  def info(u, i) do GenServer.call :M7state, {:info, u, i} end
+  def put(u, k, v) do GenServer.call :M7state, {:put, u, k, v} end
 
   def aaa, do: 1
 
@@ -172,10 +178,12 @@ defmodule M7state do
   def handle_call(:get, _p, s) do {:reply, s, s} end
   def handle_call(:load, _p, s) do {:reply, s, load(s)} end
   def handle_call(:save, _p, s) do {:reply, s, save(s)} end
-  def handle_call({:add_user, u}, _p, s) do {:reply, :ok, add_user(s, u)} end
+  def handle_call({:add_user, u}, _p, s) do {:reply, s.stats.user_counter, add_user(s, u)} end
   def handle_call({:get_user, i}, _p, s) do {:reply, get_user(s, i), s} end
-  def handle_call(:create_users, _p, s) do {:reply, create_users(s).users, create_users(s)} end
+  def handle_call({:create_users, c}, _p, s) do {:reply, create_users(s, c).users, create_users(s, c)} end
   def handle_call(:reset, _p, s) do {:reply, reset(s), reset(s)} end
+  def handle_call({:info, u, i}, _p, s) do {:reply, :ok, info(s, u, i)} end
+  def handle_call({:put, u, k, v}, _p, s) do {:reply, :ok, put(s, u, k, v)} end
 
   def i2a(i) do String.to_atom("c#{i}") end
 
@@ -188,9 +196,9 @@ defmodule M7state do
     {:ok, f} -> :erlang.binary_to_term f
     _ -> nil end end
 
-    def create_users(s) do
+    def create_users(s, c) do
     # c = s.stats.user_counter;
-      for e <- 1..111, reduce: s do acc ->
+      for e <- 1..c, reduce: s do acc ->
          add_user(acc,
          %M7user{name: Faker.Person.name}
          ) end
@@ -200,6 +208,12 @@ defmodule M7state do
 
     def check(u, pw), do: u.pw == pw
 
+    defp info(s, u, i), do: put_in s.users[:"u#{u}"],
+     %M7user{s.users[:"u#{u}"] | info: i}
+
+    defp put(s, u, k, v), do: put_in s.users[:"u#{u}"],
+     Map.put(s.users[:"u#{u}"], k, v)
+
     def add_user(s, u) do
         s = put_in s.users, Map.put(s.users, :"u#{s.stats.user_counter}",
         %M7user{u | id: s.stats.user_counter});
@@ -208,7 +222,7 @@ defmodule M7state do
 
   def reset(s), do:
    add_user(%M7state{}, %M7user{name: "a", adm: true, pw: "1"})
-   |> add_user %M7user{name: "an", pw: "2"}
+   |> add_user %M7user{name: "an", pw: "2", info: " qwe rqt tq "}
   #  |> add_user %M7user{name: "234", pw: 123}
 
 end

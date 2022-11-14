@@ -14,8 +14,12 @@ defmodule Sn22Web.Router do
     # put_resp_cookie(conn, "u", "2", max_age: 360000)
     # text(conn, 1)
     q = M7state.get_user get_session(conn, :user)
+    # conn = assign conn, :info
+    # conn = conn |> put_flash(:info, "Logged in");
+
     case q do
-      {:ok, _} -> {_, u} = q; conn |> put_session(:user, u.id)
+      {:ok, _} -> conn
+      # {:ok, _} -> {_, u} = q; conn |> put_session(:user, u.id)
       _ -> conn |> put_session(:user, 2)
 
     end
@@ -58,7 +62,7 @@ defmodule Sn22Web.Router do
     get "/p", PageController, :p
     get "/rq", PageController, :rq
     get "/rq1", PageController, :rq1
-    get "/g", PageController, :gd
+    get "/g", PageController, :new
     get "/v", PageController, :v
     get "/sm", PageController, :sm
     get "/sb", PageController, :sb
