@@ -50,6 +50,7 @@ let liveSocket = new LiveSocket("/live", Socket, {
 topbar.config({barColors: {0: "#29d"}, shadowColor: "rgba(0, 1, 0, .3)"})
 window.addEventListener("phx:page-loading-start", info => topbar.show())
 window.addEventListener("phx:page-loading-stop", info => topbar.hide())
+window.liveSocket = liveSocket
 
 // connect if there are any LiveViews on the page
 liveSocket.connect()
@@ -58,6 +59,4 @@ liveSocket.connect()
 // liveSocket.enableDebug()
 // >> liveSocket.enableLatencySim(1000)  // enabled for duration of browser session
 // >> liveSocket.disableLatencySim()
-window.liveSocket = liveSocket
-
-console.log(333)
+// window.liveSocket = liveSocket

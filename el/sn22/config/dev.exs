@@ -61,7 +61,7 @@ config :sn22, Sn22Web.Endpoint,
       ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$",
       ~r"priv/gettext/.*(po)$",
       ~r"lib/sn22_web/(live|views)/.*(ex)$",
-      ~r"lib/m8.ex",
+      ~r"lib/m*",
       ~r"../../data/m7.png",
       ~r"lib/sn22_web/templates/.*(eex)$"
     ]

@@ -70,7 +70,7 @@ defmodule Sn22Web.PageController do
     end
 
     def new(conn, _params) do
-      render conn, "gd.html", changeset: :aaaa
+      render conn, "gd.html", changeset: Ecto.Changeset.cast(%User{}, %{}, [:name, :age])
     end
 
   def rq(conn, _params) do

@@ -16,6 +16,8 @@ defmodule Sn22Web.Router do
     q = M7state.get_user get_session(conn, :user)
     # conn = assign conn, :info
     # conn = conn |> put_flash(:info, "Logged in");
+    s = Store.give Store.init, 1, 2, "🍏";
+    s = Store.bar s, 1, 2, "🍎", "🍏"
 
     case q do
       {:ok, _} -> conn
@@ -52,8 +54,9 @@ defmodule Sn22Web.Router do
     pipe_through :browser
     # live "/v",
     live_session :default do
-      live "/ts", ThermostatLive
+      live "/ts", Ts
       live "/st", Store
+      live "/g", V2
   end
     post "/reg", PageController, :reg
     post "/logout", PageController, :logout
@@ -62,7 +65,7 @@ defmodule Sn22Web.Router do
     get "/p", PageController, :p
     get "/rq", PageController, :rq
     get "/rq1", PageController, :rq1
-    get "/g", PageController, :new
+    # get "/g", PageController, :new
     get "/v", PageController, :v
     get "/sm", PageController, :sm
     get "/sb", PageController, :sb

@@ -1,4 +1,4 @@
-defmodule Sn22Web.ThermostatLive do
+defmodule Sn22Web.Ts do
 alias Sn22Web.Presence
   use Sn22Web, :live_view
 

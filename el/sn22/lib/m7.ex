@@ -19,12 +19,14 @@ defmodule M7char do
 
 end
 
+defmodule Palette do defstruct [:colors] end
+
 defmodule M7user do
   use GenServer
   # template
 
   defstruct [:id, :adm, :name, pw: "", devices: %{},
-   clients: %{}, sessions: %{}, key: nil, info: nil, color: nil]
+   clients: %{}, sessions: %{}, key: nil, info: nil, color: nil, color2: nil]
 
   def start(i) do GenServer.start __MODULE__, %M7user{}, name: i2a(i) end
   def get(i) do GenServer.call i2a(i), :get end
