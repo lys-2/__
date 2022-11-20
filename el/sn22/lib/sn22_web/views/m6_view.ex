@@ -12,7 +12,7 @@ alias Sn22Web.Presence
     Sn22Web.Endpoint.subscribe(@cursorview)
     Presence.track(self(), @cursorview, socket.id, %{
       socket_id: socket.id,
-      x: 50,
+      x: 550,
       y: 50,
       p: 50,
       id: 1,
@@ -30,8 +30,8 @@ alias Sn22Web.Presence
       socket
       |> assign(:user, n)
       |> assign(:users, initial_users)
-      |> assign(:x, 50)
-      |> assign(:y, 50)
+      |> assign(:x, 150)
+      |> assign(:y, 150)
       |> assign(:p, 50)
       |> assign(:id, 50)
       |> assign(:cl, cells)

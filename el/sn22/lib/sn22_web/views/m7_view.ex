@@ -50,6 +50,7 @@ defmodule Sn22Web.Store do
       |> assign(:pw, "")
       |> assign(:id, "")
       |> assign(:key, "")
+      |> assign(:vip, u.vip)
       |> assign(:info, u.info)
       |> assign(:color, u.color)
       |> assign(:color2, u.color2)
@@ -95,17 +96,22 @@ defmodule Sn22Web.Store do
 
 <form>
 <%= f = form_for :user, "/", [phx_submit: "submit"] %>
-  <%= text_input f, :name %>
-  <%= color_input f, :color %>
+  <%!-- <%= text_input f, :name %>
+  <%= color_input f, :color %> --%>
+
 </form>
 
 <style> body {
-  font-size: 24px;
-  background-color: <%= @color %>;} </style>
+  <%!-- font-size: 24px; --%>
+  background-color: <%= @color %>;
+  color: <%= @color2 %>;
+  } </style>
 <span style="
  font-size: 20px;
     color: magenta;
     "> <%= @uid %>::<%= @user %></span>
+
+<span><%= if @vip do "✔️" end %></span> 
 
 <a href="/">aaaaaa</a>
 <span style="
@@ -128,17 +134,14 @@ defmodule Sn22Web.Store do
 <form action="/log" method="POST" >
 
     <input type="hidden" value={"#{@token}"} name="_csrf_token"/>
-    <input autofocus type="text" size="8" name="id" id="id" value={"#{@id}"} phx-change="validate" placeholder="...id"  maxlength="99">
+    <input  type="text" size="8" name="id" id="id" value={"#{@id}"} phx-change="validate" placeholder="...id"  maxlength="99">
     <input type="text" size="8" name="key" id="key" value={"#{@key}"} phx-change="validate" placeholder="...key"  maxlength="99">
     <button>Вход</button>
 
 </form>
 
 <br>
-<%=
-  s = Store.give Store.init, 1, 2, "🍏";
-    s = Store.bar s, 1, 2, "🍎", "🍏"; inspect [s.log, s]
- %>
+
 
 
 <%!-- <form action="/logout" method="POST" >
@@ -186,15 +189,35 @@ color: lightblue;
    font-family:monospace;  background-color:
     deeppink;"> <%= 1 %>
     </span>
+
+<br>
+
+<span><%= s = Store.init; lc = s.store[2].lc %></span> 
+  <%= for e <- Store.init.map[lc].ent do %>
+  <span><%= s.store[e].name %></span>
+    <% end %>
+<span><%= inv = s.store[2].inv %></span> |
+<span><%= inv = s.store[2].avt %></span> |
+<span><%= gear = inspect s.store[2].gear %></span> | 
+
+  <%= for l <- Store.init.map[lc].wp do %>
+  <a href={"#{l}"}><%= l %></a>
+    <% end %>
+
+
+<span><%= gear = inspect s.map %></span> | 
+
 <pre style={"
 user-select: none;
 pointer-events: none;
-position: absolute; top: 232px;
+position: absolute; top: 100px;
+transform: rotate(180deg);
 font-family:monospace;
 color: #{@color2};
   line-height: 4px;
   font-size: 8px;
   "}><%= @y %></pre>
+
 
 
 <script>

@@ -1,4 +1,6 @@
 
+
+
 defmodule M7char do
   use GenServer
   # template
@@ -25,7 +27,7 @@ defmodule M7user do
   use GenServer
   # template
 
-  defstruct [:id, :adm, :name, pw: "", devices: %{},
+  defstruct [:id, :adm, :name, pw: "", devices: %{}, vip: false,
    clients: %{}, sessions: %{}, key: nil, info: nil, color: nil, color2: nil]
 
   def start(i) do GenServer.start __MODULE__, %M7user{}, name: i2a(i) end
@@ -223,7 +225,7 @@ defmodule M7state do
        end
 
   def reset(s), do:
-   add_user(%M7state{}, %M7user{name: "a", adm: true, pw: "1"})
+   add_user(%M7state{}, %M7user{name: "a", adm: true, pw: "1", vip: true})
    |> add_user %M7user{name: "an", pw: "2", info: " qwe rqt tq "}
   #  |> add_user %M7user{name: "234", pw: 123}
 
