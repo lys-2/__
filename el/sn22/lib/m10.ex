@@ -5,7 +5,7 @@ defmodule Ms do
    log: [a: [1], b: [2]],
     chips: [1,2,3,4,5]
 
-  def play s do for e <- Enum.reverse s.log, reduce: s do s ->
+  def play s do for e <- (Enum.reverse s.log), reduce: s do s ->
      {f,a} = e; s = apply :"Elixir.Ms",f,[s] ++ a;
     s = put_in s.frame, s.frame+1;
     [h|t] = s.log; s = put_in s.log, t;
