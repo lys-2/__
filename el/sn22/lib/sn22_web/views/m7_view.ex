@@ -1,22 +1,3 @@
-defmodule User do
-  use Ecto.Schema
-
-  import Ecto.Changeset
-
-  schema "users" do
-    field :name, :string
-    field :email
-    field :age, :integer
-  end
-
-  def changeset(user, params \\ %{}) do
-    user
-    |> cast(params, [:name, :email, :age])
-    |> validate_required([:name, :email])
-    |> validate_format(:email, ~r/@/)
-    |> validate_inclusion(:age, 18..100)
-  end
-end
 
 defmodule Weather do
   use Ecto.Schema
@@ -41,10 +22,11 @@ defmodule Sn22Web.Store do
     :timer.send_interval(1000, :update)
 
   {:ok, u} = M7state.get_user(user)
-
+  State.start;
     updated =
       socket
       |> assign(:user, u.name)
+      |> assign(:st,  State.gather)
       |> assign(:uid, u.id)
       |> assign(:name, "")
       |> assign(:pw, "")
@@ -111,7 +93,7 @@ defmodule Sn22Web.Store do
     color: magenta;
     "> <%= @uid %>::<%= @user %></span>
 
-<span><%= if @vip do "✔️" end %></span> 
+<span><%= if @vip do "✔️" end %></span>
 
 <a href="/">aaaaaa</a>
 <span style="
@@ -192,20 +174,28 @@ color: lightblue;
 
 <br>
 
-<span><%= s = Store.init; lc = s.store[2].lc %></span> 
+<span><%= s = Store.init; lc = s.store[2].lc %></span>
   <%= for e <- Store.init.map[lc].ent do %>
   <span><%= s.store[e].name %></span>
     <% end %>
 <span><%= inv = s.store[2].inv %></span> |
 <span><%= inv = s.store[2].avt %></span> |
-<span><%= gear = inspect s.store[2].gear %></span> | 
+<span><%= gear = inspect s.store[2].gear %></span> |
 
   <%= for l <- Store.init.map[lc].wp do %>
   <a href={"#{l}"}><%= l %></a>
     <% end %>
 
 
-<span><%= gear = inspect s.map %></span> | 
+<span><%= gear = inspect s.map %></span> |
+<br>
+
+<span><%=  inspect @st %></span> |
+
+  <%!-- <%= for {k, v} <- State.gather.users do %>
+  <span ><%= v.id %></span>
+    <% end %> --%>
+<br>
 
 <pre style={"
 user-select: none;

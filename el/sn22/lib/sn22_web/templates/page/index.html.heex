@@ -98,7 +98,7 @@ for e <- p do %>
 </form>
 <p>
 
-<canvas id="myCanvas" width="960" height="540"></canvas>
+<canvas id="myCanvas" width="960" height="540" style="user-select: none;"></canvas>
 </p>
 
   <%= for e <- 1..16 do %>
@@ -272,7 +272,7 @@ up1(<%= M2.get %>);
 
 				const GODOT_CONFIG = {
           "canvas":"myCanvas",
-			"args":[],"canvasResizePolicy":0,"executable":"1",
+			"args":[],"canvasResizePolicy":1,"executable":"1",
 			"experimentalVK":false,
 			"fileSizes":{"1.pck":
       <%= %{size: size} = File.lstat! "priv/static/1.pck"; size %>,

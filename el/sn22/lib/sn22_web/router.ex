@@ -16,8 +16,7 @@ defmodule Sn22Web.Router do
     q = M7state.get_user get_session(conn, :user)
     # conn = assign conn, :info
     # conn = conn |> put_flash(:info, "Logged in");
-    s = Store.give Store.init, 1, 2, "🍏";
-    s = Store.bar s, 1, 2, "🍎", "🍏"
+
 
     case q do
       {:ok, _} -> conn
