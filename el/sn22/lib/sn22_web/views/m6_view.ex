@@ -136,10 +136,7 @@ alias Sn22Web.Presence
     <%=  M7cell.get(user.id) |> inspect %>
     </span>
 
-   <span id="cursors" phx-hook="TrackClientCursor"
-   style=" position: absolute;
-   font-family:monospace;  background-color:
-    deeppink;"> <%= user.name %></span>
+
     </span>
 
     <% end %>

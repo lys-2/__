@@ -27,29 +27,39 @@ import {Socket} from "phoenix"
 import {LiveSocket} from "phoenix_live_view"
 import topbar from "../vendor/topbar"
 
-let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
 let Hooks = {};
 
 Hooks.TrackClientCursor = {
   mounted() {
-    document.addEventListener('mouseevent', (e) => {
-console.log(e)
-
-      const x = e.pageX; // in %
-      const p = e; // in %
-      const y = e.pageY; // in %
-      this.pushEvent('cursor-move', { x, y, p });
+    document.addEventListener('mousemove', (e) => {
+      const mouse_x = e.pageX; // in %
+      const mouse_y = e.pageY; // in %
+      this.pushEvent('cursor-move', { mouse_x, mouse_y });
     });
   }
 };
-let liveSocket = new LiveSocket("/live", Socket, {
-    hooks: Hooks,
-    params: {_csrf_token: csrfToken}})
+
+Hooks.Aaa = {
+  mounted() {
+    document.addEventListener('pointermove', (e) => {
+      // console.log(e);
+      const x = Math.floor( e.pageX);
+      const y = Math.floor(e.pageY);
+      const p = e.pressure;
+  if (p > 0.0) this.pushEvent('aaa', {x, y, p});
+
+    });
+  }
+};
+
+let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
+let liveSocket = new LiveSocket("/live", Socket, {hooks: Hooks, params: {_csrf_token: csrfToken}})
 
 // Show progress bar on live navigation and form submits
 topbar.config({barColors: {0: "#29d"}, shadowColor: "rgba(0, 1, 0, .3)"})
 window.addEventListener("phx:page-loading-start", info => topbar.show())
 window.addEventListener("phx:page-loading-stop", info => topbar.hide())
+
 window.liveSocket = liveSocket
 
 // connect if there are any LiveViews on the page

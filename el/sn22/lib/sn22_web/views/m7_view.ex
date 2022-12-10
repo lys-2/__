@@ -73,8 +73,21 @@ defmodule Sn22Web.Store do
     {:noreply, assign(socket, :"#{t}", p[t])}
   end
 
+
+  def handle_event("cursor-move", %{"mouse_x" => x, "mouse_y" => y}, socket) do
+    {:noreply,
+      socket
+        |> assign(:x, x)
+        |> assign(:y, y)
+        |> assign( :y, M8.t)
+    }
+  end
+
   def render(assigns) do
+
     ~H"""
+
+
 
 <form>
 <%= f = form_for :user, "/", [phx_submit: "submit"] %>
