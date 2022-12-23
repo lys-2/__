@@ -206,12 +206,16 @@ defmodule M4a do
   def run() do GenServer.call :db, :run end
   def msg(m) do GenServer.cast :db, {:msg, m} end
   def get() do GenServer.call :db, :get end
+  def get2(u) do GenServer.call :db, {:get2, u} end
   def save() do GenServer.call :db, :save end
+  def reset() do GenServer.call :db, :save end
 
 
   # def handle_call(:run, _p, s) do {:reply, run(s), s} end
   def handle_cast({:msg, m}, s) do {:noreply, msg(s, m)} end
   def handle_call(:get, _p, s) do {:reply, s, s} end
+  def handle_call(:reset, _p, s) do {:reply, :ok, %M4a{}} end
+  def handle_call({:get2, u}, _p, s) do {:reply, s.users[u], s} end
   # def handle_call(:save, _p, s) do {:reply, s, save(s, s.path)} end
 
   def msg s, m do twprocess(s, m) |> save(s.path) end

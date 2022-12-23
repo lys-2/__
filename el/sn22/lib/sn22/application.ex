@@ -30,6 +30,7 @@ defmodule Sn22.Application do
       Sn22Web.Telemetry,
       # Start the PubSub system
       {Phoenix.PubSub, name: Sn22.PubSub},
+      # {MyTracker, [name: MyTracker, pubsub_server: Sn22.PubSub]},
       # Start the Endpoint (http/https)
       Sn22Web.Endpoint,
       Sn22Web.Presence

@@ -30,9 +30,10 @@ defmodule M7user do
   # template
 
   defstruct [:id, :adm, :name, pw: "", devices: %{}, vip: false,
-  casts: %{1 => %{x: 0, y: 0}}, point: %{x: 0, y: 0, p: 0},
-  board: %{},
-   clients: %{}, sessions: %{}, key: nil, info: nil, color: nil, color2: nil]
+  casts: %{1 => %{x: 0, y: 0}}, point: %{x: 0, y: 0, p: 0}, twlog: %{},
+  board: %{clra: True, pixels: %{}, cur: %{2 => %{x: 9, y: 22}}},
+   chips: [], paint: 999, chipa: 0,
+  key: nil, info: nil, color: nil, color2: "#3BDE56"]
 
   def start(i) do GenServer.start __MODULE__, %M7user{}, name: i2a(i) end
   def get(i) do GenServer.call i2a(i), :get end
@@ -122,7 +123,7 @@ defmodule M7 do
           <<0, 255, 0, 255>> -> "✅"
           <<0, 0, 0, 255>> -> "⛚"
           <<0, 0, 111, 255>> -> "⛆"
-          <<0, 0, 255, 255>> -> "⛽"
+          <<0, 0, 255, 255>> -> "🧽"
           <<0, 111, 0, 255>> -> "~"
           _ -> 0
         end
@@ -147,7 +148,8 @@ defmodule M7state do
   use GenServer
   # template
 
-  defstruct [users: %{}, cells: %{}, stats: %{user_counter: 1},
+  defstruct [users: %{}, cells: %{},
+  stats: %{user_counter: 1}, chips: (for e <- 1..33, do: e),
    rkeys: %{}]
 
   def start_link(i) do GenServer.start_link __MODULE__, %M7state{}, name: :M7state end
@@ -160,6 +162,9 @@ defmodule M7state do
   def reset() do GenServer.call :M7state, :reset end
   def info(u, i) do GenServer.call :M7state, {:info, u, i} end
   def put(u, k, v) do GenServer.call :M7state, {:put, u, k, v} end
+  def put(k, v) do GenServer.call :M7state, {:puts, k, v} end
+  def clra(u) do GenServer.call :M7state, {:clra, u} end
+  def draw(u, x, y) do GenServer.call :M7state, {:draw, u, x, y} end
 
   def aaa, do: 1
 
@@ -172,7 +177,8 @@ defmodule M7state do
   # for e <- M7.parse do GenServer.call(String.to_atom("c#{e.id}"), :ns) end
   # :dets.open_file(:dt, [type: :set]);
   # [{_, s}] = :dets.lookup(:dt, 1); :dets.close(:dt);
-  s = reset s;
+  :timer.apply_interval(3000, M7state, :save, [])
+  s = load s;
   s = put_in(s.cells, M7.parse)
   # s = put_in(s.cells, [])
 
@@ -192,6 +198,9 @@ defmodule M7state do
   def handle_call(:reset, _p, s) do {:reply, reset(s), reset(s)} end
   def handle_call({:info, u, i}, _p, s) do {:reply, :ok, info(s, u, i)} end
   def handle_call({:put, u, k, v}, _p, s) do {:reply, :ok, put(s, u, k, v)} end
+  def handle_call({:puts, k, v}, _p, s) do {:reply, s, puts(s, k, v)} end
+  def handle_call({:clra, u}, _p, s) do {:reply, :ok, clra(s, u)} end
+  def handle_call({:draw, u, x, y}, _p, s) do {:reply, {x, y}, draw(s, u, x, y)} end
 
   def i2a(i) do String.to_atom("c#{i}") end
 
@@ -199,10 +208,10 @@ defmodule M7state do
   |> Map.get(:id) |> M7cell.get end
 
   def save(s) do
-    File.write("../../data/M7", :erlang.term_to_binary s); s end
-  def load(s) do case File.read("../../data/M7") do
+    File.write("../../data/M7"<>to_string(Mix.env), :erlang.term_to_binary s); s end
+  def load(s) do case File.read("../../data/M7"<>to_string(Mix.env)) do
     {:ok, f} -> :erlang.binary_to_term f
-    _ -> nil end end
+    _ -> reset(s) end end
 
     def create_users(s, c) do
     # c = s.stats.user_counter;
@@ -216,11 +225,42 @@ defmodule M7state do
 
     def check(u, pw), do: u.pw == pw
 
+    defp clra(s, u) do
+
+    put_in s.users[:"u#{u}"].board.clra, True
+     end
+
     defp info(s, u, i), do: put_in s.users[:"u#{u}"],
      %M7user{s.users[:"u#{u}"] | info: i}
 
     defp put(s, u, k, v), do: put_in s.users[:"u#{u}"],
      Map.put(s.users[:"u#{u}"], k, v)
+    defp puts(s, k, v), do: Map.put(s, k, v)
+
+    defp draw(s, u, x, y), do:
+    put_in s.users[:"u#{u}"].board.pixels,
+     Map.put(s.users[:"u#{u}"].board.pixels, x+y*480, u)
+
+    def drawline({x0, y0}, {x1, y1}) do
+      st = 1 + dst({x0, y0}, {x1, y1})/8 |> floor;
+
+     for e <- 1..st, do: draw(2, floor(x0+(x1-x0)*(e/st)), floor(y0+(y1-y0)*(e/st)))
+  end
+
+  def drawtriw({x0, y0}, {x1, y1}, {x2, y2}) do
+
+    drawline({x0, y0}, {x1, y1})
+    drawline({x2, y2}, {x0, y0})
+    drawline({x1, y1}, {x2, y2})
+    end
+
+  def drawtri({x0, y0}, {x1, y1}, {x2, y2}) do
+
+    for e <- drawline({x0, y0}, {x1, y1}), do: drawline(e, {x2, y2})
+
+     end
+
+  def dst({x0, y0}, {x1, y1}), do: max(abs(x0-x1), abs(y0-y1))
 
     def add_user(s, u) do
         s = put_in s.users, Map.put(s.users, :"u#{s.stats.user_counter}",
@@ -230,7 +270,8 @@ defmodule M7state do
 
   def reset(s), do:
    add_user(%M7state{}, %M7user{name: "a", adm: true, pw: "1", vip: true})
-   |> add_user %M7user{name: "an", pw: "2", info: " qwe rqt tq "}
+   |> add_user %M7user{name: "an", pw: "2", info: " qwe rqt tq "};
+  # Map.merge %M7state{}, s
   #  |> add_user %M7user{name: "234", pw: 123}
 
 end

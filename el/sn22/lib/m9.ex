@@ -51,16 +51,16 @@ def floors(m, c) do
 end
 
 
-  def log(s, m) do
-   s = put_in(s.log, Map.put(s.log, s.lc, m)
+def log(s, m) do
+  s = put_in(s.log, Map.put(s.log, s.lc, m)
    );
    s = put_in(s.lc, s.lc+1)
   end
 
 
-  def bar(s, a, b, i, i2) do case check(s, a, b, i) and check(s, b, a, i2) do
-    true -> s = give(s, a, b, i); s = give(s, b, a, i2)
-    false -> s
+def bar(s, a, b, i, i2) do case check(s, a, b, i) and check(s, b, a, i2) do
+  true -> s = give(s, a, b, i); s = give(s, b, a, i2)
+  false -> s
   end
 end
 
@@ -71,12 +71,12 @@ end end
 
 def eq(inv, i, gear, slot), do: {:ok, inv, gear}
 
-def ck({inv, acc}) do if acc == [] do
+defp ck({inv, acc}) do if acc == [] do
    {:ok, acc, inv} else {:no, acc, inv} end end
-def ck(inv, list) do ck(inv, list, []) end
-def ck([], list, acc) do ck{[], list ++ acc} end
-def ck(inv, [], acc) do ck{inv, acc} end
-def ck(inv, [i | l], acc) do
+def ck(inv, list) do ck(inv, list, []) end #/# 1111
+defp ck([], list, acc) do ck{[], list ++ acc} end
+defp ck(inv, [], acc) do ck{inv, acc} end
+defp ck(inv, [i | l], acc) do
   inv2 = List.delete inv, i
   case i in inv do
     true -> ck(inv2, l, acc)
@@ -119,7 +119,7 @@ def check(inv, i) do case i in inv do
       sa = s.store[a]
       sb = s.store[b]
 
-      case check(s, a, b, :cr, c) do
+    case check(s, a, b, :cr, c) do
       true ->
          m = "#{sa.name} gives #{c} :cr to #{sb.name} "
         s = log(s,m)

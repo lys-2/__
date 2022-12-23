@@ -43,13 +43,20 @@ Hooks.Aaa = {
   mounted() {
     document.addEventListener('pointermove', (e) => {
       // console.log(e);
-      const x = Math.floor( e.pageX);
-      const y = Math.floor(e.pageY);
+      const x = Math.floor( e.pageX)- 10;
+      const y = Math.floor(e.pageY)- 33;
       const p = e.pressure;
-  if (p > 0.0) this.pushEvent('aaa', {x, y, p});
-
-    });
+  this.pushEvent('cur', {x, y});
+  if (p > 0.0) this.pushEvent('aaa', {x, y, p});}
+    );
+    document.addEventListener('pointerdown', (e) => {
+      const x = Math.floor( e.pageX)- 10;
+      const y = Math.floor(e.pageY)- 33;
+      const p = e.pressure;
+      this.pushEvent('aaa', {x, y, p});
+});
   }
+  
 };
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
