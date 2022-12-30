@@ -44,6 +44,19 @@ defmodule Sn22Web.Router do
 
   end
 
+  pipeline :browser2 do
+    # plug :basic_auth, username: "an", password: ""
+    plug :accepts, ["html"]
+
+  end
+
+  scope "/ymn", Sn22Web do
+    pipe_through :browser2
+    get "/", PageController, :ymn
+    post "/", PageController, :ymn
+
+  end
+
   pipeline :api do
     plug :accepts, ["json"]
   end
@@ -63,13 +76,14 @@ defmodule Sn22Web.Router do
     post "/log", PageController, :log
     get "/", PageController, :index
     get "/p", PageController, :p
-    get "/rq", PageController, :rq
     get "/rq1", PageController, :rq1
     # get "/g", PageController, :new
     get "/v", PageController, :v
     get "/sm", PageController, :sm
     get "/sb", PageController, :sb
     get "/ls", PageController, :ls
+    pipe_through :browser2
+    get "/rq", PageController, :rq
 
   end
 

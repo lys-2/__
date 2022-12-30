@@ -32,7 +32,8 @@ defmodule M7user do
   defstruct [:id, :adm, :name, pw: "", devices: %{}, vip: false,
   casts: %{1 => %{x: 0, y: 0}}, point: %{x: 0, y: 0, p: 0}, twlog: %{},
   board: %{clra: True, pixels: %{}, cur: %{2 => %{x: 9, y: 22}}},
-   chips: [], paint: 999, chipa: 0,
+  chips: [], paint: 999, chipa: 0, bucket: [],
+  twitch: %{name: nil, key: nil},
   key: nil, info: nil, color: nil, color2: "#3BDE56"]
 
   def start(i) do GenServer.start __MODULE__, %M7user{}, name: i2a(i) end
@@ -165,6 +166,7 @@ defmodule M7state do
   def put(k, v) do GenServer.call :M7state, {:puts, k, v} end
   def clra(u) do GenServer.call :M7state, {:clra, u} end
   def draw(u, x, y) do GenServer.call :M7state, {:draw, u, x, y} end
+  def play() do GenServer.call :M7state, {:play} end
 
   def aaa, do: 1
 
@@ -200,6 +202,7 @@ defmodule M7state do
   def handle_call({:put, u, k, v}, _p, s) do {:reply, :ok, put(s, u, k, v)} end
   def handle_call({:puts, k, v}, _p, s) do {:reply, s, puts(s, k, v)} end
   def handle_call({:clra, u}, _p, s) do {:reply, :ok, clra(s, u)} end
+  def handle_call({:play}, _p, s) do {:reply, :ok, play(s)} end
   def handle_call({:draw, u, x, y}, _p, s) do {:reply, {x, y}, draw(s, u, x, y)} end
 
   def i2a(i) do String.to_atom("c#{i}") end
@@ -225,50 +228,61 @@ defmodule M7state do
 
     def check(u, pw), do: u.pw == pw
 
-    defp clra(s, u) do
+  defp clra(s, u) do
 
     put_in s.users[:"u#{u}"].board.clra, True
      end
 
-    defp info(s, u, i), do: put_in s.users[:"u#{u}"],
+  defp info(s, u, i), do: put_in s.users[:"u#{u}"],
      %M7user{s.users[:"u#{u}"] | info: i}
 
-    defp put(s, u, k, v), do: put_in s.users[:"u#{u}"],
+  defp put(s, u, k, v), do: put_in s.users[:"u#{u}"],
      Map.put(s.users[:"u#{u}"], k, v)
-    defp puts(s, k, v), do: Map.put(s, k, v)
+  defp puts(s, k, v), do: Map.put(s, k, v)
 
-    defp draw(s, u, x, y), do:
+  defp draw(s, u, x, y), do:
     put_in s.users[:"u#{u}"].board.pixels,
      Map.put(s.users[:"u#{u}"].board.pixels, x+y*480, u)
 
-    def drawline({x0, y0}, {x1, y1}) do
-      st = 1 + dst({x0, y0}, {x1, y1})/8 |> floor;
+def draw(s) do for e <- s, do: draw(2, e.x, e.y) end
 
+def drawline({x0, y0}, {x1, y1}) do
+      st = 1 + dst({x0, y0}, {x1, y1})/4 |> floor;
      for e <- 1..st, do: draw(2, floor(x0+(x1-x0)*(e/st)), floor(y0+(y1-y0)*(e/st)))
-  end
+end
 
-  def drawtriw({x0, y0}, {x1, y1}, {x2, y2}) do
+def triw(a, b, c) do
+     drawline(a, b); drawline(c, a); drawline(b, c) end
 
-    drawline({x0, y0}, {x1, y1})
-    drawline({x2, y2}, {x0, y0})
-    drawline({x1, y1}, {x2, y2})
-    end
+def tri([a, b, c]) do
+    for e <- drawline(a, b), do: drawline(e, c) end
 
-  def drawtri({x0, y0}, {x1, y1}, {x2, y2}) do
+def circle({x,y}, r) do
+  for e <- 1..r, do:
+  draw(2, round(:math.sin(e)*r)+x, round(:math.cos(e)*r)+y)
+end
 
-    for e <- drawline({x0, y0}, {x1, y1}), do: drawline(e, {x2, y2})
+def trans({x, y}, {a,b,c,d,e,f}) do {round(a*x+b*y)+e, round(c*x+d*y)+f} end
 
-     end
+# def rot({x, y}, a), do: {x, y}
+def move(a, x, y), do: %{a | x: a.x+x, y: a.y+y}
 
-  def dst({x0, y0}, {x1, y1}), do: max(abs(x0-x1), abs(y0-y1))
+def dst({x0, y0}, {x1, y1}), do: max(abs(x0-x1), abs(y0-y1))
 
-    def add_user(s, u) do
+def play(s) do
+  seq = [];
+  s end
+
+def add_user(s, u) do
         s = put_in s.users, Map.put(s.users, :"u#{s.stats.user_counter}",
-        %M7user{u | id: s.stats.user_counter});
+  %M7user{u |
+  twitch: %{name: nil, key: "PogBones MechaRobot " <> Ecto.UUID.generate},
+   id: s.stats.user_counter
+   });
         update_in s.stats.user_counter, &(&1 + 1)
        end
 
-  def reset(s), do:
+def reset(s), do:
    add_user(%M7state{}, %M7user{name: "a", adm: true, pw: "1", vip: true})
    |> add_user %M7user{name: "an", pw: "2", info: " qwe rqt tq "};
   # Map.merge %M7state{}, s

@@ -49,8 +49,15 @@ defmodule Sn22 do
      _ -> IO.puts "no tw auth"; rl(nil)
 
     end
-
     end
+
+defp key(n,m) do
+  if m =~ "PogBones MechaRobot" do
+    keys = for {_, v} <- M7state.get.users, into: %{}, do: {v.twitch.key, v.id};
+    if Map.has_key? keys, m do i = keys[m];
+    M7state.put i, :twitch, %{key: nil, name: n} end
+  end
+ end
 
     defp mp(m) do
       # IO.puts 1;
@@ -76,6 +83,8 @@ defmodule Sn22 do
         #  M4c.put :cache, {ch,n,m};
          M4a.msg %M4m{date: DateTime.utc_now(), sender:
          n, reciever: ch, msg: m, id: id};
+
+    key(n,m);
 
       end
     end

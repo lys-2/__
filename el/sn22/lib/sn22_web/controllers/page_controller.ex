@@ -23,18 +23,18 @@ defmodule Sn22Web.PageController do
       {:ok, _} ->
         {_, u} = q;
         case M7state.check u, conn.params["key"] do
-        true -> redirect(put_session(conn, :user, u.id), to: "/st")
+        true -> redirect(put_session(conn, :user, u.id), to: "/")
         _ -> M7state.info id, "Wrong!";
 
         :timer.apply_after(5000, M7state, :info, [id, ""]);
-         redirect(conn, to: "/st")
+         redirect(conn, to: "/")
         end
       # 1 -> redirect(put_session(conn, :user, 3), to: "/st")
       # 2 -> redirect(put_session(conn, :user, "111"), to: "/st")
-      _ ->;
+      _ ->
         M7state.info id, "Missing id";
         :timer.apply_after(5000, M7state, :info, [id, ""]);
-       redirect(conn, to: "/st")
+       redirect(conn, to: "/")
     end
    end
 
@@ -52,7 +52,9 @@ defmodule Sn22Web.PageController do
     render(conn, "ls.html")
   end
 
+  def ymn(conn, _params) do IO.inspect conn.params; text(conn, "aaa") end
   def sm(conn, _params) do render(conn, "sm.html") end
+
   def sb(conn, _params) do
     conn |>
     # put_flash(:error, M3.get) |>

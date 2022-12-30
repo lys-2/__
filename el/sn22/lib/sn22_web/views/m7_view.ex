@@ -47,7 +47,8 @@ defmodule Sn22Web.Store do
   def handle_info(:update, socket) do
     {:ok, u} = M7state.get_user(socket.assigns.uid)
     # Process.send_after(self(), :update, 1000)
-    {:noreply, assign(socket, :y, M8.t)
+    {:noreply,
+    assign(socket, :y, M8.t)
     |> assign(:users, M7state.get.users)
     |> assign(:info, u.info)
     |> assign(:color, u.color)
@@ -69,7 +70,7 @@ defmodule Sn22Web.Store do
     [t|_] = p["_target"]
     # IO.inspect p
     M7state.put socket.assigns.uid, :"#{t}", p[t]
-    Process.send_after(self(), :update, 1)
+    # Process.send_after(self(), :update, 1)
     {:noreply, assign(socket, :"#{t}", p[t])}
   end
 
@@ -79,7 +80,8 @@ defmodule Sn22Web.Store do
       socket
         |> assign(:x, x)
         |> assign(:y, y)
-        |> assign( :y, M8.t)
+        # |> assign( :y, M8.t)
+        |> assign( :y, "........")
     }
   end
 
@@ -191,9 +193,7 @@ color: lightblue;
   <%= for e <- Store.init.map[lc].ent do %>
   <span><%= s.store[e].name %></span>
     <% end %>
-<span><%= inv = s.store[2].inv %></span> |
-<span><%= inv = s.store[2].avt %></span> |
-<span><%= gear = inspect s.store[2].gear %></span> |
+
 
   <%= for l <- Store.init.map[lc].wp do %>
   <a href={"#{l}"}><%= l %></a>
@@ -204,7 +204,9 @@ color: lightblue;
 <br>
 
 <span><%=  inspect @st %></span> |
-
+<span><%= inv = s.store[2].inv %></span> |
+<span><%= inv = s.store[2].avt %></span> |
+<span><%= gear = inspect s.store[2].gear %></span> |
   <%!-- <%= for {k, v} <- State.gather.users do %>
   <span ><%= v.id %></span>
     <% end %> --%>

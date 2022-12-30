@@ -1,8 +1,26 @@
 
+defmodule PComp do
+  use Phoenix.Component
+
+  def greet(assigns) do
+    ~H"""
+    <p>Hello, <%= @name %>!</p>
+    """
+  end
+end
+
 defmodule Sn22Web.V2 do
   alias Sn22Web.Presence
   use Sn22Web, :live_view
+  use Phoenix.Component
   alias Phoenix.Socket.Broadcast
+
+  def greet(assigns) do
+    ~H"""
+    <p>Hello, <%= @name %>!</p>
+    """
+  end
+
 
   def mount(p, %{"user" => user}, socket) do
     if connected?(socket), do:
@@ -22,6 +40,7 @@ defmodule Sn22Web.V2 do
       |> assign(:y, 50)
       |> assign(:user, u.name)
       |> assign(:u, u)
+      |> assign(:fv, 11)
       |> assign(:vip, u.vip)
       |> assign(:uid, u.id)
       |> assign(:cs, u.casts)
@@ -167,7 +186,12 @@ font-size: 24px;
     color: magenta;
     "> <%=@uid %>::<%= @user %></span> --%>
 
+<%!-- <.greet name={@fv}} /> --%>
+
+
+
 <span><%= if @vip do "✔️" end %></span>
+<span><%= @u.twitch.name || "_____" %></span>
 <br>
 
     <%!-- <%= inspect Store.init %>
@@ -200,6 +224,18 @@ font-size: 24px;
 <button phx-click="clear" disabled={@u.board.clra==False}>стр</button>
 <button phx-click="getink" disabled={@chips==[]}>чрн</button>
 <button phx-click="getchip" disabled={@schips==[]}>жт</button>
+
+<form method="POST" action="https://yoomoney.ru/quickpay/confirm.xml">
+    <input type="hidden" name="receiver" value="4100117845246172"/>
+    <input type="hidden" name="label" value="1111"/>
+    <input type="hidden" name="quickpay-form" value="button"/>
+    <input  name="sum" value={"#{@fv}"} type="number" min="11" max="55"/>
+    <%!-- <label><input type="radio" name="paymentType" value="PC"/>ЮMoney</label>
+    <label><input type="radio" name="paymentType" value="AC"/>Банковской картой</label> --%>
+    <input  type="submit" value="пк"/>
+</form>
+
+<%!-- <iframe src="https://yoomoney.ru/quickpay/fundraise/button?billNumber=AdFIUwGWMKk.221228&" width="330" height="50" frameborder="0" allowtransparency="true" scrolling="no"></iframe>​ --%>
 <%!-- <button phx-click="load" >зг</button>
 <button phx-click="save" >схр</button>
 <button phx-click="reset" >прꙖⰀ</button> --%>
@@ -212,7 +248,7 @@ font-size: 24px;
 <span><%= @u.chipa %></span>
 
     <span><%= inspect @chips %></span>
-    <span style="color: black; font-size: 12px;"><%= inspect @schips %></span>
+    <span style="color: black; font-size: 12px;"><%= inspect @schips, limit: 111 %></span>
     <%!-- <span id="cursors" phx-hook="TrackClientCursor"
    style="
    font-family:monospace;"> <%= inspect @cs %>
