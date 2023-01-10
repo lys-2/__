@@ -70,6 +70,7 @@ defmodule Sn22Web.Router do
       live "/st", Store
       live "/g", V2
       live "/w", Wgt1
+      live "/ac", Ac
   end
     post "/reg", PageController, :reg
     post "/logout", PageController, :logout

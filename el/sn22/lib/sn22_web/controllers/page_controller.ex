@@ -8,10 +8,10 @@ defmodule Sn22Web.PageController do
   end
 
   def reg(conn, _p) do
-    id = M7state.add_user %M7user{name: conn.params["name"] || Faker.Person.name, pw:
-    conn.params["pw"]}
+    id = M7state.add_user %M7user{name: conn.params["name"] || Faker.Person.name,
+     pw: M7state.pw(conn.params["pw"])}
     conn = put_session(conn, :user, id)
-    redirect(conn, to: "/st")
+    redirect(conn, to: "/")
    end
 
    def log(conn, _p) do
@@ -23,7 +23,7 @@ defmodule Sn22Web.PageController do
       {:ok, _} ->
         {_, u} = q;
         case M7state.check u, conn.params["key"] do
-        true -> redirect(put_session(conn, :user, u.id), to: "/")
+        true ->  redirect(put_session(conn, :user, u.id), to: "/")
         _ -> M7state.info id, "Wrong!";
 
         :timer.apply_after(5000, M7state, :info, [id, ""]);
@@ -52,7 +52,7 @@ defmodule Sn22Web.PageController do
     render(conn, "ls.html")
   end
 
-  def ymn(conn, _params) do IO.inspect conn.params; text(conn, "aaa") end
+  def ymn(conn, _params) do M7state.logymn conn.params; text(conn, "aaa") end
   def sm(conn, _params) do render(conn, "sm.html") end
 
   def sb(conn, _params) do

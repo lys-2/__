@@ -51,11 +51,28 @@ defmodule Sn22 do
     end
     end
 
+defp keycheck(m) do m =~ "PogBones MechaRobot " end
+defp gettw() do us = M7state.get.users;
+{
+  (for {_, v} <- us, into: %{}, do: {v.twitch.key, v.id}),
+    (for {_, v} <- us, do: v.twitch.name)
+  }end
+
 defp key(n,m) do
-  if m =~ "PogBones MechaRobot" do
-    keys = for {_, v} <- M7state.get.users, into: %{}, do: {v.twitch.key, v.id};
-    if Map.has_key? keys, m do i = keys[m];
-    M7state.put i, :twitch, %{key: nil, name: n} end
+  # IO.inspect {n, m}
+  if keycheck(m) do
+    {k, a} = gettw();
+    case {Map.has_key?(k, m), n in a} do
+      {true, false} -> i = k[m]; M7state.put i, :twitch, %{key: nil, name: n}
+      {true, true} -> i = k[m]; M7state.put i,
+       :twitch, %{key: "PogBones MechaRobot " <> Ecto.UUID.generate, name: nil}
+      _ -> nil
+    end
+    # if Map.has_key?(k, m) and n not in a do
+    #   i = k[m]; M7state.put i, :twitch, %{key: nil, name: n}; end
+    # else if Map.has_key?(k, m) and n not in a do
+    #   i = k[m]; M7state.put i, :twitch, %{key: '123', name: nil} end
+
   end
  end
 

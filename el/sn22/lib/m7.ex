@@ -32,8 +32,8 @@ defmodule M7user do
   defstruct [:id, :adm, :name, pw: "", devices: %{}, vip: false,
   casts: %{1 => %{x: 0, y: 0}}, point: %{x: 0, y: 0, p: 0}, twlog: %{},
   board: %{clra: True, pixels: %{}, cur: %{2 => %{x: 9, y: 22}}},
-  chips: [], paint: 999, chipa: 0, bucket: [],
-  twitch: %{name: nil, key: nil},
+  chips: [], paint: 999, chipa: 0, bucket: [], ex: %{1 => 24, 2 => 12}, b: 0, a: 0,
+  twitch: %{name: nil, key: nil}, palette: %{},
   key: nil, info: nil, color: nil, color2: "#3BDE56"]
 
   def start(i) do GenServer.start __MODULE__, %M7user{}, name: i2a(i) end
@@ -112,9 +112,6 @@ defmodule M7box do
 end
 
 defmodule M7 do
-
-
-
   def parse do
         # m = ["../../data/m7.png", "../../data/m7a.png", "../../data/m7b.png"]
         m = ["../../data/m7.png"]
@@ -138,19 +135,15 @@ defmodule M7 do
 
            :dets.open_file(:dt, [type: :set]);
            :dets.insert(:dt, {1, d}); :dets.close(:dt); d
-
-
   end
-
-
 end
 
 defmodule M7state do
   use GenServer
   # template
 
-  defstruct [users: %{}, cells: %{},
-  stats: %{user_counter: 1}, chips: (for e <- 1..33, do: e),
+  defstruct [users: %{}, cells: %{}, price: %{chip: 10}, inc: %{ymn: []},
+  stats: %{user_counter: 1}, chips: (for e <- 1..30000, do: e), b: 0, c: 0, timers: [{5000, M7state, :reset, []}],
    rkeys: %{}]
 
   def start_link(i) do GenServer.start_link __MODULE__, %M7state{}, name: :M7state end
@@ -180,6 +173,8 @@ defmodule M7state do
   # :dets.open_file(:dt, [type: :set]);
   # [{_, s}] = :dets.lookup(:dt, 1); :dets.close(:dt);
   :timer.apply_interval(3000, M7state, :save, [])
+  :timer.apply_interval(100, M7state, :tick, [])
+  for {a,b,c,d} <- s.timers, do: :timer.apply_after(a,b,c,d)
   s = load s;
   s = put_in(s.cells, M7.parse)
   # s = put_in(s.cells, [])
@@ -224,9 +219,9 @@ defmodule M7state do
          ) end
     end
 
-    def get_user(s, i) do s.users |> Map.fetch :"u#{i}" end
+  def get_user(s, i) do s.users |> Map.fetch :"u#{i}" end
 
-    def check(u, pw), do: u.pw == pw
+  def check(u, pw), do: :crypto.hash(:sha3_256, pw<>u.pw.s) == u.pw.h
 
   defp clra(s, u) do
 
@@ -268,23 +263,46 @@ def trans({x, y}, {a,b,c,d,e,f}) do {round(a*x+b*y)+e, round(c*x+d*y)+f} end
 def move(a, x, y), do: %{a | x: a.x+x, y: a.y+y}
 
 def dst({x0, y0}, {x1, y1}), do: max(abs(x0-x1), abs(y0-y1))
+def play(s) do seq = []; s end
 
-def play(s) do
-  seq = [];
-  s end
+def logymn(m) do GenServer.call :M7state, {:logymn, m} end
+def handle_call({:logymn, m}, _p, s) do {:reply, :ok, logymn(s, m)} end
+def logymn(s, m) do
+  s = update_in s.inc.ymn, &([m]++&1);
+  s = update_in s.b, &(&1 + String.to_float m["amount"]);
+
+case Jason.decode m["label"] do
+  {:ok, l} ->
+  a = l["a"]; update_in s.users[:"u#{a}"].b, &(&1 + String.to_float m["amount"]);
+  _ -> s
+ end
+
+ end
+
+def tick() do GenServer.call :M7state, {:tick} end
+def handle_call({:tick}, _p, s) do {:reply, :ok, tick(s)} end
+def tick(s) do
+  s = update_in s.c, &(&1+1);
+
+ end
+
 
 def add_user(s, u) do
-        s = put_in s.users, Map.put(s.users, :"u#{s.stats.user_counter}",
+
+  s = put_in s.users, Map.put(s.users, :"u#{s.stats.user_counter}",
   %M7user{u |
   twitch: %{name: nil, key: "PogBones MechaRobot " <> Ecto.UUID.generate},
-   id: s.stats.user_counter
+   id: s.stats.user_counter,
    });
         update_in s.stats.user_counter, &(&1 + 1)
        end
 
+def pw(p) do s = :crypto.strong_rand_bytes(8);
+  %{h: :crypto.hash(:sha3_256, p<>s), s: s} end
+
 def reset(s), do:
-   add_user(%M7state{}, %M7user{name: "a", adm: true, pw: "1", vip: true})
-   |> add_user %M7user{name: "an", pw: "2", info: " qwe rqt tq "};
+   add_user(%M7state{}, %M7user{name: "a", adm: true, pw: pw("1"), vip: true})
+   |> add_user %M7user{name: "an", pw: pw("2"), info: " qwe rqt tq "};
   # Map.merge %M7state{}, s
   #  |> add_user %M7user{name: "234", pw: 123}
 

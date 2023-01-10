@@ -171,14 +171,7 @@ defmodule Sn22Web.Store do
      "}><%=
       v.name
         %></span>
-        <span style={"
 
-font-size: 20px;
-color: lightblue;
-
- "}><%=
-  v.pw
-    %></span>
     <% end %>
 
     <span id="cursors" phx-hook="TrackClientCursor"

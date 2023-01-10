@@ -1,6 +1,14 @@
 /* This file is for your main application CSS */
 @import "./phoenix.css";
 
+@font-face {
+  font-family: 'Polaris-Regular';
+  src: local('Polaris-Regular'), url('../fonts/Polaris-Regular.ttf') format('ttf');
+  font-weight: normal;
+  font-style: normal
+}
+
+
 /* Alerts and form errors used by phx.new */
 .alert {
   padding: 15px;

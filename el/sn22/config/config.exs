@@ -37,7 +37,7 @@ config :esbuild,
   version: "0.14.29",
   default: [
     args:
-      ~w(js/app.js --bundle --target=es2017
+      ~w(js/app.js --bundle --target=es2017 --loader:.ttf=file
       --outdir=../priv/static/assets --external:/fonts/* --external:/godot/*
        --external:/images/*),
     cd: Path.expand("../assets", __DIR__),

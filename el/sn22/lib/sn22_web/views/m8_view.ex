@@ -179,7 +179,7 @@ defmodule Sn22Web.V2 do
     ~H"""
 <style> body {
 background-color: <%= "#796C4D" %>;
-font-size: 24px;
+font-size: 16px;
 } </style>
 <%!-- <span style="
  font-size: 20px;
@@ -188,10 +188,9 @@ font-size: 24px;
 
 <%!-- <.greet name={@fv}} /> --%>
 
-
-
 <span><%= if @vip do "✔️" end %></span>
 <span><%= @u.twitch.name || "_____" %></span>
+<span><%= @u.twitch.key || "_____" %></span>
 <br>
 
     <%!-- <%= inspect Store.init %>
@@ -229,10 +228,11 @@ font-size: 24px;
     <input type="hidden" name="receiver" value="4100117845246172"/>
     <input type="hidden" name="label" value="1111"/>
     <input type="hidden" name="quickpay-form" value="button"/>
-    <input  name="sum" value={"#{@fv}"} type="number" min="11" max="55"/>
+    <input  name="sum" value={"#{@fv}"} type="number" min="1" max="9999"/>
     <%!-- <label><input type="radio" name="paymentType" value="PC"/>ЮMoney</label>
     <label><input type="radio" name="paymentType" value="AC"/>Банковской картой</label> --%>
-    <input  type="submit" value="пк"/>
+    <input  type="submit" disabled="true" value="пк"/>
+    <input  type="submit"  value="пк"/>
 </form>
 
 <%!-- <iframe src="https://yoomoney.ru/quickpay/fundraise/button?billNumber=AdFIUwGWMKk.221228&" width="330" height="50" frameborder="0" allowtransparency="true" scrolling="no"></iframe>​ --%>
