@@ -15,6 +15,7 @@ defmodule Sn22Web.Ac do
       socket
       |> assign(:acc, M7state.get.inc.ymn)
       |> assign(:ex, u.ex)
+      |> assign(:label, Jason.encode! %{"a" => user})
       |> assign(:us, M7state.get.users)
       |> assign(:b, M7state.get.b)
       |> assign(:c, M7state.get.c)
@@ -44,7 +45,7 @@ defmodule Sn22Web.Ac do
     ~H"""
         <%= (inspect @c)%>
 <br>
-    <%= (inspect @b) <>" p"%>
+    <%= ( :erlang.float_to_binary(@b, [decimals: 2])) <>" p"%>
 
     <br>
 
@@ -53,6 +54,16 @@ defmodule Sn22Web.Ac do
 <% end %>
 
 <br>
+<form method="POST" action="https://yoomoney.ru/quickpay/confirm.xml">
+    <input type="hidden" name="receiver" value="4100117845246172"/>
+    <input type="hidden" name="label" value="1111"/>
+    <input type="hidden" name="quickpay-form" value="button"/>
+    <input placeholder="...0 p" name="sum" value={""} type='number' min="1" max="99999" step="0.01"/>
+    <%!-- <label><input type="radio" name="paymentType" value="PC"/>ЮMoney</label>
+    <label><input type="radio" name="paymentType" value="AC"/>Банковской картой</label> --%>
+    <%!-- <input  type="submit" disabled="true" value="пк"/> --%>
+    <input  type="submit"  value="пк"/>
+</form>
 
 <%= for {k,v} <- @us do %>
   <span class="name"><%= "#{v.id}, #{v.a}, #{v.b}__" %></span>

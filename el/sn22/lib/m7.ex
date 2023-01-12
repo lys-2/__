@@ -32,8 +32,9 @@ defmodule M7user do
   defstruct [:id, :adm, :name, pw: "", devices: %{}, vip: false,
   casts: %{1 => %{x: 0, y: 0}}, point: %{x: 0, y: 0, p: 0}, twlog: %{},
   board: %{clra: True, pixels: %{}, cur: %{2 => %{x: 9, y: 22}}},
-  chips: [], paint: 999, chipa: 0, bucket: [], ex: %{1 => 24, 2 => 12}, b: 0, a: 0,
-  twitch: %{name: nil, key: nil}, palette: %{},
+  chips: [], paint: 999, chipa: 0, bucket: [],
+  ex: %{"count" => 1, "charge" => 1, 1 => 24, 2 => 12},
+   b: 0.0, a: 0.0, twitch: %{name: nil, key: nil}, palette: %{},
   key: nil, info: nil, color: nil, color2: "#3BDE56"]
 
   def start(i) do GenServer.start __MODULE__, %M7user{}, name: i2a(i) end
@@ -143,7 +144,10 @@ defmodule M7state do
   # template
 
   defstruct [users: %{}, cells: %{}, price: %{chip: 10}, inc: %{ymn: []},
-  stats: %{user_counter: 1}, chips: (for e <- 1..30000, do: e), b: 0, c: 0, timers: [{5000, M7state, :reset, []}],
+  stats: %{user_counter: 1}, chips: (for e <- 1..30000, do: e), b: 0.0, c: 0.0,
+   timers: [
+    # {5000, M7state, :reset, []}
+   ],
    rkeys: %{}]
 
   def start_link(i) do GenServer.start_link __MODULE__, %M7state{}, name: :M7state end
@@ -265,19 +269,61 @@ def move(a, x, y), do: %{a | x: a.x+x, y: a.y+y}
 def dst({x0, y0}, {x1, y1}), do: max(abs(x0-x1), abs(y0-y1))
 def play(s) do seq = []; s end
 
+# m = %{"amount" => "111.01", "label" => Jason.encode! %{"a" => 2}}
 def logymn(m) do GenServer.call :M7state, {:logymn, m} end
-def handle_call({:logymn, m}, _p, s) do {:reply, :ok, logymn(s, m)} end
-def logymn(s, m) do
-  s = update_in s.inc.ymn, &([m]++&1);
-  s = update_in s.b, &(&1 + String.to_float m["amount"]);
+def handle_call({:logymn, m}, _p, s) do {:reply, checkymn(m), logymn(s, m)} end
+def checkymn(m) do
+case m do
+  %{
+    "amount" => amount,
+    "bill_id" => bill_id,
+    "codepro" => codepro,
+    "currency" => currency,
+    "datetime" => datetime,
+    "label" => label,
+    "notification_type" => notification_type,
+    "operation_id" => operation_id,
+    "operation_label" => operation_label,
+    "sender" => sender,
+    "sha1_hash" => sha1_hash,
+    "test_notification" => test_notification
+  } ->
+ns = case File.read "../../data/secret/ymn" do {:ok, ns} -> ns; _ -> "" end
+ms =
+m["notification_type"]<>"&"<>m["operation_id"]<>"&"<>m["amount"]<>
+"&"<>m["currency"]<>"&"<>m["datetime"]<>"&"<>m["sender"]<>"&"<>m["codepro"]<>
+"&"<>ns<>"&"<>m["label"];
 
-case Jason.decode m["label"] do
-  {:ok, l} ->
-  a = l["a"]; update_in s.users[:"u#{a}"].b, &(&1 + String.to_float m["amount"]);
+h =  sha1_hash |> String.upcase()
+h2 = :crypto.hash(:sha, ms) |> Base.encode16()
+case h == h2
+# || test_notification == "true"
+ do
+  true ->
+case Jason.decode(label) do
+  {:ok, %{"a" => user}} -> {:to_user, user}
+  _ -> :unlabeled
+end
+  _ -> :compromised
+end
+_ -> :not_formatted
+
+end
+
+end
+defp logymn(s, m) do case checkymn(m) do
+  :unlabeled ->
+  s = update_in s.inc.ymn, &([m]++&1);
+  s = update_in s.b, &((&1 + String.to_float m["amount"]) |> Float.round(2));
+
+  {:to_user, user} ->
+  s = update_in s.inc.ymn, &([m]++&1);
+  s = update_in s.b, &((&1 + String.to_float m["amount"]) |> Float.round(2));
+  update_in s.users[:"u#{user}"].b, &((&1 + String.to_float m["amount"]) |> Float.round(2));
   _ -> s
  end
 
- end
+end
 
 def tick() do GenServer.call :M7state, {:tick} end
 def handle_call({:tick}, _p, s) do {:reply, :ok, tick(s)} end
@@ -301,8 +347,10 @@ def pw(p) do s = :crypto.strong_rand_bytes(8);
   %{h: :crypto.hash(:sha3_256, p<>s), s: s} end
 
 def reset(s), do:
-   add_user(%M7state{}, %M7user{name: "a", adm: true, pw: pw("1"), vip: true})
-   |> add_user %M7user{name: "an", pw: pw("2"), info: " qwe rqt tq "};
+   add_user(%M7state{}, %M7user{name: "a", adm: true, pw:
+   case File.read("../../data/secret/adm") do {:ok,p} -> pw(p); _ -> pw(" ") end, vip: true})
+   |> add_user(%M7user{name: "an", pw: pw("2"), info: "  "})
+   |> add_user(%M7user{name: "artyui", pw: pw("3"), info: "   "})
   # Map.merge %M7state{}, s
   #  |> add_user %M7user{name: "234", pw: 123}
 

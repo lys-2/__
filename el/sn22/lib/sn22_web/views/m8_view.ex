@@ -215,7 +215,7 @@ font-size: 16px;
     [rem(k, 480), floor k/480]), limit: :infinity, charlists: :aslists}
 
      phx-hook="Aaa"
-     id="canvas" width="480" height="270" style=" user-select: none; cursor: none; color: green; border:solid gray 4px; touch-action:none">
+     id="canvas"  width="480" height="270" style=" size:200%;  user-select: none; cursor: none; color: green; border:solid gray 4px; touch-action:none">
   Your browser does not support canvas element.
 </canvas>
 <br>

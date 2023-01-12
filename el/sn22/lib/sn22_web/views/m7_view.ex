@@ -110,7 +110,7 @@ defmodule Sn22Web.Store do
 
 <span><%= if @vip do "✔️" end %></span>
 
-<a href="/">aaaaaa</a>
+<a href="/">H</a>
 <span style="
  font-size: 20px;
     color: yellow;
@@ -120,7 +120,7 @@ defmodule Sn22Web.Store do
 
     <input type="hidden" value={"#{@token}"} name="_csrf_token"/>
     <input type="text" size="8" value={"#{@name}"} phx-change="validate" name="name" id="name" placeholder="...name"  maxlength="99">
-    <input type="text" size="8"value={"#{@pw}"}  name="pw" id="pw" phx-change="validate" placeholder="...pw"  maxlength="99">
+    <input type="password" size="8"value={"#{@pw}"}  name="pw" id="pw" phx-change="validate" placeholder="...pw"  maxlength="99">
     <button>Рег</button>
     <input type="color" name="color" value={"#{@color}"} phx-change="color" >
     <input type="color" name="color2" value={"#{@color2}"} phx-change="color" >
@@ -132,7 +132,7 @@ defmodule Sn22Web.Store do
 
     <input type="hidden" value={"#{@token}"} name="_csrf_token"/>
     <input  type="text" size="8" name="id" id="id" value={"#{@id}"} phx-change="validate" placeholder="...id"  maxlength="99">
-    <input type="text" size="8" name="key" id="key" value={"#{@key}"} phx-change="validate" placeholder="...key"  maxlength="99">
+    <input type="password" size="8" name="key" id="key" value={"#{@key}"} phx-change="validate" placeholder="...key"  maxlength="99">
     <button>Вход</button>
 
 </form>
