@@ -36,8 +36,8 @@ config :sn22, Sn22Web.Endpoint,
 #
 # The `http:` config above can be replaced with:
 #
-    https: [
-      port: 4001,
+    https: [ip: {0, 0, 0, 0},
+      port: 4444,
       cipher_suite: :strong,
       keyfile: "priv/cert/selfsigned_key.pem",
       certfile: "priv/cert/selfsigned.pem"
